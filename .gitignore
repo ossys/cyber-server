@@ -3,4 +3,5 @@
 *.pem
 
 /api-server/results
+/api-server/tmp
 /osqueryd/run

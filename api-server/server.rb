@@ -3,6 +3,11 @@
 require 'sinatra/base'
 require 'sinatra/json'
 require 'securerandom'
+require 'gauntlt'
+require 'optimist'
+
+SERVER_CRT = File.join(File.dirname(__FILE__), 'files', 'server.crt')
+SERVER_KEY = File.join(File.dirname(__FILE__), 'files', 'server.key')
 
 USER_SECRET = ENV['USER_SECRET'].freeze || 'secret'.freeze
 ENROLL_SECRET = ENV['TLS_ENROLL_SECRET'].freeze || 'secret'.freeze
@@ -16,8 +21,8 @@ class Server < Sinatra::Base
   configure do
     set :bind, '0.0.0.0'
     set :node_ids, []
-    set :ssl_certificate, "server.crt"
-    set :ssl_key, "server.key"
+    set :ssl_certificate, SERVER_CRT
+    set :ssl_key, SERVER_KEY
     set :port, 5000
   end
 
@@ -62,12 +67,11 @@ class Server < Sinatra::Base
     @@node_ids = []
     Dir.mkdir('results') unless File.exists?('results')
 
-
     super do |server|
       server.ssl = true
       server.ssl_options = {
-        :cert_chain_file  => File.dirname(__FILE__) + "/server.crt",
-        :private_key_file => File.dirname(__FILE__) + "/server.key",
+        :cert_chain_file  => SERVER_CRT,
+        :private_key_file => SERVER_KEY,
         :verify_peer      => false
       }
     end
@@ -145,6 +149,28 @@ class Server < Sinatra::Base
         end
       end
     end
+  end
+
+  post '/gauntlt-exec' do
+    @a = nil
+    node_key = @parsed['node_key']
+    out_dir = File.join('results', node_key)
+
+    Kernel.system "rm -rf results/*"
+    Dir.mkdir(out_dir) unless File.exists?(out_dir)
+
+    begin
+      Gauntlt::Attack.new(
+        File.join(File.dirname(__FILE__), 'examples', 'generic.attack'),
+        '',
+        'json',
+        File.join(out_dir, 'result.log')
+      ).run
+      sleep 2
+    rescue SystemExit
+    end
+
+    json :data => "Ran successfully!"
   end
 
   run! if app_file == $0

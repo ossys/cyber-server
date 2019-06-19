@@ -11,6 +11,8 @@ when 'enroll'
 when 'dist-read-invalid'
 when 'dist-read'
   Kernel.system "curl --data '{\"node_key\": \"" + node_key + "\"}' https://localhost:5000/distributed_read -k"
+when 'gauntlt-exec'
+  Kernel.system "curl --data '{\"node_key\": \"" + node_key + "\"}' https://localhost:5000/gauntlt-exec -k"
 end
 
 # vim: set syntax=ruby:

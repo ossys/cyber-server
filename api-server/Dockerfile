@@ -24,4 +24,4 @@ RUN gem install bundler \
   && bundle install
 
 EXPOSE 5000
-CMD ["ruby", "app.rb"]
+CMD ["ruby", "server.rb"]
