@@ -1,0 +1,12 @@
+{
+  "options": {
+    "host_identifier": "demo-osquery",
+    "schedule_splay_percent": 10
+  },
+  "schedule": {
+    "usb-monitor": {
+      "query": "SELECT vendor, model FROM usb_devices;",
+      "interval": 2
+    }
+  }
+}
