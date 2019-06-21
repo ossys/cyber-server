@@ -1,25 +1,14 @@
-*.crt
-*.key
-*.pem
-
-.idea/
-
-/api-server/results
-/api-server/tmp
-/osqueryd/run
-
-
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-angular/dist
-angular/tmp
-angular/out-tsc
+/dist
+/tmp
+/out-tsc
 # Only exists if Bazel was run
-angular/bazel-out
+/bazel-out
 
 # dependencies
-angular/node_modules
+/node_modules
 
 # profiling files
 chrome-profiler-events.json
@@ -43,14 +32,14 @@ speed-measure-plugin.json
 .history/*
 
 # misc
-angular/.sass-cache
-angular/connect.lock
-angular/coverage
-angular/libpeerconnection.log
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-angular/typings
+/typings
 
 # System Files
 .DS_Store
