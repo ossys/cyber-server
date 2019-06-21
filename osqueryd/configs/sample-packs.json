@@ -1,0 +1,9 @@
+{
+  "options": {
+    "host_identifier": "demo-osquery",
+    "schedule_splay_percent": 10
+  },
+  "packs": {
+    "nist-800-179": "../../packs/nist-800-179-r1-osx-10-12.conf"
+  }
+}
