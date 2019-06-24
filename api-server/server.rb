@@ -13,7 +13,6 @@ USER_SECRET = ENV['USER_SECRET'].freeze || 'secret'.freeze
 ENROLL_SECRET = ENV['TLS_ENROLL_SECRET'].freeze || 'secret'.freeze
 BAD_USER_RESPONSE = '{"user_invalid": "true"}'.freeze
 BAD_NODE_RESPONSE = '{"node_invalid": "true"}'.freeze
-DIST_READ_RESP_EX = '{"queries": {"ff_addons": "select COUNT(*) from firefox_addons;"}, "node_invalid": false}'
 
 class Server < Sinatra::Base
   @@node_ids = []
@@ -23,7 +22,7 @@ class Server < Sinatra::Base
     set :node_ids, []
     set :ssl_certificate, SERVER_CRT
     set :ssl_key, SERVER_KEY
-    set :port, 5000
+    set :port, ENV['SINATRA_PORT']
   end
 
   def verify_user
@@ -35,7 +34,7 @@ class Server < Sinatra::Base
   def verify_node
     if !@@node_ids.include? @parsed['node_key']
       puts "invalid! node key: #{@parsed['node_key']}, node_ids: #{@@node_ids}"
-      halt 200, BAD_NODE_RESPONSE
+      halt 200, {'Content-Type' => 'text/javascript'}, json({ :node_invalid => true })
     end
   end
 
@@ -128,7 +127,7 @@ class Server < Sinatra::Base
     verify_node
 
     json({
-      :queries => { "ff_addon" => "SELECT COUNT(*) FROM firefox_addons;" },
+      :queries => { "windows-patches" => "SELECT * from patches;" },
       :node_invalid => false
     })
   end
@@ -144,9 +143,7 @@ class Server < Sinatra::Base
     queries.each do |(query_id, results)|
       out_file = File.join(out_dir, query_id + '.result')
       results.each do |result|
-        result.each do |query_string, value|
-          open(out_file, 'w') { |f| f.puts "#{query_string}: #{value}" }
-        end
+        open(out_file, 'w') { |f| f.puts json(result) }
       end
     end
   end
