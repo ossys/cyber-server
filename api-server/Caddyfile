@@ -1,7 +1,7 @@
-localhost.zah, :2015 {
-  tls off
+:6000 {
+  tls ./app/assets/server.crt ./app/assets/server.key
 
-  proxy / http://server:5000 {
+  proxy / http://localhost:5000 {
     transparent
   }
 }

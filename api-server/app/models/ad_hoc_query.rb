@@ -1,0 +1,2 @@
+class AdHocQuery < ApplicationRecord
+end

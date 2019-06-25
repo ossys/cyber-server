@@ -12,11 +12,12 @@ development:
 test:
   <<: *default
   database: api_server_test
-
-production:
-  <<: *default
   host: db
   port: 5432
   username: <%= ENV['POSTGRES_USERNAME'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   database: <%= ENV['POSTGRES_DB'] %>
+
+production:
+  <<: *default
+  database: api_server_prod_dev

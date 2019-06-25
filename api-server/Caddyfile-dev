@@ -1,0 +1,10 @@
+:6000 {
+  tls ./app/assets/server.crt ./app/assets/server.key {
+    protocols tls1.0 tls1.3
+  }
+
+  proxy / http://localhost:5000 {
+    insecure_skip_verify
+    transparent
+  }
+}

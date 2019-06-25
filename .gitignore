@@ -7,6 +7,7 @@
 
 !/api-server/log/.keep
 !/api-server/tmp/.keep
+/app-server/app/assets/server*
 /api-server/.byebug_history
 /api-server/.env
 /api-server/spec/tmp
