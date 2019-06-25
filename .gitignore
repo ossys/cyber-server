@@ -1,13 +1,25 @@
 *.crt
 *.key
 *.pem
+*.env
 
 .idea/
 
+!/api-server/log/.keep
+!/api-server/tmp/.keep
+/api-server/.byebug_history
+/api-server/.env
+/api-server/spec/tmp
+/api-server/public/system
+/api-server/coverage
 /api-server/results
 /api-server/tmp
+/api-server/log
+/api-server/config/initializers/secret_token.rb
+/api-server/config/master.key
+/api-server/.bundle
+/api-server/vendor/bundle
 /osqueryd/run
-
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 

@@ -1,0 +1,7 @@
+localhost.zah, :2015 {
+  tls off
+
+  proxy / http://server:5000 {
+    transparent
+  }
+}

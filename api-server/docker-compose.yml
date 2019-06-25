@@ -1,7 +1,40 @@
 version: '3.7'
 
 services:
-  api-server:
+  server:
     build: .
+    command: ./script/start
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - bundle:/bundle
     ports:
-      - "4999:5000"
+      - "5000"
+    links:
+      - db
+
+  caddy:
+    image: abiosoft/caddy
+    volumes:
+      - type: bind
+        source: ./Caddyfile
+        target: /etc/Caddyfile
+    restart: always
+    ports:
+      - "6000:2015"
+      - "80:80"
+
+  db:
+    image: postgres:9.6.7-alpine
+    ports:
+      - '5432'
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  bundle:
+  postgres:

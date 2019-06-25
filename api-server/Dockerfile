@@ -16,12 +16,20 @@ RUN apt update \
     liblua5.3-0 \
   && rm -rf /var/lib/apt/lists/*
 
-COPY . /opt/gauntlt-server
-COPY --from=0 /usr/bin/nmap /usr/bin/nmap
+ENV app /app
+RUN mkdir $app
+COPY ./Gemfile $app/Gemfile
+COPY ./Gemfile.lock $app/Gemfile.lock
 
-WORKDIR /opt/gauntlt-server
+ENV BUNDLE_PATH /bundle
+WORKDIR $app
 RUN gem install bundler \
   && bundle install
 
+COPY --from=0 /usr/bin/nmap /usr/bin/nmap
+COPY . $app
+
+RUN ls -al
+
+#CMD ["sh", "script/start"]
 EXPOSE 5000
-CMD ["ruby", "server.rb"]

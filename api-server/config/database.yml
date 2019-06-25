@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['GAUNTLT_SERVER_DB_USERNAME'] %>
+  password: <%= ENV['GAUNTLT_SERVER_DB_PASSWORD'] %>
+
+development:
+  <<: *default
+  database: api_server_development
+
+test:
+  <<: *default
+  database: api_server_test
+
+production:
+  <<: *default
+  host: db
+  port: 5432
+  username: <%= ENV['POSTGRES_USERNAME'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  database: <%= ENV['POSTGRES_DB'] %>
