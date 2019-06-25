@@ -16,14 +16,19 @@ services:
 
   caddy:
     image: abiosoft/caddy
+    restart: always
     volumes:
       - type: bind
         source: ./Caddyfile
         target: /etc/Caddyfile
-    restart: always
+      - type: bind
+        source: ./app/assets/server.key
+        target: /app/server.key
+      - type: bind
+        source: ./app/assets/server.crt
+        target: /app/server.crt
     ports:
-      - "6000:2015"
-      - "80:80"
+      - "443:443"
 
   db:
     image: postgres:9.6.7-alpine

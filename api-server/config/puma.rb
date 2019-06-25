@@ -18,10 +18,10 @@ tmp_dir = File.join(app_dir, 'tmp')
 bind "unix://#{tmp_dir}/socks/puma.sock"
 
 # logging
-stdout_redirect "#{tmp_dir}/log/puma.stdout.log", "#{tmp_dir}/log/puma.stderr.log", true
+#stdout_redirect "#{tmp_dir}/log/puma.stdout.log", "#{tmp_dir}/log/puma.stderr.log", true
 
 pidfile "#{tmp_dir}/pids/puma.pid"
 state_path "#{tmp_dir}/pids/puma.state"
-activate_control_app
+#activate_control_app
 
 plugin :tmp_restart

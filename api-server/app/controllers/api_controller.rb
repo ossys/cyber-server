@@ -7,7 +7,8 @@ class ApiController < ApplicationController
     p new_params
   end
 
-  def config
+  # can't be named `config` due to rails conflict
+  def osq_config
   end
 
   def dist_read
@@ -17,6 +18,10 @@ class ApiController < ApplicationController
   end
   
   def log
+  end
+
+  def test
+    render :json => { :data => 'henlo' }
   end
 
   private
