@@ -10,6 +10,9 @@ services:
       - .prod.env
     volumes:
       - bundle:/bundle
+      - type: bind
+        source: ./config/master.key
+        target: /app/config/master.key
     ports:
       - "5000"
     links:

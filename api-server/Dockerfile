@@ -33,6 +33,6 @@ RUN bundle install --without development test
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
 COPY . $app
 
-RUN echo "SECRET_KEY_BASE=$(bundle exec rails secret)" >> .env
+RUN echo $(openssl version)
 
 EXPOSE 5000
