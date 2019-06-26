@@ -61,7 +61,7 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
 
-    file_logger = ActiveSupport::Logger.new("#{Rails.root}/log/#{Rails.env}.log")
+    file_logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
     config.logger.extend(ActiveSupport::Logger.broadcast(file_logger))
   end
 
