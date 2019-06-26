@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2019_06_25_013551) do
   end
 
   create_table "configs", force: :cascade do |t|
+    t.string "name"
     t.jsonb "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

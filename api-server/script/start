@@ -1,4 +1,4 @@
 #!/bin/bash
 
-bundle exec rake db:create db:migrate
+bundle exec rake db:create db:migrate db:seed
 bundle exec puma -C config/puma.rb

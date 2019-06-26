@@ -26,6 +26,12 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

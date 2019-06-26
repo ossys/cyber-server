@@ -6,12 +6,14 @@ class ApiController < ApplicationController
   def enroll
     @node = Node.new
     @node.set_fields(params[:api])
+    @node.config = Config.first
 
     node_invalid = if @node.valid? && @node.save
                      false
                    else
                      true
                    end
+
     result = {
       :node_key => @node.key,
       :node_invalid => node_invalid

@@ -6,14 +6,9 @@ services:
     command: ./script/start
     restart: always
     env_file:
+      - .env
       - .prod.env
     volumes:
-      - type: bind
-        source: ./log/development.log
-        target: /app/log/development.log
-      - type: bind
-        source: ./log/production.log
-        target: /app/log/production.log
       - bundle:/bundle
     ports:
       - "5000"
@@ -41,8 +36,12 @@ services:
     ports:
       - '5432'
     env_file:
+      - .env
       - .prod.env
+    volumes:
+      - postgres:/var/lib/postgresql/data
     restart: always
 
 volumes:
   bundle:
+  postgres:

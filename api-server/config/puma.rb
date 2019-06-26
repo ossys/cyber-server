@@ -1,8 +1,4 @@
-require "dotenv"
-Dotenv.load("../.env")
-
 gauntlt_port = ENV.fetch("GAUNTLT_PORT") { 5000 }
-
 
 max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
@@ -14,6 +10,7 @@ environment ENV.fetch("RACK_ENV") { "development" }
 
 app_dir = File.expand_path('../..', __FILE__)
 tmp_dir = File.join(app_dir, 'tmp')
+log_dir = File.join(app_dir, 'tmp')
 
 bind "unix://#{tmp_dir}/socks/puma.sock"
 

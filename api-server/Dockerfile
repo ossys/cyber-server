@@ -16,19 +16,21 @@ RUN apt update \
     liblua5.3-0 \
   && rm -rf /var/lib/apt/lists/*
 
+RUN gem install bundler
+
 ENV app /app
 RUN mkdir $app
+WORKDIR $app
+
 COPY ./Gemfile $app/Gemfile
 COPY ./Gemfile.lock $app/Gemfile.lock
+
+ENV BUNDLE_PATH=/bundle \
+  BUNDLE_JOBS=3
+
+RUN bundle install --without development test
 
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
 COPY . $app
 
-WORKDIR $app
-ENV BUNDLE_PATH /bundle
-
-RUN gem install bundler \
-  && bundle install
-
-#CMD ["sh", "script/start"]
 EXPOSE 5000

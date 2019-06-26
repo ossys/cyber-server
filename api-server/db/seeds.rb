@@ -1,7 +1,11 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require 'json'
+
+if Config.first == nil
+  file = File.read(File.expand_path('../osquery.example.conf', __FILE__))
+  default_config = JSON.parse(file)
+
+  conf = Config.new
+  conf.name = 'Default'
+  conf.data = default_config
+  conf.save!
+end
