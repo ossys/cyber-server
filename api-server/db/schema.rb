@@ -25,21 +25,46 @@ ActiveRecord::Schema.define(version: 2019_06_25_013551) do
 
   create_table "configs", force: :cascade do |t|
     t.jsonb "data"
-    t.bigint "node_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["node_id"], name: "index_configs_on_node_id"
   end
 
   create_table "nodes", force: :cascade do |t|
-    t.string "node_key"
+    t.bigint "config_id"
+    t.string "key"
     t.string "host_identifier"
+    t.string "platform_type"
+    t.string "os_platform"
+    t.string "os_major"
+    t.string "os_minor"
+    t.string "os_name"
+    t.string "os_patch"
     t.string "os_version"
-    t.string "osquery_info"
-    t.string "system_info"
-    t.string "platform_info"
+    t.string "sys_computer_name"
+    t.string "sys_cpu_brand"
+    t.string "sys_cpu_logical_cores"
+    t.string "sys_cpu_microcode"
+    t.string "sys_cpu_physical_cores"
+    t.string "sys_cpu_subtype"
+    t.string "sys_cpu_type"
+    t.string "sys_hardware_model"
+    t.string "sys_hostname"
+    t.string "sys_local_hostname"
+    t.string "sys_physical_memory"
+    t.string "sys_uuid"
+    t.string "osqi_build_distro"
+    t.string "osqi_build_platform"
+    t.string "osqi_config_hash"
+    t.string "osqi_config_valid"
+    t.string "osqi_extensions"
+    t.string "osqi_instance_id"
+    t.string "osqi_pid"
+    t.string "osqi_start_time"
+    t.string "osqi_uuid"
+    t.string "osqi_version"
+    t.index ["config_id"], name: "index_nodes_on_config_id"
   end
 
   add_foreign_key "adhoc_queries", "nodes"
-  add_foreign_key "configs", "nodes"
+  add_foreign_key "nodes", "configs"
 end

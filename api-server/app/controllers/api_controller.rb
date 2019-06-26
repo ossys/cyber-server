@@ -1,14 +1,29 @@
+# frozen_string_literal: true
+
 class ApiController < ApplicationController
   #before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
 
   def enroll
-    new_params = enroll_params
-    uuid = Node.gen_node_key()
-    p new_params
+    @node = Node.new
+    @node.set_fields(params[:api])
+
+    node_invalid = if @node.valid? && @node.save
+                     false
+                   else
+                     true
+                   end
+    result = {
+      :node_key => @node.key,
+      :node_invalid => node_invalid
+    }.reject{ |k, v| v.nil? }
+
+    render :json => result
   end
 
   # can't be named `config` due to rails conflict
   def osq_config
+    p params[:config][:node_key]
+    @config = Config.find_by(key: params[:config][:node_key])
   end
 
   def dist_read
@@ -16,7 +31,7 @@ class ApiController < ApplicationController
 
   def dist_write
   end
-  
+
   def log
   end
 
@@ -30,6 +45,19 @@ class ApiController < ApplicationController
   end
 
   def enroll_params
-    params.require(:data).permit(:enroll_secret, :host_identifier, :host_details)
+    params.require(:api).permit(
+      :enroll_secret,
+      :host_identifier,
+      :platform_type,
+      :host_details => [
+        :os_version => {},
+        :osquery_info => {},
+        :system_info => {}
+      ]
+    )
+  end
+
+  def config_params
+    params.require(:config).permit(:node_key)
   end
 end

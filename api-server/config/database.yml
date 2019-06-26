@@ -1,9 +1,11 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  host: localhost
+  port: 5432
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['GAUNTLT_SERVER_DB_USERNAME'] %>
-  password: <%= ENV['GAUNTLT_SERVER_DB_PASSWORD'] %>
+  username: <%= ENV['GAUNTLT_LOCAL_DB_USERNAME'] %>
+  password: <%= ENV['GAUNTLT_LOCAL_DB_PASSWORD'] %>
 
 development:
   <<: *default
@@ -12,12 +14,11 @@ development:
 test:
   <<: *default
   database: api_server_test
-  host: db
-  port: 5432
-  username: <%= ENV['POSTGRES_USERNAME'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-  database: <%= ENV['POSTGRES_DB'] %>
 
 production:
   <<: *default
-  database: api_server_prod_dev
+  host: db
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>

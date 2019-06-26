@@ -21,15 +21,14 @@ RUN mkdir $app
 COPY ./Gemfile $app/Gemfile
 COPY ./Gemfile.lock $app/Gemfile.lock
 
-ENV BUNDLE_PATH /bundle
-WORKDIR $app
-RUN gem install bundler \
-  && bundle install
-
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
 COPY . $app
 
-RUN ls -al
+WORKDIR $app
+ENV BUNDLE_PATH /bundle
+
+RUN gem install bundler \
+  && bundle install
 
 #CMD ["sh", "script/start"]
 EXPOSE 5000
