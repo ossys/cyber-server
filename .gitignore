@@ -1,3 +1,5 @@
+/api-server/config/credentials.yml.enc
+
 *.crt
 *.key
 *.pem
