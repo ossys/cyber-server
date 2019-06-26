@@ -1,4 +1,4 @@
-localhost.zah:443, :2015 {
+localhost:443 {
   tls /app/server.crt /app/server.key
 
   proxy / http://server:5000 {

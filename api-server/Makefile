@@ -6,7 +6,7 @@ CERT_FILES := $(CERT_DIR)/server.crt $(CERT_DIR)/server.key
 LOG_FILES := log/development.log log/production.log
 SOCKET_FILE := tmp/sockets/puma.sock
 
-up: log cert sockets
+up: log cert
 	docker-compose up
 log: $(LOG_FILES)
 cert: $(CERT_FILES)
