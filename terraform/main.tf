@@ -74,7 +74,7 @@ resource "aws_vpc" "cyber-vpc" {
   cidr_block = "${var.vpc_cidr}"
   enable_dns_hostnames = true
 
-  tags {
+  tags = {
     Name = "cyber-vpc"
   }
 }
@@ -86,8 +86,8 @@ resource "aws_subnet" "cyber-public-subnet" {
   cidr_block ="${var.public_subnet_cidr}"
   availability_zone = "${var.aws_subregion}"
 
-  tags {
-    Name = "Prod Public Subnet"
+  tags = {
+    Name = "Cyber Public Subnet"
   }
 }
 
@@ -96,8 +96,8 @@ resource "aws_subnet" "cyber-private-subnet" {
   cidr_block = "${var.private_subnet_cidr}"
   availability_zone = "${var.aws_subregion}"
 
-  tags {
-    Name = "Prod Private Subnet"
+  tags = {
+    Name = "Cyber Private Subnet"
   }
 }
 
@@ -107,8 +107,8 @@ resource "aws_subnet" "cyber-private-subnet" {
 resource "aws_internet_gateway" "cyber-gw" {
   vpc_id = "${aws_vpc.cyber-vpc.id}"
 
-  tags {
-    Name = "Prod VPC IGW"
+  tags = {
+    Name = "Cyber VPC IGW"
   }
 }
 resource "aws_eip" "cyber-nat-eip" {
@@ -120,7 +120,7 @@ resource "aws_nat_gateway" "cyber-nat-gw" {
   depends_on = ["aws_internet_gateway.cyber-gw"]
 
   tags = {
-    Name = "Prod NAT GW"
+    Name = "Cyber NAT GW"
   }
 }
 
@@ -133,8 +133,8 @@ resource "aws_route_table" "cyber-public-rt" {
     gateway_id = "${aws_internet_gateway.cyber-gw.id}"
   }
 
-  tags {
-    Name = "Prod Public Subnet RT"
+  tags = {
+    Name = "Cyber Public Subnet RT"
   }
 }
 resource "aws_route_table" "cyber-private-rt" {
@@ -145,8 +145,8 @@ resource "aws_route_table" "cyber-private-rt" {
     nat_gateway_id = "${aws_nat_gateway.cyber-nat-gw.id}"
   }
 
-  tags {
-    Name = "Prod Private Subnet RT"
+  tags = {
+    Name = "Cyber Private Subnet RT"
   }
 }
 
@@ -201,8 +201,8 @@ resource "aws_security_group" "cyber-public-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
-    Name = "Prod Public SG"
+  tags = {
+    Name = "Cyber Public SG"
   }
 }
 
@@ -232,8 +232,8 @@ resource "aws_security_group" "cyber-private-sg"{
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
-    Name = "Prod Private SG"
+  tags = {
+    Name = "Cyber Private SG"
   }
 }
 
@@ -250,8 +250,8 @@ resource "aws_instance" "cyber-master" {
   root_block_device {
     delete_on_termination = true
   }
-  tags {
-    Name = "Prod Master"
+  tags = {
+    Name = "Cyber Master"
   }
 
 }
@@ -272,7 +272,7 @@ resource "aws_instance" "cyber-node1" {
   root_block_device {
     delete_on_termination = true
   }
-  tags {
+  tags = {
     Name = "Cyber Node 1"
   }
 }
@@ -287,7 +287,7 @@ resource "aws_instance" "cyber-node2" {
   root_block_device {
     delete_on_termination = true
   }
-  tags {
+  tags = {
     Name = "Cyber Node 2"
   }
 }
@@ -302,7 +302,7 @@ resource "aws_instance" "cyber-node3" {
   root_block_device {
     delete_on_termination = true
   }
-  tags {
+  tags = {
     Name = "Cyber Node 3"
   }
 }

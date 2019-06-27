@@ -1,5 +1,8 @@
 /api-server/config/credentials.yml.enc
 
+keys/
+terraform/.terraform/
+
 *.crt
 *.key
 *.pem
