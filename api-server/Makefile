@@ -1,4 +1,4 @@
-.PHONY: cert creds sockets log up
+.PHONY: bundle cert creds sockets log up
 
 CRED_FILES := config/credentials.yml.enc config/master.key
 
@@ -8,14 +8,16 @@ CERT_FILES := $(CERT_DIR)/server.crt $(CERT_DIR)/server.key
 LOG_FILES := log/development.log log/production.log
 SOCKET_FILE := tmp/sockets/puma.sock
 
-up: log cert creds
+up: bundle log cert creds
+	@bundle install
 	docker-compose up --build
-ups: log cert creds
-	docker-compose up --build server
 log: $(LOG_FILES)
 cert: $(CERT_FILES)
 sockets: $(SOCKET_FILE)
 creds: $(CRED_FILES)
+
+bundle:
+	@bundle install
 
 $(LOG_FILES):
 	@if [ ! -d "log" ]; then mkdir log; fi

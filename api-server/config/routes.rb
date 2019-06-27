@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  get '/test', to: 'api#test'
-  post '/enroll', to: 'api#enroll'
-  post '/config', to: 'api#osq_config'
+  namespace :api do
+    resources :nodes, only: %i[index show]
+    resources :configs, only: %i[index show]
+  end
+
+  get '/test', to: 'os_query#test'
+  post '/enroll', to: 'os_query#enroll'
+  post '/config', to: 'os_query#osq_config'
 end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class ApiController < ApplicationController
+class OsQueryController < ApplicationController
   #before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
 
   def enroll
     @node = Node.new
-    @node.set_fields(params[:api])
+    @node.set_fields(params[:os_query])
     @node.config = Config.first
 
     node_invalid = if @node.valid? && @node.save
@@ -47,7 +47,7 @@ class ApiController < ApplicationController
   end
 
   def enroll_params
-    params.require(:api).permit(
+    params.require(:os_query).permit(
       :enroll_secret,
       :host_identifier,
       :platform_type,
