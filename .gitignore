@@ -9,6 +9,7 @@ terraform/.terraform/
 *.env
 
 /ansible/*.retry
+/terraform/vendor
 
 .idea/
 
