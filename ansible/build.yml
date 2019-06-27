@@ -1,0 +1,44 @@
+- name: Automated Cyber Environment
+  hosts: local
+  connection: local
+
+  tasks:
+
+    - name: Check that keys Directory Exists
+      stat:
+        path: ../keys
+      register: keys_directory
+
+    - name: Create Directory for SSH Keys
+      file:
+        path: ../keys
+        state: directory
+      when: keys_directory.stat.exists == False
+
+    - name: Check that Key File Exists
+      stat:
+        path: ../keys/cyber
+      register: keys_file
+
+    - name: Generate SSH Keypair
+      command: ssh-keygen -f ../keys/cyber -t rsa -b 2048 -m pem -N ''
+      when: keys_file.stat.exists == False
+
+    - name: Change Private Key Permissions
+      file:
+        path: ../keys/cyber
+        mode: '0400'
+
+    - name: Change Public Key Permissions
+      file:
+        path: ../keys/cyber.pub
+        mode: '0644'
+
+    - name: Run Terraform (3-5 mins)
+      terraform:
+        project_path: '../terraform'
+        state: present
+        force_init: yes
+
+- name: Cyber Environment
+  import_playbook: cyber.yml

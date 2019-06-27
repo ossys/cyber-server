@@ -1,0 +1,39 @@
+- name: Destroy Automated Cyber Environment
+  hosts: local
+  connection: local
+
+  tasks:
+
+    - name: Remove Terraform (2-5 mins)
+      terraform:
+        project_path: '../terraform'
+        state: absent
+
+    - name: Remove Key from SSH Agent
+      command: ssh-add -d ../keys/cyber.pub
+
+    - name: Delete Directory for SSH Keys
+      file:
+        path: ../keys
+        state: absent
+
+    - name: Delete Terraform State Files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - ../terraform/.terraform
+        - ../terraform/terraform.tfstate
+        - ../terraform/terraform.tfstate.backup
+
+    - name: Find Retry Files
+      find:
+        paths: ../ansible
+        patterns: "*.retry"
+      register: retry
+
+    - name: Delete Ansible Retry Files
+      file:
+        path: "{{ item['path'] }}"
+        state: absent
+      with_items: "{{ retry.files }}"
