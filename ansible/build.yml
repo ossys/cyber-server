@@ -34,6 +34,9 @@
         path: ../keys/cyber.pub
         mode: '0644'
 
+    - name: Add Key to SSH Agent
+      command: ssh-add ../keys/cyber.pub
+
     - name: Run Terraform (3-5 mins)
       terraform:
         project_path: '../terraform'
