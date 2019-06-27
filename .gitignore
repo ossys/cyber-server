@@ -8,6 +8,8 @@ terraform/.terraform/
 *.pem
 *.env
 
+/ansible/*.retry
+
 .idea/
 
 !/api-server/log/.keep
