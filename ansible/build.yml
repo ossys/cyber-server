@@ -35,7 +35,7 @@
         mode: '0644'
 
     - name: Add Key to SSH Agent
-      command: ssh-add ../keys/cyber.pub
+      command: ssh-add ../keys/cyber
 
     - name: Run Terraform (3-5 mins)
       terraform:
