@@ -11,6 +11,7 @@
 
     - name: Remove Key from SSH Agent
       command: ssh-add -d ../keys/cyber.pub
+      become: yes
 
     - name: Delete Directory for SSH Keys
       file:
