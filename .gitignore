@@ -24,6 +24,7 @@ terraform/.terraform/
 /api-server/results
 /api-server/tmp
 /api-server/log
+/api-server/bin
 /api-server/config/initializers/secret_token.rb
 /api-server/config/master.key
 /api-server/.bundle
