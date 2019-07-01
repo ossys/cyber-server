@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "required": ["user"],
+  "properties": {
+    "user" : {
+      "type" : "object",
+      "required" : [
+        "id",
+        "email"
+      ],
+      "properties" : {
+        "id" : { "type" : "integer" },
+        "email" : { "type" : "string" },
+        "auth_token" : { "type" : "string" },
+        "created_at" : { "type" : "string", "format": "date-time" },
+        "updated_at" : { "type" : "string", "format": "date-time" }
+      }
+    }
+  }
+}
