@@ -10,9 +10,13 @@ environment ENV.fetch("RACK_ENV") { "development" }
 
 app_dir = File.expand_path('../..', __FILE__)
 tmp_dir = File.join(app_dir, 'tmp')
-log_dir = File.join(app_dir, 'tmp')
+log_dir = File.join(app_dir, 'log')
 
 bind "unix://#{tmp_dir}/sockets/puma.sock"
+ssl_bind '127.0.0.1', '5001', {
+  cert: File.join('app', 'assets', 'server.crt'),
+  key: File.join('app', 'assets', 'server.key')
+}
 
 #logging
 #stdout_redirect "#{tmp_dir}/log/puma.stdout.log", "#{tmp_dir}/log/puma.stderr.log", true

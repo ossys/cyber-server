@@ -3,6 +3,7 @@
 class OsQueryController < ApplicationController
   #before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
   skip_before_action :authenticate
+  wrap_parameters :osq
 
   def enroll
     @node = Node.new
@@ -16,7 +17,7 @@ class OsQueryController < ApplicationController
                    end
 
     result = {
-      :node_key => @node.key,
+      :node_key => @node.node_key,
       :node_invalid => node_invalid
     }.reject{ |k, v| v.nil? }
 
@@ -25,8 +26,8 @@ class OsQueryController < ApplicationController
 
   # can't be named `config` due to rails conflict
   def osq_config
-    p params[:config][:node_key]
-    @config = Config.find_by(key: params[:config][:node_key])
+    node = Node.from_node_key(config_params)
+    render :json => node.config.data.to_json
   end
 
   def dist_read
@@ -61,6 +62,6 @@ class OsQueryController < ApplicationController
   end
 
   def config_params
-    params.require(:config).permit(:node_key)
+    params.require(:osq).permit(:node_key)
   end
 end

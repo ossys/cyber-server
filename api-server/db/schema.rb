@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
 
   create_table "nodes", force: :cascade do |t|
     t.bigint "config_id"
-    t.string "key"
+    t.string "node_key"
     t.string "host_identifier"
     t.string "platform_type"
     t.string "os_platform"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
     t.string "osqi_uuid"
     t.string "osqi_version"
     t.index ["config_id"], name: "index_nodes_on_config_id"
+    t.index ["node_key"], name: "index_nodes_on_node_key"
   end
 
   create_table "queries", force: :cascade do |t|
@@ -81,7 +82,6 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.datetime "confirmed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true

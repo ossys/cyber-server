@@ -11,7 +11,7 @@ class Node < ApplicationRecord
     osquery_info = details['osquery_info']
     system_info = details['system_info']
 
-    self.key = Node.generate_key
+    self.node_key = Node.generate_key
     self.host_identifier = params['host_identifier']
     self.platform_type = params['platform_type']
 
@@ -49,5 +49,10 @@ class Node < ApplicationRecord
 
   def self.generate_key
     SecureRandom.uuid
+  end
+
+  def self.from_node_key(params)
+    puts "params: #{params}"
+    Node.find_by(node_key: params[:node_key])
   end
 end

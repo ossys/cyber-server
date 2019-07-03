@@ -3,7 +3,7 @@ class AddNodes < ActiveRecord::Migration[6.0]
     create_table :nodes do |t|
       t.references :config, index: true, foreign_key: true
 
-      t.string :key
+      t.string :node_key, index: true
       t.string :host_identifier
       t.string :platform_type
 

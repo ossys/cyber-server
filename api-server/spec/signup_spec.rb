@@ -15,8 +15,8 @@ RSpec.describe 'POST /signup', type: :request do
   context 'when user is unauthenticated' do
     before { post url, params: params }
 
-    it 'returns 200' do
-      expect(response.status).to eq 200
+    it 'returns 201' do
+      expect(response.status).to eq 201
     end
 
     it 'returns a new user' do
