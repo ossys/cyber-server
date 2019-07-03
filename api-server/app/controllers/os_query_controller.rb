@@ -3,6 +3,7 @@
 class OsQueryController < ApplicationController
   #before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
   skip_before_action :authenticate
+  wrap_parameters :osq
 
   skip_before_action :authenticate
   wrap_parameters :osq
@@ -14,17 +15,17 @@ class OsQueryController < ApplicationController
 
     node_invalid = @node && @node.save
     result = {
-      node_key: @node ? @node.node_key : nil,
-      node_invalid: node_invalid
-    }.reject { |_k, v| v.nil? }
+      :node_key => @node.node_key,
+      :node_invalid => node_invalid
+    }.reject{ |k, v| v.nil? }
 
     render json: result, status: 200
   end
 
   # can't be named `config` due to rails conflict
   def osq_config
-    node = Node.from_node_key(node_key_params)
-    render json: node.config.data.to_json
+    node = Node.from_node_key(config_params)
+    render :json => node.config.data.to_json
   end
 
   def dist_read
@@ -81,12 +82,8 @@ class OsQueryController < ApplicationController
     )
   end
 
-  def node_key_params
-    params.permit(:node_key)
-  end
-
-  def log_params
-    params.permit(:node_key, :log_type, data: [{}])
+  def config_params
+    params.require(:osq).permit(:node_key)
   end
 
   def dist_write_params

@@ -8,16 +8,19 @@ RSpec.describe 'POST /api/sign_in', type: :request do
   let(:url) { '/api/sign_in' }
   let(:params) do
     {
-      email: user.email,
-      password: user.password
+      user: {
+        email: user.email,
+        password: user.password
+      }
     }
   end
 
   let(:headers) do
     {
-      'Content-Type' => 'application/json'
+      'Content-Type' => 'application/json' 
     }
   end
+
 
   context 'when params are correct' do
     before do
