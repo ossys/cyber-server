@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Api
   class AdHocQueryListsController < ApplicationController
     skip_before_action :authenticate
@@ -27,16 +25,18 @@ module Api
 
     def create_manual
       query_list = AdHocQueryList.build(query_params)
-      return render status: 400 unless query_list
 
-      query_list.save
-      render_resource(query_list)
+      if query_list.save
+        render json: query_list, status: 201
+      else
+        validation_error(query_list)
+      end
     end
 
     private
 
     def query_params
-      params.require(:query_list).permit(nodes: [], queries: %i[name body])
+      params.require(:query_list).permit(nodes: [{}], queries: [:name, :query])
     end
   end
 end

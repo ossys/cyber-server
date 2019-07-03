@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class OsQueryController < ApplicationController
-  before_action :check_node_key, except: :enroll
-  before_action :set_node_key, except: :enroll
+  #before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
+  skip_before_action :authenticate
 
   skip_before_action :authenticate
   wrap_parameters :osq
