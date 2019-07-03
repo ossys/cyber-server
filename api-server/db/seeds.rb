@@ -9,6 +9,6 @@ if Config.first == nil
   config.data = default_config
   config.save!
 
-  n = Node.new(key: 'test', config: config)
+  n = Node.new(node_key: 'test', config: config)
   n.save!
 end

@@ -1,5 +1,6 @@
 class RegistrationsController < ApplicationController
   respond_to :json
+  wrap_parameters :user
 
   def create
     build_resource(register_params)
