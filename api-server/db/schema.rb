@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "ad_hoc_query_lists_queries", id: false, force: :cascade do |t|
+  create_table "ad_hoc_query_lists_queries", force: :cascade do |t|
     t.bigint "ad_hoc_query_list_id"
     t.bigint "query_id"
     t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_queries_on_ad_hoc_query_list_id"

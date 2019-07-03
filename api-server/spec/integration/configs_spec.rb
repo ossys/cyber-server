@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # spec/integration/blogs_spec.rb
 require 'swagger_helper'
 
@@ -23,11 +21,11 @@ describe 'Configs API' do
           name: { type: :string },
           data: { type: 'object' }
         },
-        required: %w[name data]
+        required: [ 'name', 'data' ]
       }
 
       response '201', 'config created' do
-        let(:config) { { name: 'TestConf', data: { options: '{}' } } }
+        let(:config) { { name: 'TestConf', data: { options: "{}" } } }
         run_test!
       end
 
@@ -42,22 +40,22 @@ describe 'Configs API' do
     get 'Retrieves a config' do
       tags 'Configs'
       produces 'application/json'
-      parameter name: :id, in: :path, type: :string
+      parameter name: :id, :in => :path, :type => :string
 
       response '200', 'config found' do
         schema type: :object,
-               properties: {
-                 data: {
-                   type: :object,
-                   id: { type: :integer, required: true },
-                   name: { type: :string, required: true },
-                   data: { type: 'object', required: true },
-                   created_at: { type: :string, required: true },
-                   updated_at: { type: :string, required: true }
-                 }
-               }
+          properties: {
+            data: {
+              type: :object,
+              id: { type: :integer, required: true },
+              name: { type: :string, required: true },
+              data: { type: 'object', required: true },
+              created_at: { type: :string, required: true },
+              updated_at: { type: :string, required: true }
+            }
+          }
 
-        let(:id) { Config.create(name: 'foo', data: { options: '{}' }).id }
+        let(:id) { Config.create(name: 'foo', data: { options: "{}" }).id }
         run_test!
       end
 
@@ -70,10 +68,10 @@ describe 'Configs API' do
     delete 'Deletes a config' do
       tags 'Configs'
       produces 'application/json'
-      parameter name: :id, in: :path, type: :string
+      parameter name: :id, :in => :path, :type => :string
 
       response '204', 'config not found' do
-        let(:id) { Config.create(name: 'foo', data: { options: '{}' }).id }
+        let(:id) { Config.create(name: 'foo', data: { options: "{}" }).id }
         run_test!
       end
 
@@ -82,5 +80,6 @@ describe 'Configs API' do
         run_test!
       end
     end
+
   end
 end

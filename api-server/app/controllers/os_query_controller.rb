@@ -5,8 +5,10 @@ class OsQueryController < ApplicationController
   skip_before_action :authenticate
   wrap_parameters :osq
 
-  skip_before_action :authenticate
-  wrap_parameters :osq
+  def enroll
+    @node = Node.new
+    @node.set_fields(params[:osq])
+    @node.config = Config.first
 
   def enroll
     if ENV['OSQUERY_ENROLL_SECRET'] == enroll_params[:enroll_secret]
@@ -24,31 +26,34 @@ class OsQueryController < ApplicationController
 
   # can't be named `config` due to rails conflict
   def osq_config
-    node = Node.from_node_key(config_params)
+    node = Node.from_node_key(node_key_params)
     render :json => node.config.data.to_json
   end
 
   def dist_read
     response = { queries: [] }
+    aql = AdHocQueryList
+      .where(:nodes => [node_key_params[:node_key]])
+      .first
 
-    if aql = AdHocQueryList.find_by_node(params)
+    if aql
       aql.queries.each do |q|
         response[:queries] << { q.name => q.body }
       end
-      render json: response, status: 200
+      render :json => response, :status => 200
     else
-      render status: 200
+      render :status => 200
     end
   end
 
   def dist_write
     puts "received dist-write. key: #{dist_write_params[:node_key]}"
-    render status: 200
+    render :status => 200
   end
 
   def log
     puts "received log. key: #{params[:node_key]}, type: #{params[:log_type]}"
-    render status: 200
+    render :status => 200
   end
 
   def test
@@ -82,12 +87,17 @@ class OsQueryController < ApplicationController
     )
   end
 
-  def config_params
+  def node_key_params
     params.require(:osq).permit(:node_key)
   end
 
-  def dist_write_params
-    params.permit(:node_key, statuses: [{}], queries: {})
+  def log_params
+    params.require(:osq)
+      .permit(:node_key, :log_type, :data => [{}])
   end
 
+  def dist_write_params
+    params.require(:osq)
+      .permit(:node_key, :statuses => [{}], :queries => {})
+  end
 end
