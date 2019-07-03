@@ -12,6 +12,7 @@ gem 'bcrypt'
 gem 'lograge'
 gem 'gauntlt'
 gem 'jwt', '~> 1.5'
+gem 'rswag', '~> 2.0', '>= 2.0.5'
 
 gem 'dotenv-rails', groups: [:development, :test]
 group :development, :test do

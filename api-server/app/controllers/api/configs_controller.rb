@@ -8,20 +8,20 @@ module Api
     end
 
     def show
-      config = Config.find(params[:id])
-      render :json => { :data => config }
+      config = Config.find_by(id: params[:id])
+      maybe_render_resource(config)
     end
 
     def create
       config = Config.new(config_params)
       config.save
-      render_resource(config)
+      render_resource(config, :status => 201)
     end
 
     def update
       config = Config.update(params[:id], config_params)
       config.save
-      render_resource(config)
+      render_resource(config, :status => 200)
     end
 
     def destroy
@@ -30,7 +30,7 @@ module Api
 
       if config = Config.find_by(id: params[:id])
         config.destroy
-        render status: 200
+        render status: 204
       else
         render status: 404
       end
