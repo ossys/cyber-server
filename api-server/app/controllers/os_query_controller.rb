@@ -2,7 +2,7 @@
 
 class OsQueryController < ApplicationController
   #before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
-  skip_before_action :authenticate!
+  skip_before_action :authenticate
 
   def enroll
     @node = Node.new

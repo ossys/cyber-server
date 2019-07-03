@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     resources :nodes, only: %i[index show]
     resources :configs, only: %i[index show]
+    resources :ad_hoc_query_lists, only: %i[index create show]
+    post '/ad_hoc_query_lists/manual', to: 'ad_hoc_query_lists#create_manual'
   end
 
   post '/api/users', to: 'users#create'
