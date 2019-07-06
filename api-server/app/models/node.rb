@@ -5,7 +5,10 @@ require 'securerandom'
 class Node < ApplicationRecord
   belongs_to :config
 
-  def set_fields(params)
+  def build(params)
+    @node.build(params[:osq])
+    @node.config = Config.first
+
     details = params['host_details']
     os_version = details['os_version']
     osquery_info = details['osquery_info']

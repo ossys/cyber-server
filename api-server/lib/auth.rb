@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'jwt'
 
 class Auth
   ALGORITHM = 'HS256'
 
   def self.exp_payload(payload)
-    expiration = Time.now.to_i + 4 * 86400
+    expiration = Time.now.to_i + 4 * 86_400
 
     { data: payload, exp: expiration }
   end
@@ -13,7 +15,8 @@ class Auth
     JWT.encode(
       Auth.exp_payload(payload),
       auth_secret,
-      ALGORITHM)
+      ALGORITHM
+    )
   end
 
   def self.decode(token)
@@ -21,7 +24,7 @@ class Auth
       token,
       auth_secret,
       true,
-      { algorithm: ALGORITHM }
+      algorithm: ALGORITHM
     )
   end
 
