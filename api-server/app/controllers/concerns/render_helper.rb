@@ -38,9 +38,10 @@ module RenderHelper
 
   # -> { errors: ['', ''] }
   def render_errors(error_list, opts = {})
-    response = opts.merge(status: 400) unless opts[:status]
-    response = opts.merge(json: { errors: error_list })
-    render response
+    opts[:status] = 400 unless opts[:status]
+    opts[:json] = { errors: error_list }
+
+    render opts
   end
 
   def render_404(opts = {})

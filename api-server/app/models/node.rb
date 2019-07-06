@@ -6,7 +6,7 @@ class Node < ApplicationRecord
   belongs_to :config
 
   def build_from_params(params)
-    self.config = Config.first
+    return unless params['host_details'].present?
 
     details = params['host_details']
     os_version = details['os_version']
@@ -47,6 +47,8 @@ class Node < ApplicationRecord
     self.osqi_start_time     = osquery_info['start_time']
     self.osqi_uuid           = osquery_info['uuid']
     self.osqi_version        = osquery_info['version']
+
+    self.config = Config.first
 
     self
   end
