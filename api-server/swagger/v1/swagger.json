@@ -138,6 +138,31 @@
           }
         }
       }
+    },
+    "/enroll": {
+      "post": {
+        "summary": "enrolls successfully",
+        "tags": [
+          "OsQuery"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "enrolled (node created)"
+          }
+        }
+      }
     }
   }
 }
