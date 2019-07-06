@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Api
   class ConfigsController < ApplicationController
     skip_before_action :authenticate
 
     def index
       configs = Config.all
-      render :json => { :data => configs }
+      render json: { data: configs }
     end
 
     def show
@@ -15,20 +17,20 @@ module Api
     def create
       config = Config.new(config_params)
       config.save
-      render_resource(config, :status => 201)
+      render_resource(config, status: 201)
     end
 
     def update
       config = Config.update(params[:id], config_params)
       config.save
-      render_resource(config, :status => 200)
+      render_resource(config, status: 200)
     end
 
     def destroy
       # cannot delete the default config
       return render status: 400 if params[:id] == '1'
 
-      if config = Config.find_by(id: params[:id])
+      if (config = Config.find_by(id: params[:id]))
         config.destroy
         render status: 204
       else
@@ -39,7 +41,7 @@ module Api
     private
 
     def config_params
-      params.require(:config).permit(:name, :data => {})
+      params.require(:config).permit(:name, data: {})
     end
   end
 end

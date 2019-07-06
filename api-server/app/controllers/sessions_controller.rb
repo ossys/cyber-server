@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   skip_before_action :authenticate
 
   def create
     user = User.find_by(email: params[:email])
-    render json: {error: "User not found"}, status: 404 and return if user.nil?
+    render(json: { error: 'User not found' }, status: 404) && return if user.nil?
 
     if user.authenticate(session_params[:password])
-      jwt = Auth.issue({user: user.id})
+      jwt = Auth.issue(user: user.id)
 
       render json: { jwt: jwt }
     else

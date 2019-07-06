@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class AdHocQueryList < ApplicationRecord
-  has_and_belongs_to_many :queries, :through => :ad_hoc_query_lists_queries
+  has_and_belongs_to_many :queries, through: :ad_hoc_query_lists_queries
   has_many :nodes
 
   def self.build(params)
     queries = []
     nodes = params['nodes']
-      .map{ |k| Node.find_by(node_key: k) }
-      .compact
+            .map { |k| Node.find_by(node_key: k) }
+            .compact
 
     return nil if nodes.empty?
 
@@ -19,15 +21,17 @@ class AdHocQueryList < ApplicationRecord
       queries << query
     end
 
-    data = {
-      nodes: nodes,
-      queries: queries,
-    }
-
-    AdHocQueryList.new(data)
+    AdHocQueryList.new(nodes: nodes, queries: queries)
   end
 
-  def as_json(options={})
-    { :queries => self.queries }
+  def self.find_by_node
+    AdHocQueryList
+      .where(nodes: [node_key_params[:node_key]])
+      .where(has_run: false)
+      .first
+  end
+
+  def as_json(_options = {})
+    { queries: queries }
   end
 end

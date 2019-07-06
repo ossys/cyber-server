@@ -1,0 +1,26 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'
+    - 'bin/{rails,rake}'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'script/**/*'
+    - 'spec/**/*'
+
+Metrics/LineLength:
+  Max: 110
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - 'app/models/node.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/models/node.rb'
+
+Style/DoubleNegation:
+  Enabled: false
+

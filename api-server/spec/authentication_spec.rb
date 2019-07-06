@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'POST /api/sign_in', type: :request do
@@ -15,10 +17,9 @@ RSpec.describe 'POST /api/sign_in', type: :request do
 
   let(:headers) do
     {
-      'Content-Type' => 'application/json' 
+      'Content-Type' => 'application/json'
     }
   end
-
 
   context 'when params are correct' do
     before do
