@@ -8,15 +8,17 @@ class OsQueryController < ApplicationController
   wrap_parameters :osq
 
   def enroll
-    @node = Node.new.build_from_params(params[:osq])
+    if ENV['OSQUERY_ENROLL_SECRET'] == enroll_params[:enroll_secret]
+      @node = Node.new.build_from_params(enroll_params)
+    end
 
-    node_invalid = @node.valid? && @node.save
+    node_invalid = @node && @node.save
     result = {
-      node_key: @node.node_key,
+      node_key: @node ? @node.node_key : nil,
       node_invalid: node_invalid
     }.reject { |_k, v| v.nil? }
 
-    render json: result
+    render json: result, status: 200
   end
 
   # can't be named `config` due to rails conflict
