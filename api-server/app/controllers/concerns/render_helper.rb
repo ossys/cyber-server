@@ -32,7 +32,18 @@ module RenderHelper
     }, status: :bad_request
   end
 
-  def render_404(opts)
+  def render_error(error, opts = {})
+    render_errors([error], opts)
+  end
+
+  # -> { errors: ['', ''] }
+  def render_errors(error_list, opts = {})
+    response = opts.merge(status: 400) unless opts[:status]
+    response = opts.merge(json: { errors: error_list })
+    render response
+  end
+
+  def render_404(opts = {})
     response = opts.merge(status: 404)
     render response
   end

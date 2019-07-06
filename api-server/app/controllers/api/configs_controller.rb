@@ -41,7 +41,7 @@ module Api
     private
 
     def config_params
-      params.require(:config).permit(:name, data: {})
+      params.permit(:name, data: {})
     end
   end
 end

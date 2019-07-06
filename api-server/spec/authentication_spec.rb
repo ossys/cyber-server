@@ -8,10 +8,8 @@ RSpec.describe 'POST /api/sign_in', type: :request do
   let(:url) { '/api/sign_in' }
   let(:params) do
     {
-      user: {
-        email: user.email,
-        password: user.password
-      }
+      email: user.email,
+      password: user.password
     }
   end
 
@@ -30,8 +28,8 @@ RSpec.describe 'POST /api/sign_in', type: :request do
       expect(response).to have_http_status(200)
     end
 
-    it 'returns JTW token in authorization header' do
-      expect(response.headers['Authorization']).to be_present
+    it 'returns JWT token in authorization header' do
+      expect(response.headers['HTTP_AUTHORIZATION']).to be_present
     end
 
     it 'returns valid JWT token' do
