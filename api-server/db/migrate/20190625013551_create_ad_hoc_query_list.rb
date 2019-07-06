@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAdHocQueryList < ActiveRecord::Migration[6.0]
   def change
     create_table :ad_hoc_query_lists do |t|

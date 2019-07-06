@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RenderHelper
-  DEFAULT_OPTS = { status: 200 }
+  DEFAULT_OPTS = { status: 200 }.freeze
 
   def maybe_render_resource(resource, opts = DEFAULT_OPTS)
     if resource
@@ -12,9 +12,9 @@ module RenderHelper
   end
 
   def render_resource(resource, opts = DEFAULT_OPTS)
-    response = opts.merge({ json: { data: resource } })
+    response = opts.merge(json: { data: resource })
 
-    if has_errors?(resource)
+    if errors?(resource)
       render response
     else
       validation_error(resource)
@@ -37,9 +37,9 @@ module RenderHelper
     render response
   end
 
-  def has_errors?(resource)
+  def errors?(resource)
     if resource.respond_to?('each')
-      resource.all?{ |r| r.errors.empty? }
+      resource.all? { |r| r.errors.empty? }
     else
       resource.errors.empty?
     end

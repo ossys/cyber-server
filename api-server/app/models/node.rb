@@ -5,8 +5,9 @@ require 'securerandom'
 class Node < ApplicationRecord
   belongs_to :config
 
-  def build_from_params(params)
-    return unless params['host_details'].present?
+  def build(params)
+    @node.build(params[:osq])
+    @node.config = Config.first
 
     details = params['host_details']
     os_version = details['os_version']

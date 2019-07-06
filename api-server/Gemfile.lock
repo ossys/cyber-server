@@ -202,6 +202,14 @@ GEM
     rswag-ui (2.0.5)
       actionpack (>= 3.1, < 6.0)
       railties (>= 3.1, < 6.0)
+    rubocop (0.72.0)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.6)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 1.7)
+    ruby-progressbar (1.10.1)
     ruby_dep (1.5.0)
     seed_dump (3.3.1)
       activerecord (>= 4)
@@ -248,6 +256,7 @@ DEPENDENCIES
   rails (~> 6.0.0.rc1)
   rspec-rails (~> 3.8)
   rswag (~> 2.0, >= 2.0.5)
+  rubocop
   seed_dump
   spring
   spring-watcher-listen (~> 2.0.0)
