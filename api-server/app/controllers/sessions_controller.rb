@@ -5,10 +5,11 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(email: params[:email])
-    render(json: { error: 'User not found' }, status: 404) && return if user.nil?
+    render_error('User not found', status: 404) && return if user.nil?
 
     if user.authenticate(session_params[:password])
       jwt = Auth.issue(user: user.id)
+      response.headers['HTTP_AUTHORIZATION'] = jwt
 
       render json: { jwt: jwt }
     else
@@ -19,7 +20,7 @@ class SessionsController < ApplicationController
   private
 
   def session_params
-    params.require(:session).permit(:email, :password)
+    params.permit(:email, :password)
   end
 
   def respond_with(resource, _opts = {})

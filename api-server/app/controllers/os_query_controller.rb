@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 class OsQueryController < ApplicationController
-  # before_filter :verify_node, only: [:config, :dist_read, :dist_write, :log]
+  before_action :check_node_key, except: :enroll
+  before_action :set_node_key, except: :enroll
+
   skip_before_action :authenticate
   wrap_parameters :osq
 
   def enroll
-    @node = Node.new.build(params[:osq])
+    @node = Node.new.build_from_params(params[:osq])
 
     node_invalid = @node.valid? && @node.save
-
     result = {
       node_key: @node.node_key,
       node_invalid: node_invalid
@@ -27,7 +28,7 @@ class OsQueryController < ApplicationController
   def dist_read
     response = { queries: [] }
 
-    if aql
+    if aql = AdHocQueryList.find_by_node(params)
       aql.queries.each do |q|
         response[:queries] << { q.name => q.body }
       end
@@ -53,6 +54,16 @@ class OsQueryController < ApplicationController
 
   private
 
+  def check_node_key
+    return if node_key_params[:node_key].present?
+
+    return render_error('node_key was not present')
+  end
+
+  def set_node_key
+    @node_key = node_key_params[:node_key]
+  end
+
   def verify_node; end
 
   def enroll_params
@@ -69,16 +80,15 @@ class OsQueryController < ApplicationController
   end
 
   def node_key_params
-    params.require(:osq).permit(:node_key)
+    params.permit(:node_key)
   end
 
   def log_params
-    params.require(:osq)
-          .permit(:node_key, :log_type, data: [{}])
+    params.permit(:node_key, :log_type, data: [{}])
   end
 
   def dist_write_params
-    params.require(:osq)
-          .permit(:node_key, statuses: [{}], queries: {})
+    params.permit(:node_key, statuses: [{}], queries: {})
   end
+
 end

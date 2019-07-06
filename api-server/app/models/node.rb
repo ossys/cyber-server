@@ -5,9 +5,8 @@ require 'securerandom'
 class Node < ApplicationRecord
   belongs_to :config
 
-  def build(params)
-    @node.build(params[:osq])
-    @node.config = Config.first
+  def build_from_params(params)
+    self.config = Config.first
 
     details = params['host_details']
     os_version = details['os_version']
@@ -48,6 +47,8 @@ class Node < ApplicationRecord
     self.osqi_start_time     = osquery_info['start_time']
     self.osqi_uuid           = osquery_info['uuid']
     self.osqi_version        = osquery_info['version']
+
+    self
   end
 
   def self.generate_key
