@@ -12,7 +12,7 @@
 ### Variables ###
 variable "node_size" {
   description = "Default Node Size"
-  default = "t3.nano"
+  default = "t3.medium"
 }
 
 variable "aws_region" {
@@ -249,13 +249,13 @@ resource "aws_instance" "cyber-master" {
   private_ip                  = "10.0.0.10"
   root_block_device {
     delete_on_termination = true
+    volume_size = 100
   }
   tags = {
     Name = "Cyber Master"
   }
 
 }
-
 resource "aws_eip_association" "cyber-eipa" {
   instance_id   = "${aws_instance.cyber-master.id}"
   allocation_id = "${var.cyber-eip}"
@@ -271,11 +271,13 @@ resource "aws_instance" "cyber-node1" {
   private_ip = "10.0.1.10"
   root_block_device {
     delete_on_termination = true
+    volume_size = 100
   }
   tags = {
     Name = "Cyber Node 1"
   }
 }
+
 resource "aws_instance" "cyber-node2" {
   ami           = "${var.ami}"
   instance_type = "${var.node_size}"
@@ -286,11 +288,13 @@ resource "aws_instance" "cyber-node2" {
   private_ip = "10.0.1.11"
   root_block_device {
     delete_on_termination = true
+    volume_size = 100
   }
   tags = {
     Name = "Cyber Node 2"
   }
 }
+
 resource "aws_instance" "cyber-node3" {
   ami           = "${var.ami}"
   instance_type = "${var.node_size}"
@@ -301,6 +305,7 @@ resource "aws_instance" "cyber-node3" {
   private_ip = "10.0.1.12"
   root_block_device {
     delete_on_termination = true
+    volume_size = 100
   }
   tags = {
     Name = "Cyber Node 3"
@@ -308,7 +313,7 @@ resource "aws_instance" "cyber-node3" {
 }
 
 ### Give time for environment to stabilize
-resource "null_resource" "ansible-prod" {
+resource "null_resource" "ansible-cyber" {
   provisioner "local-exec" {
     command = "sleep 120"
   }

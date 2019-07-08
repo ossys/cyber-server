@@ -45,3 +45,6 @@
 
 - name: Cyber Environment
   import_playbook: cyber.yml
+
+- name: Jupyter Environment
+  import_playbook: jupyter.yml

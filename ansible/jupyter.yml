@@ -1,0 +1,399 @@
+- hosts: cyber
+
+  tasks:
+
+    - name: Ping Master
+      ping:
+
+    - name: Create Anaconda User
+      user:
+        name: anaconda
+        state: present
+        shell: /bin/bash
+        system: yes
+        createhome: yes
+      become: yes
+
+    - name: Configuring Sudo for Anaconda User
+      lineinfile:
+        path: /etc/sudoers.d/anaconda
+        line: "anaconda     ALL=(ALL) NOPASSWD: /usr/bin/env"
+        state: present
+        mode: 0440
+        create: yes
+        validate: 'visudo -cf %s'
+      become: yes
+
+    - name: Ensure includedir is in sudoers
+      lineinfile:
+        dest: /etc/sudoers
+        line: "#includedir /etc/sudoers.d"
+        state: present
+        validate: "/usr/sbin/visudo -cf %s"
+      become: yes
+
+    - name: Create Anaconda Install Dir
+      file:
+        path: /usr/anaconda
+        state: directory
+        mode: '0755'
+      become: yes
+
+    - name: Download Anaconda Installer
+      get_url:
+        url: https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
+        dest: /usr/anaconda/Anaconda3-2019.03-Linux-x86_64.sh
+        mode: '0770'
+      become: yes
+
+    - name: Install Anaconda
+      command: /usr/anaconda/Anaconda3-2019.03-Linux-x86_64.sh -b -p /usr/anaconda/anaconda3
+      args:
+        creates: /usr/anaconda/anaconda3
+      become: yes
+
+    - name: Change ownership of Anaconda install to anaconda user
+      file:
+        path: /usr/anaconda
+        state: directory
+        recurse: yes
+        owner: anaconda
+        group: anaconda
+      become: yes
+
+    - name: Create Anaconda Symbolic Link
+      file:
+        src: /usr/anaconda/anaconda3
+        dest: /opt/anaconda
+        owner: anaconda
+        group: anaconda
+        state: link
+      become: yes
+
+    - name: Download NVM
+      get_url:
+        url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh
+        dest: /home/anaconda
+        mode: '0770'
+      become: yes
+      become_user: anaconda
+
+    - name: Install NVM
+      shell: /home/anaconda/install.sh
+      args:
+        chdir: /home/anaconda
+        creates: /home/anaconda/.nvm
+      become: yes
+      become_user: anaconda
+
+    - name: Install Node
+      shell: source ~/.nvm/nvm.sh && nvm install 12.5.0
+      args:
+        chdir: /home/anaconda
+        creates: /home/anaconda/.nvm/versions/node
+        executable: /bin/bash
+      become: yes
+      become_user: anaconda
+
+    - name: Install Configurable HTTP Proxy
+      shell: source ~/.nvm/nvm.sh && npm install -g configurable-http-proxy
+      args:
+        chdir: /home/anaconda
+        executable: /bin/bash
+      become: yes
+      become_user: anaconda
+
+    - name: Create Data and Notebooks Folders
+      file:
+        path: /home/anaconda/{{item}}
+        state: directory
+        owner: anaconda
+        group: anaconda
+        mode: u=rwx,g=rwx,o=,g+s
+      with_items:
+        - notebooks
+        - data
+        - notebooks/.ipynb_checkpoints
+      become: yes
+      become_user: anaconda
+
+    - name: Create Jupyter Folder
+      file:
+        path: /home/anaconda/{{item}}
+        state: directory
+        owner: anaconda
+        group: anaconda
+        mode: 0770
+      with_items:
+        - .jupyter
+      become: yes
+      become_user: anaconda
+
+    - name: Install Jupyterhub
+      shell: /opt/anaconda/bin/conda install -y jupyterhub
+      args:
+        chdir: /home/anaconda/.jupyter
+        executable: /bin/bash
+      become: yes
+      become_user: anaconda
+
+#################################################################################################
+############## TODO: Need to figure out how to get rid of these symlinks ########################
+#################################################################################################
+    - name: Create Node Symbolic Link
+      file:
+        src: /home/anaconda/.nvm/versions/node/v12.5.0/bin/node
+        dest: /usr/local/bin/node
+        owner: anaconda
+        group: anaconda
+        state: link
+      become: yes
+
+    - name: Create Configurable HTTP Proxy Symbolic Link
+      file:
+        src: /home/anaconda/.nvm/versions/node/v12.5.0/bin/configurable-http-proxy
+        dest: /usr/local/bin/configurable-http-proxy
+        owner: anaconda
+        group: anaconda
+        state: link
+      become: yes
+
+    - name: Create Jupyterhub Single User Symbolic Link
+      file:
+        src: /opt/anaconda/bin/jupyterhub-singleuser
+        dest: /usr/local/bin/jupyterhub-singleuser
+        owner: anaconda
+        group: anaconda
+        state: link
+      become: yes
+#################################################################################################
+#################################################################################################
+#################################################################################################
+
+    - name: Create Jupyterhub Config
+      shell: /opt/anaconda/bin/jupyterhub --generate-config
+      args:
+        chdir: /home/anaconda/.jupyter
+        creates: /home/anaconda/.jupyter/.jupyterhub_config.py
+        executable: /bin/bash
+      become: yes
+      become_user: anaconda
+
+    - name: Update Jupyter Config
+      blockinfile:
+        path: /home/anaconda/.jupyter/jupyterhub_config.py
+        insertbefore: BOF
+        block: |
+          c.Authenticator.admin_users = {'ccravens'}
+          c.JupyterHub.admin_access = True
+
+          c.JupyterHub.cookie_secret_file = 'jupyterhub_cookie_secret'
+
+          origin = '*'
+          c.JupyterHub.tornado_settings = {
+            'headers': {
+              'Access-Control-Allow-Origin': origin,
+            },
+          }
+          c.Spawner.args = ['--NotebookApp.allow_origin={0}'.format(origin)]
+          c.Spawner.cmd = '/opt/anaconda/bin/jupyterhub-singleuser'
+      become: yes
+      become_user: anaconda
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Update Nginx Config
+      copy:
+        dest: /etc/nginx/sites-enabled/default
+        content: |
+          server {
+            root /var/www/html;
+
+            index index.html index.htm index.nginx-debian.html;
+
+            server_name cyber.ossys.com;
+
+            client_max_body_size 1000M;
+
+            location / {
+              proxy_pass            http://127.0.0.1:8000;
+              proxy_set_header      Host $host;
+            }
+
+            location ~ /api/kernels/ {
+              proxy_pass            http://127.0.0.1:8000;
+              proxy_set_header      Host $host;
+              # websocket support
+              proxy_http_version    1.1;
+              proxy_set_header      Upgrade "websocket";
+              proxy_set_header      Connection "Upgrade";
+              proxy_read_timeout    86400;
+            }
+            location ~ /terminals/ {
+              proxy_pass            http://127.0.0.1:8000;
+              proxy_set_header      Host $host;
+              # websocket support
+              proxy_http_version    1.1;
+              proxy_set_header      Upgrade "websocket";
+              proxy_set_header      Connection "Upgrade";
+              proxy_read_timeout    86400;
+            }
+          }
+      become: yes
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+      become: yes
+
+    - name: Install Certbot Requirement Package
+      apt:
+        name: software-properties-common
+        update_cache: yes
+      become: yes
+
+    - name: Enable Required Certbot Repositories
+      apt_repository:
+        repo: "{{ item }}"
+      loop:
+        - "deb http://archive.ubuntu.com/ubuntu/ bionic universe"
+        - "deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe"
+        - "deb http://security.ubuntu.com/ubuntu/ bionic-security universe"
+        - "ppa:certbot/certbot"
+      become: yes
+
+    - name: Update Repository Cache
+      apt:
+        update_cache: yes
+      become: yes
+
+    - name: Install Certbot
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+      loop:
+        - "certbot"
+        - "python-certbot-nginx"
+      become: yes
+
+    - name: Run Certbot
+      shell: certbot --nginx --non-interactive --agree-tos --redirect --domains cyber.ossys.com -m chad.cravens@ossys.com
+      become: yes
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+      become: yes
+
+    - name: Create Jupyterhub Service
+      copy:
+        dest: /etc/init.d/jupyterhub
+        mode: '0755'
+        content: |
+          #!/bin/sh
+
+          ### BEGIN INIT INFO
+          # Provides:          jupyterhub
+          # Required-Start:    $local_fs $network $syslog
+          # Required-Stop:     $local_fs $network $syslog
+          # Default-Start:     2 3 4 5
+          # Default-Stop:      0 1 6
+          # Short-Description: Jupyterhub
+          # Description:       Jupyterhub start-stop-daemon - Debian
+          ### END INIT INFO
+
+          NAME="jupyterhub"
+          PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+          APPDIR="/home/anaconda/.jupyter"
+          APPBIN="/usr/bin/sudo"
+          APPARGS='/usr/bin/env "PATH=$PATH" /opt/anaconda/bin/jupyterhub -f /home/anaconda/.jupyterhub/jupyterhub_config.py'
+          USER="anaconda"
+          GROUP="anaconda"
+
+          # Include functions
+          set -e
+          . /lib/lsb/init-functions
+
+          start() {
+            printf "Starting '$NAME'... "
+            start-stop-daemon --start --chuid "$USER:$GROUP" --background --make-pidfile --pidfile /var/run/$NAME.pid --chdir "$APPDIR" --exec "$APPBIN" -- $APPARGS >> /var/logs/jupyterhub
+            printf "done\n"
+          }
+
+          #We need this function to ensure the whole process tree will be killed
+          killtree() {
+            local _pid=$1
+            local _sig=${2-TERM}
+            for _child in $(ps -o pid --no-headers --ppid ${_pid}); do
+              killtree ${_child} ${_sig}
+            done
+            kill -${_sig} ${_pid}
+          }
+
+          stop() {
+            printf "Stopping '$NAME'... "
+            [ -z `cat /var/run/$NAME.pid 2>/dev/null` ] || \
+            while test -d /proc/$(cat /var/run/$NAME.pid); do
+              killtree $(cat /var/run/$NAME.pid) 15
+              sleep 0.5
+            done
+            [ -z `cat /var/run/$NAME.pid 2>/dev/null` ] || rm /var/run/$NAME.pid
+            printf "done\n"
+          }
+
+          status() {
+            status_of_proc -p /var/run/$NAME.pid "" $NAME && exit 0 || exit $?
+          }
+
+          case "$1" in
+            start)
+              start
+              ;;
+            stop)
+              stop
+              ;;
+            restart)
+              stop
+              start
+              ;;
+            status)
+              status
+              ;;
+            *)
+              echo "Usage: $NAME {start|stop|restart|status}" >&2
+              exit 1
+              ;;
+          esac
+
+          exit 0
+      become: yes
+
+    - name: Enable Jupyterhub
+      shell: update-rc.d jupyterhub "{{ item }}"
+      with_items:
+        - "defaults"
+        - "enable"
+      become: yes
+
+    - name: Start Jupyterhub
+      service:
+        name: jupyterhub
+        state: started
+      become: yes
+
+    - include_tasks: create_users.yml
+      with_items:
+        - ccravens
+        - atodd
+        - tnguyen
+        - tstafford
+        - azah
+      loop_control:
+        loop_var: user

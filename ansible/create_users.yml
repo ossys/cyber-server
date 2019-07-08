@@ -1,0 +1,21 @@
+- name: Add User and Add to Anaconda Group
+  user:
+    name: "{{ user }}"
+    shell: /bin/bash
+    groups: anaconda
+    password: "$6$Gd9IRnycj$h8sfT4T44HWDq6iPFrNv/anx1xNHgYVTBY9RYatV85EnrVLsux/VjHwfIAD/N2Qo8NnDSCQv3Noa1R0ffLzwv."
+    append: yes
+  become: yes
+
+- name: Add Symbolic Links
+  file:
+    src: /home/anaconda/{{ item }}
+    dest: /home/{{ user }}/{{ item }}
+    owner: "{{ user }}"
+    group: anaconda
+    state: link
+    mode: 0770
+  become: yes
+  with_items:
+    - notebooks
+    - data
