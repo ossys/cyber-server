@@ -2,16 +2,16 @@ version: '3.7'
 
 services:
   server:
-    build: .
-    command: ./script/start
+    build: ./api-server
+    command: /app/script/start
     restart: always
     env_file:
-      - .env
-      - .prod.env
+      - ./api-server/.env
+      - ./api-server/.prod.env
     volumes:
       - bundle:/bundle
       - type: bind
-        source: ./config/master.key
+        source: ./api-server/config/master.key
         target: /app/config/master.key
     ports:
       - "5000"
@@ -23,13 +23,13 @@ services:
     restart: always
     volumes:
       - type: bind
-        source: ./Caddyfile
+        source: ./api-server/Caddyfile
         target: /etc/Caddyfile
       - type: bind
-        source: ./app/assets/server.key
+        source: ./api-server/app/assets/server.key
         target: /app/server.key
       - type: bind
-        source: ./app/assets/server.crt
+        source: ./api-server/app/assets/server.crt
         target: /app/server.crt
     ports:
       - "443:443"
@@ -39,8 +39,8 @@ services:
     ports:
       - '5432'
     env_file:
-      - .env
-      - .prod.env
+      - ./api-server/.env
+      - ./api-server/.prod.env
     volumes:
       - postgres:/var/lib/postgresql/data
     restart: always
