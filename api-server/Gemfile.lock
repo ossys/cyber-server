@@ -56,10 +56,13 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.4)
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
     aruba (0.7.4)
       childprocess (>= 0.3.6)
       cucumber (>= 1.1.1)
       rspec-expectations (>= 2.7.0)
+    bcrypt (3.1.13)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -80,6 +83,7 @@ GEM
       dotenv (= 2.7.4)
       railties (>= 3.2, < 6.1)
     erubi (1.8.0)
+    fabrication (2.20.2)
     ffi (1.9.18)
     gauntlt (1.0.13)
       aruba (= 0.7.4)
@@ -93,6 +97,9 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    json-schema (2.8.1)
+      addressable (>= 2.4)
+    jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -121,6 +128,7 @@ GEM
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     pg (1.1.4)
+    public_suffix (3.1.1)
     puma (3.12.1)
     rack (2.0.7)
     rack-test (1.1.0)
@@ -157,8 +165,21 @@ GEM
       ffi (~> 1.0)
     request_store (1.4.1)
       rack (>= 1.4)
+    rspec-core (3.8.2)
+      rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
       diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-rails (3.8.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.2)
     ruby_dep (1.5.0)
@@ -190,15 +211,20 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   bootsnap (>= 1.4.2)
   byebug
   dotenv-rails
+  fabrication (~> 2.20)
   gauntlt
+  json-schema (~> 2.8, >= 2.8.1)
+  jwt (~> 1.5)
   listen (>= 3.0.5, < 3.2)
   lograge
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 6.0.0.rc1)
+  rspec-rails (~> 3.8)
   seed_dump
   spring
   spring-watcher-listen (~> 2.0.0)
