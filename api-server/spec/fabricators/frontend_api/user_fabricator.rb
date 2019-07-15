@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Fabricator(:user) do
+Fabricator(:user, from: 'FrontendApi::User') do
   id 1
   email 'demo23@email.com'
   password 'pass'

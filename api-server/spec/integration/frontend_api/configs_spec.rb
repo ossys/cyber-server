@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-# spec/integration/blogs_spec.rb
 require 'swagger_helper'
 
 describe 'Configs API' do
-  path '/api/configs' do
+  path '/frontend_api/configs' do
     get 'Gets config index' do
       tags 'Configs'
       consumes 'application/json'
@@ -38,7 +37,7 @@ describe 'Configs API' do
     end
   end
 
-  path '/api/configs/{id}' do
+  path '/frontend_api/configs/{id}' do
     get 'Retrieves a config' do
       tags 'Configs'
       produces 'application/json'

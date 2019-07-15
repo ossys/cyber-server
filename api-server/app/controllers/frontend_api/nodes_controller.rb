@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Api
-  class NodesController < ApplicationController
+module FrontendApi
+  class NodesController < FrontendApplicationController
     def index
       @nodes = Node.all
       render json: { data: @nodes }

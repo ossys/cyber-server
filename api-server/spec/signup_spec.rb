@@ -3,8 +3,8 @@
 require 'rails_helper'
 require './spec/support/api_schema_matcher'
 
-RSpec.describe 'POST /signup', type: :request do
-  let(:url) { '/api/users' }
+RSpec.describe 'POST /frontend_api/signup', type: :request do
+  let(:url) { '/frontend_api/users' }
   let(:params) do
     {
       email: 'user@example.com',
@@ -37,7 +37,7 @@ RSpec.describe 'POST /signup', type: :request do
     it 'returns validation errors' do
       json = JSON.parse(response.body)
 
-      expect(json['errors'].first['detail']).to eq({'email' => ['has already been taken' ]})
+      expect(json['errors'].first['detail']).to eq('Email has already been taken')
     end
   end
 end
