@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Api
-  class AdHocQueryListsController < ApplicationController
+module FrontendApi
+  class AdHocQueryListsController < FrontendApplicationController
     skip_before_action :authenticate
     wrap_parameters :query_list
 

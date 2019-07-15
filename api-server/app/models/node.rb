@@ -49,8 +49,6 @@ class Node < ApplicationRecord
     self.osqi_version        = osquery_info['version']
 
     self.config = Config.first
-
-    self
   end
 
   def self.generate_key

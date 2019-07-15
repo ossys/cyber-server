@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe FrontendApi::UsersController, type: :controller do
   #describe 'GET #create' do
     #it 'returns http success' do
       #get :create

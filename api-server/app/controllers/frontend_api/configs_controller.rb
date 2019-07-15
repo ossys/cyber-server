@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Api
-  class ConfigsController < ApplicationController
-    skip_before_action :authenticate
+module FrontendApi
+  class ConfigsController < FrontendApplicationController
+    include RenderHelper
 
     def index
       configs = Config.all

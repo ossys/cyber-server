@@ -1,24 +1,30 @@
-# README
+## EMASS
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Request Headers
 
-Things you may want to cover:
+* `api-key`, ex) `1f32516cc-57d3-43f5-9e16- 8f86780a4cce`
 
-* Ruby version
+This API key must be provided in the request header for all endpoint calls.
 
-* System dependencies
+* `user-uid`, ex) `1647389405`
 
-* Configuration
+This User unique identifier key must be provided in the request header for all PUT, POST, and DELETE endpoint calls.
+Note: For DoD users this is the DoD ID Number (EIDIPI) on their DoD CAC.
 
-* Database creation
+### Error Codes (Not comprehensive)
 
-* Database initialization
+* 200 Ok
 
-* How to run the test suite
+* 201 Created
 
-* Services (job queues, cache servers, search engines, etc.)
+* 400 Bad Request
 
-* Deployment instructions
+* 401 Unauthorized
 
-* ...
+* 500 Internal Server Error
+
+Custom codes:
+
+* 480 Business Rule Failed
+
+* 490 API Rule Failed
