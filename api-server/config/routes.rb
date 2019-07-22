@@ -4,13 +4,31 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/docs'
   mount Rswag::Api::Engine => '/docs'
 
+  namespace :slack, path: '/api/slack' do
+    post '/event', to: 'slack#event'
+  end
+
   namespace :frontend_api do
     resources :nodes, only: %i[index show]
     resources :configs, only: %i[index show create update destroy]
     resources :ad_hoc_query_lists, only: %i[index create show]
     post '/ad_hoc_query_lists/manual', to: 'ad_hoc_query_lists#create_manual'
-    post 'users', to: 'users#create'
-    post 'token', to: 'auth#create'
+    post :users, to: 'users#create'
+    post :token, to: 'auth#create'
+
+    get :webhook, to: 'attacks#webhook'
+
+    scope :attacks do
+      get '/', to: 'attacks#index'
+      get '/:file_name', to: 'attacks#show'
+      post '/', to: 'attacks#create'
+      put '/', to: 'attacks#update'
+      delete '/', to: 'attacks#destroy'
+    end
+
+    scope :tests do
+      post '/run', to: 'tests#run'
+    end
   end
 
   namespace :emass_api, path: 'api' do
