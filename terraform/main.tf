@@ -4,6 +4,10 @@
 # CentOS 7 Official - ami-0f2b4fc905b0bd1f1
 # Ubuntu Server 18.04 LTS (HVM), SSD Volume Type - ami-0c55b159cbfafe1f0
 # Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0653e888ec96eab9b
+# Windows_Server-2008-R2_SP1-English-64Bit-Base-2019.06.12 - ami-03fe0a48fa4931d42
+# Windows_Server-2012-RTM-English-64Bit-Base-2019.06.12 - ami-02d2604b729c6082a
+# Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.06.12 - ami-0373777a9c7d3596b
+# Windows_Server-2016-English-Full-Base-2019.06.12 - ami-096b2c9dc9336e7c4
 
 ### Links ###
 # Subnets - https://hackernoon.com/manage-aws-vpc-as-infrastructure-as-code-with-terraform-55f2bdb3de2a
@@ -261,8 +265,9 @@ resource "aws_eip_association" "cyber-eipa" {
   allocation_id = "${var.cyber-eip}"
 }
 
+# RHEL-7.6_HVM-20190515-x86_64-0-Hourly2-GP2 - ami-01a834fd83ae239ff
 resource "aws_instance" "cyber-node1" {
-  ami           = "${var.ami}"
+  ami           = "ami-01a834fd83ae239ff"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -274,12 +279,13 @@ resource "aws_instance" "cyber-node1" {
     volume_size = 100
   }
   tags = {
-    Name = "Cyber Node 1"
+    Name = "Cyber Node 1 - RHEL 7.6"
   }
 }
 
+# Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0653e888ec96eab9b
 resource "aws_instance" "cyber-node2" {
-  ami           = "${var.ami}"
+  ami           = "ami-0653e888ec96eab9b"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -291,12 +297,13 @@ resource "aws_instance" "cyber-node2" {
     volume_size = 100
   }
   tags = {
-    Name = "Cyber Node 2"
+    Name = "Cyber Node 2 - Ubuntu 16.04"
   }
 }
 
+# Windows_Server-2008-R2_SP1-English-64Bit-Base-2019.06.12 - ami-03fe0a48fa4931d42
 resource "aws_instance" "cyber-node3" {
-  ami           = "${var.ami}"
+  ami           = "ami-03fe0a48fa4931d42"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -308,7 +315,44 @@ resource "aws_instance" "cyber-node3" {
     volume_size = 100
   }
   tags = {
-    Name = "Cyber Node 3"
+    Name = "Cyber Node 3 - Win Server 2008 R2"
+  }
+}
+
+
+# Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.06.12 - ami-0373777a9c7d3596b
+resource "aws_instance" "cyber-node4" {
+  ami           = "ami-0373777a9c7d3596b"
+  instance_type = "${var.node_size}"
+  key_name = "${aws_key_pair.cyber-key.id}"
+  subnet_id = "${aws_subnet.cyber-private-subnet.id}"
+  vpc_security_group_ids = ["${aws_security_group.cyber-private-sg.id}"]
+  source_dest_check = false
+  private_ip = "10.0.1.13"
+  root_block_device {
+    delete_on_termination = true
+    volume_size = 100
+  }
+  tags = {
+    Name = "Cyber Node 4 - Win Server 2012 R2"
+  }
+}
+
+# Windows_Server-2016-English-Full-Base-2019.06.12 - ami-096b2c9dc9336e7c4
+resource "aws_instance" "cyber-node5" {
+  ami           = "ami-096b2c9dc9336e7c4"
+  instance_type = "${var.node_size}"
+  key_name = "${aws_key_pair.cyber-key.id}"
+  subnet_id = "${aws_subnet.cyber-private-subnet.id}"
+  vpc_security_group_ids = ["${aws_security_group.cyber-private-sg.id}"]
+  source_dest_check = false
+  private_ip = "10.0.1.14"
+  root_block_device {
+    delete_on_termination = true
+    volume_size = 100
+  }
+  tags = {
+    Name = "Cyber Node 5 - Win Server 2016"
   }
 }
 

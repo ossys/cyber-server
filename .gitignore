@@ -2,6 +2,7 @@
 
 keys/
 terraform/.terraform/
+terraform/terraform.*
 
 *.crt
 *.key

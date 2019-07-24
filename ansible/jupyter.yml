@@ -5,6 +5,18 @@
     - name: Ping Master
       ping:
 
+    - name: Update Repository Cache
+      apt:
+        update_cache: yes
+      become: yes
+
+    - name: Install Required Packages
+      apt:
+        name: ['gcc', 'python-dev', 'libxml2-dev', 'libxslt1-dev', 'antiword', 'unrtf', 'poppler-utils',
+               'pstotext', 'tesseract-ocr', 'flac', 'ffmpeg', 'lame', 'libmad0', 'libsox-fmt-mp3',
+               'sox', 'libjpeg-dev', 'swig', 'libpulse-dev', 'default-jdk']
+      become: yes
+
     - name: Create Anaconda User
       user:
         name: anaconda
@@ -166,6 +178,15 @@
         group: anaconda
         state: link
       become: yes
+
+    - name: Create Pip Symbolic Link
+      file:
+        src: /opt/anaconda/bin/pip
+        dest: /usr/local/bin/pip3
+        owner: anaconda
+        group: anaconda
+        state: link
+      become: yes
 #################################################################################################
 #################################################################################################
 #################################################################################################
@@ -268,11 +289,6 @@
         - "ppa:certbot/certbot"
       become: yes
 
-    - name: Update Repository Cache
-      apt:
-        update_cache: yes
-      become: yes
-
     - name: Install Certbot
       apt:
         name: "{{ item }}"
@@ -323,7 +339,7 @@
 
           start() {
             printf "Starting '$NAME'... "
-            start-stop-daemon --start --chuid "$USER:$GROUP" --background --make-pidfile --pidfile /var/run/$NAME.pid --chdir "$APPDIR" --exec "$APPBIN" -- $APPARGS >> /var/logs/jupyterhub
+            start-stop-daemon --start --chuid "$USER:$GROUP" --background --make-pidfile --pidfile /var/run/$NAME.pid --chdir "$APPDIR" --exec "$APPBIN" -- $APPARGS || true
             printf "done\n"
           }
 
@@ -397,3 +413,14 @@
         - azah
       loop_control:
         loop_var: user
+
+    - name: Install Required Pip Packages
+      pip:
+        name: ['cdqa', 'textract', 'tensorflow', 'libxml2-python3', 'snips-nlu']
+      become: yes
+      become_user: anaconda
+
+    - name: Install Snips English Resources
+      shell: python -m snips_nlu download en
+      become: yes
+      become_user: anaconda
