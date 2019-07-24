@@ -5,13 +5,15 @@ require 'securerandom'
 class Node < ApplicationRecord
   belongs_to :config
 
-  def set_fields(params)
+  def build_from_params(params)
+    return unless params['host_details'].present?
+
     details = params['host_details']
     os_version = details['os_version']
     osquery_info = details['osquery_info']
     system_info = details['system_info']
 
-    self.key = Node.generate_key
+    self.node_key = Node.generate_key
     self.host_identifier = params['host_identifier']
     self.platform_type = params['platform_type']
 
@@ -45,9 +47,16 @@ class Node < ApplicationRecord
     self.osqi_start_time     = osquery_info['start_time']
     self.osqi_uuid           = osquery_info['uuid']
     self.osqi_version        = osquery_info['version']
+
+    self.config = Config.first
   end
 
   def self.generate_key
     SecureRandom.uuid
+  end
+
+  def self.from_node_key(params)
+    puts "params: #{params}"
+    Node.find_by(node_key: params[:node_key])
   end
 end

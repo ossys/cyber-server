@@ -15,24 +15,29 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "adhoc_queries", force: :cascade do |t|
-    t.jsonb "data"
-    t.bigint "node_id"
+  create_table "ad_hoc_query_lists", force: :cascade do |t|
+    t.boolean "has_run", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["node_id"], name: "index_adhoc_queries_on_node_id"
+  end
+
+  create_table "ad_hoc_query_lists_queries", force: :cascade do |t|
+    t.bigint "ad_hoc_query_list_id"
+    t.bigint "query_id"
+    t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_queries_on_ad_hoc_query_list_id"
+    t.index ["query_id"], name: "index_ad_hoc_query_lists_queries_on_query_id"
   end
 
   create_table "configs", force: :cascade do |t|
-    t.string "name"
-    t.jsonb "data"
+    t.string "name", null: false
+    t.jsonb "data", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "nodes", force: :cascade do |t|
     t.bigint "config_id"
-    t.string "key"
+    t.string "node_key"
     t.string "host_identifier"
     t.string "platform_type"
     t.string "os_platform"
@@ -64,17 +69,23 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
     t.string "osqi_uuid"
     t.string "osqi_version"
     t.index ["config_id"], name: "index_nodes_on_config_id"
+    t.index ["node_key"], name: "index_nodes_on_node_key"
+  end
+
+  create_table "queries", force: :cascade do |t|
+    t.text "name", null: false
+    t.text "body", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.datetime "confirmed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "adhoc_queries", "nodes"
   add_foreign_key "nodes", "configs"
 end

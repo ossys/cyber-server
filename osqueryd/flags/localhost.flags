@@ -4,7 +4,7 @@
 --debug
 --tls_dump=true
 
---tls_hostname=localhost.zah
+--tls_hostname=localhost:443
 
 --tls_server_certs=../../files/cacert.pem
 --enroll_secret_path=../../files/osquery_secret
@@ -16,7 +16,7 @@
 --logger_tls_endpoint=/log
 
 --config_plugin=tls
---config_tls_refresh=3600
+--config_tls_refresh=5
 
 --disable_distributed=false
 --distributed_plugin=tls

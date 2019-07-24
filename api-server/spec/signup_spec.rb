@@ -1,22 +1,22 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require './spec/support/api_schema_matcher'
 
-RSpec.describe 'POST /signup', type: :request do
-  let(:url) { '/api/users' }
+RSpec.describe 'POST /frontend_api/signup', type: :request do
+  let(:url) { '/frontend_api/users' }
   let(:params) do
     {
-      user: {
-        email: 'user@example.com',
-        password: 'password'
-      }
+      email: 'user@example.com',
+      password: 'password'
     }
   end
 
   context 'when user is unauthenticated' do
     before { post url, params: params }
 
-    it 'returns 200' do
-      expect(response.status).to eq 200
+    it 'returns 201' do
+      expect(response.status).to eq 201
     end
 
     it 'returns a new user' do
@@ -26,7 +26,7 @@ RSpec.describe 'POST /signup', type: :request do
 
   context 'when user already exists' do
     before do
-      Fabricate :user, email: params[:user][:email]
+      Fabricate :user, email: params[:email]
       post url, params: params
     end
 
@@ -37,7 +37,7 @@ RSpec.describe 'POST /signup', type: :request do
     it 'returns validation errors' do
       json = JSON.parse(response.body)
 
-      expect(json['errors'].first['title']).to eq('Bad Request')
+      expect(json['errors'].first['detail']).to eq('Email has already been taken')
     end
   end
 end

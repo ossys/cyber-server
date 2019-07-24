@@ -1,13 +1,36 @@
 {
   "type" : "object",
   "required" : [
-    "id",
-    "email"
+    "data",
+    "jsonapi"
   ],
   "properties" : {
-    "id" : { "type" : "integer" },
-    "email" : { "type" : "string" },
-    "created_at" : { "type" : "string", "format": "date-time" },
-    "updated_at" : { "type" : "string", "format": "date-time" }
+    "data": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "id" : { "type" : "integer" },
+            "email" : { "type" : "string" },
+            "created_at" : { "type" : "string", "format": "date-time" },
+            "updated_at" : { "type" : "string", "format": "date-time" }
+          }
+        }
+      }
+    },
+    "jsonapi": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" }
+      }
+    }
   }
 }
