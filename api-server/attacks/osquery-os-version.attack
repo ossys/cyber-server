@@ -1,0 +1,13 @@
+Feature: osquery attacks for local node
+  Background:
+    Given "osquery" is installed
+
+  Scenario: Using tcp syn ping scan and the nmap fast flag
+    When I launch an "osquery" attack with:
+      """
+      select name from os_version
+      """
+    Then the output should contain:
+      """
+      Debian
+      """
