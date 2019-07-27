@@ -1,13 +1,24 @@
 Feature: osquery attacks for local node
   Background:
     Given "osquery" is installed
+    And the following profile:
+    | name | Mac OS X |
+    | version | 10.15 |
 
-  Scenario: Using tcp syn ping scan and the nmap fast flag
-    When I launch an "osquery" attack with:
+  Scenario: Improper System OS or Version
+    When I launch an "osquery" query with:
       """
       select name from os_version
       """
     Then the output should contain:
       """
-      Debian
+      <name> <version>
+      """
+
+  Scenario: Improper System OS or Version2
+    When I launch an "osquery-os-version" query:
+    Then the output should contain:
+      """
+      <name>
+      <version>
       """
