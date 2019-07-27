@@ -9,6 +9,8 @@ begin
   args +=  %w[attacks/osquery-os-version.attack --strict]
   args += %w[--format json]
 
+  p args
+
   cli = Cucumber::Cli::Main.new(args, nil, out)
   configuration = cli.configuration
   runtime = Cucumber::Runtime.new(configuration)
