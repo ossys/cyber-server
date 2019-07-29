@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module OsQueryApi
+module OsQuery
   class OsQueryController < ApplicationController
     include RenderHelper
 
@@ -40,13 +40,21 @@ module OsQueryApi
         end
         render json: response, status: 200
       else
-        render status: 200
+        render status: 400
       end
     end
 
     def dist_write
-      puts "received dist-write. key: #{dist_write_params[:node_key]}"
-      render status: 200
+      statuses = dist_write_params[:statuses]
+      queries = dist_write_params[:queries]
+      data = { statuses: statuses, queries: queries }.to_json
+      ahqr = AdHocQueryResult.new(node_key: @node_key, data: data)
+
+      if ahqr && ahqr.save!
+        render status: 201
+      else
+        render status: 400
+      end
     end
 
     def log
