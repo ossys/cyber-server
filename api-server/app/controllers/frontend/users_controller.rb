@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module FrontendApi
+module Frontend
   class UsersController < FrontendApplicationController
     before_action :authenticate, except: %i[create]
 

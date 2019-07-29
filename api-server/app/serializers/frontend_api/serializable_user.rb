@@ -1,4 +1,4 @@
-module FrontendApi
+module Frontend
   class SerializableUser < JSONAPI::Serializable::Resource
     type 'users'
 

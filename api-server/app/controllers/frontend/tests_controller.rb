@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module FrontendApi
+module Frontend
   require 'gauntlt'
 
   class TestsController < FrontendApplicationController
@@ -35,7 +35,7 @@ module FrontendApi
       #File.delete(out_file)
       test = Test.new(attack_name: tests_params[:attack_name], result: result)
       if test.valid? && test.save
-        render json: { data: {attack_name: test.attack_name, result: test.result }}, status: 200
+        render json: { data: {attack_name: test.attack_name, result: test.result }}, status: 201
       else
         render json: { errors: test.errors }, status: 400
       end

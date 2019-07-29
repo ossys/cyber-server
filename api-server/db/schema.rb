@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_19_211835) do
+ActiveRecord::Schema.define(version: 2019_07_29_153710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 2019_07_19_211835) do
     t.bigint "query_id"
     t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_queries_on_ad_hoc_query_list_id"
     t.index ["query_id"], name: "index_ad_hoc_query_lists_queries_on_query_id"
+  end
+
+  create_table "ad_hoc_query_results", force: :cascade do |t|
+    t.bigint "node_id"
+    t.string "node_key"
+    t.jsonb "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["node_id"], name: "index_ad_hoc_query_results_on_node_id"
+    t.index ["node_key"], name: "index_ad_hoc_query_results_on_node_key"
   end
 
   create_table "configs", force: :cascade do |t|
