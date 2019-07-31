@@ -17,5 +17,10 @@ class CreateAdHocQueryList < ActiveRecord::Migration[6.0]
       t.belongs_to :ad_hoc_query_list, index: true
       t.belongs_to :query, index: true
     end
+
+    create_table :ad_hoc_query_lists_nodes do |t|
+      t.belongs_to :ad_hoc_query_list, index: true
+      t.belongs_to :node, index: true
+    end
   end
 end

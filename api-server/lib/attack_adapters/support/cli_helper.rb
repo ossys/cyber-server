@@ -22,7 +22,7 @@ module Gauntlt
       def get_shell_variable(shell_variable)
         ENV[shell_variable]
       end
-     
+
       #this should succeed in getting the version of a command in most situations
       def get_cli_version(bin_name)
         return `#{bin_name} --version`.scan(/((\d+\.)?(\d+\.)?(\*|\d+))/)[0][0]

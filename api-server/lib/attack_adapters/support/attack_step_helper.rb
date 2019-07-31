@@ -3,6 +3,9 @@ require "json"
 module Gauntlt
   module Support
     module AttackAliasHelper
+      GAUNTLT_DIR = Dir.pwd
+      ATTACK_ALIASES_DIR = File.join(GAUNTLT_DIR, 'attack_aliases')
+      ATTACK_ALIASES_GLOB_PATTERN = ATTACK_ALIASES_DIR + '/*.json'
 
       def gauntlt_attack_aliases
         @gauntlt_attack_aliases ||= {}
@@ -31,7 +34,9 @@ module Gauntlt
       def import_attack_aliases
          @imported_attack_aliases = Hash.new
          attack_aliases_json = Dir.glob(ATTACK_ALIASES_GLOB_PATTERN)
+         Kernel.puts attack_aliases
          attack_aliases_json.each do |file|
+           Kernel.puts "file: #{JSON.load(File.open(file))}"
          @imported_attack_aliases.merge!(JSON.load(File.open(file)))
          end
          @imported_attack_aliases

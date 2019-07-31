@@ -1,0 +1,13 @@
+Feature: Test
+  Background:
+    Given "osquery" is installed
+
+  Scenario: Test
+    When I launch a "remote" query on node "e3baca9f-a750-452c-8a5b-03136854dbad" named "test1" with:
+      """
+      select name from os_version;
+      """
+    Then the output should contain:
+      """
+      molimir
+      """

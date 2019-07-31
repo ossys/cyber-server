@@ -4,6 +4,7 @@ require 'securerandom'
 
 class Node < ApplicationRecord
   belongs_to :config
+  has_and_belongs_to_many :ad_hoc_query_lists, through: :ad_hoc_query_lists_nodes
 
   def build_from_params(params)
     return unless params['host_details'].present?

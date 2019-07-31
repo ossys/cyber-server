@@ -1,37 +1,25 @@
 # frozen_string_literal: true
 
-module FrontendApi
+module Frontend
   require 'net/http'
 
   class AttacksController < FrontendApplicationController
     include RenderHelper
 
-    ATTACKS_DIR = File
-      .expand_path('../../../../attacks', __FILE__)
-      .freeze
-
-    before_action :set_file_path, except: [:index, :webhook]
-
     def index
-      data = Dir
-        .entries(ATTACKS_DIR)
-        .select{|e| !File.directory?(e) }
-
-      render json: { data: data }
+      render json: { data: Attack.attack_files }
     end
 
     def show
-      contents = File.read(@file_path + '.attack')
+      contents = File.read(Attack.file_path(attacks_params[:file_name]))
       data = { file_name: params[:file_name], body: contents }
 
       render json: data
-      rescue
-      render status: 404
     end
 
     # TODO: add guards, proper logic, maybe db storage
     def create
-      File.write(@file_path, attacks_params[:body])
+      File.write(Attack.file_path(attacks_params[:file_name]))
 
       render status: 201
     end
@@ -46,6 +34,13 @@ module FrontendApi
     def destroy
       File.delete(@file_path) if File.exist?(@file_path)
       render status: 204
+    end
+
+    def run
+      attack = Attack.new(attacks_params[:file_name])
+      result = attack.run!
+
+      render json: { data: result }, status: 200
     end
 
     #def webhook
@@ -69,8 +64,5 @@ module FrontendApi
       params.permit(:file_name, :body)
     end
 
-    def set_file_path
-      @file_path = File.join(ATTACKS_DIR, params[:file_name])
-    end
   end
 end

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       post :users, to: 'users#create'
       post :token, to: 'auth#create'
 
-      get :webhook, to: 'attacks#webhook'
+      #get :webhook, to: 'attacks#webhook'
 
       scope :attacks do
         get '/', to: 'attacks#index'
@@ -25,6 +25,8 @@ Rails.application.routes.draw do
         post '/', to: 'attacks#create'
         put '/', to: 'attacks#update'
         delete '/', to: 'attacks#destroy'
+
+        post '/run', to: 'attacks#run'
       end
 
       scope :tests do

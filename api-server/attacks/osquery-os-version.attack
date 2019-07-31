@@ -1,24 +1,14 @@
+@slow
 Feature: osquery attacks for local node
   Background:
     Given "osquery" is installed
-    And the following profile:
-    | name | Mac OS X |
-    | version | 10.15 |
 
   Scenario: Improper System OS or Version
-    When I launch an "osquery" query with:
+    When I launch a "remote" query with:
       """
       select name from os_version
       """
     Then the output should contain:
       """
-      <name> <version>
-      """
-
-  Scenario: Improper System OS or Version2
-    When I launch an "osquery-os-version" query:
-    Then the output should contain:
-      """
-      <name>
-      <version>
+      Debian
       """

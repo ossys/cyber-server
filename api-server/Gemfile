@@ -22,12 +22,10 @@ gem 'active_model_serializers', '~> 0.10.9'
 gem 'fast_jsonapi'
 gem 'oj'
 
-gem 'dotenv-rails', groups: %i[development test]
-group :development, :test do
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
-end
+gem 'byebug'
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'fabrication', '~> 2.20'
   gem 'json-schema', '~> 2.8', '>= 2.8.1'
   gem 'rspec-rails', '~> 3.8'

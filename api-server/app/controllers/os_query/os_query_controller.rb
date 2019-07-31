@@ -32,11 +32,11 @@ module OsQuery
     end
 
     def dist_read
-      response = { queries: [] }
+      response = { queries: {} }
 
-      if (aql = AdHocQueryList.find_by_node(params))
+      if (aql = AdHocQueryList.find_by_node(dist_read_params[:node_key]))
         aql.queries.each do |q|
-          response[:queries] << { q.name => q.body }
+          response[:queries][q.name] = q.body
         end
         render json: response, status: 200
       else
@@ -98,6 +98,11 @@ module OsQuery
 
     def log_params
       params.permit(:node_key, :log_type, data: [{}])
+    end
+
+    def dist_read_params
+      # TODO: multiple nodes
+      params.permit(:node_key)
     end
 
     def dist_write_params

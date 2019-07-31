@@ -1,15 +1,14 @@
 require 'cucumber'
+require 'byebug'
 
 out = StringIO.new
 
 begin
-  adapters_dir = "./attack_adapters"
+  adapters_dir = "./lib/attack_adapters"
 
   args = [ '--require', adapters_dir ]
-  args +=  %w[attacks/osquery-os-version.attack --strict]
+  args +=  %w[attacks/osq-test.attack --strict]
   args += %w[--format json]
-
-  p args
 
   cli = Cucumber::Cli::Main.new(args, nil, out)
   configuration = cli.configuration

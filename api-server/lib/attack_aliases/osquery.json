@@ -1,6 +1,5 @@
-
 {
-    "osquery-os-version" : { "command" : "select name, version from os_version",
+    "osquery-os-version-3.3.2" : { "command" : "select name, version from os_version",
       "description" : "This is a basic test to get the system's OS version and proper name.",
       "requires" : [ ]
     }
