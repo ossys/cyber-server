@@ -206,6 +206,7 @@
         insertbefore: BOF
         block: |
           c.Authenticator.admin_users = {'ccravens'}
+          c.JupyterHub.base_url = '/jupyter'
           c.JupyterHub.admin_access = True
 
           c.JupyterHub.cookie_secret_file = 'jupyterhub_cookie_secret'
