@@ -282,6 +282,7 @@ resource "aws_eip_association" "cyber-eipa" {
 }
 
 # RHEL-7.6_HVM-20190515-x86_64-0-Hourly2-GP2 - ami-01a834fd83ae239ff
+# ec2-user
 resource "aws_instance" "cyber-node1" {
   ami           = "ami-43d63732"
   instance_type = "${var.node_size}"
@@ -300,6 +301,7 @@ resource "aws_instance" "cyber-node1" {
 }
 
 # Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0653e888ec96eab9b
+# ubuntu
 resource "aws_instance" "cyber-node2" {
   ami           = "ami-0933d278"
   instance_type = "${var.node_size}"
