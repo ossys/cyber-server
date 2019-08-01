@@ -3,11 +3,11 @@ Feature: Test
     Given "osquery" is installed
 
   Scenario: Test
-    When I launch a "remote" query on node "e3baca9f-a750-452c-8a5b-03136854dbad" named "test1" with:
+    When I launch a "remote" query on node "b6028cb5-ca02-4830-ab81-31eb236a925e" named "test1" with:
       """
-      select name from os_version;
+      select * from firefox_addons;
       """
     Then the output should contain:
       """
-      molimir
+      uMatrix
       """

@@ -16,12 +16,7 @@ When /^I launch (?:a|an) "node" query with:$/ do |input|
 end
 
 When /^I launch (?:a|an) "remote" query on node "([\w-]+)" named "([\w-]+)" with:$/ do |node_key, query_name, query_body|
-  @result = AdHocQuery.run(node_key, query_name, query_body)
-end
-
-Then /^the output should contain:$/ do |text|
-  p @result
-  expect(@result.include?(text)).to eq(true)
+  Kernel.puts AdHocQuery.run(node_key, query_name, query_body)
 end
 
 #When /^I launch (?:a|an) "osquery-(.*?)" query$/ do |type|

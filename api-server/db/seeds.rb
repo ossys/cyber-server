@@ -13,4 +13,7 @@ if Config.first.nil?
 
   n = Node.new(node_key: 'test', config: config)
   n.save!
+
+  q = Query.new(name: "os version name", body: "select name from os_version;")
+  q.save!
 end

@@ -34,13 +34,11 @@ class AdHocQueryList < ApplicationRecord
     AdHocQueryList.new(nodes: nodes, queries: queries)
   end
 
-  def self.find_by_node(node_key)
-    return AdHocQueryList.last
-    nodes = Node.where(node_key: node_key)
-    return nil unless nodes.count > 0
-
+  def self.find_list(node_key)
     AdHocQueryList
-      .where(nodes: [nodes])
+      .includes(:nodes)
+      .joins(:nodes)
+      .where('nodes.node_key = ?', node_key)
       .where(has_run: false)
       .first
   end

@@ -13,15 +13,14 @@ class AdHocQuery
       return "Error: Timed out- a response was not received from node #{node_key} in time." if Time.now > timeout_time
       sleep 1.second
 
-      query_result = AdHocQueryResult.where(node_key: node_key).limit(1).first
-
-      next if query_result.nil?
-      next if query_result.created_at < start_time
-
-      if query_result.created_at > start_time
+      if query_result = AdHocQueryResult.last_result_for_node(node_key, start_time)
         result = query_result.data
         break
+      else
+        next
       end
     end
+
+    result
   end
 end
