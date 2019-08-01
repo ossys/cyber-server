@@ -9,6 +9,16 @@
 # Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.06.12 - ami-0373777a9c7d3596b
 # Windows_Server-2016-English-Full-Base-2019.06.12 - ami-096b2c9dc9336e7c4
 
+### AWS GOVCLOUD-EAST AMIS ###
+# Red Hat Enterprise Linux 8 (HVM), SSD Volume Type    -  ami-8c56b0fd
+# Red Hat Enterprise Linux 7.6 (HVM), SSD Volume Type  -  ami-43d63732
+# Ubuntu Server 18.04 LTS (HVM), SSD Volume Type       -  ami-cd35d4bc
+# Ubuntu Server 16.04 LTS (HVM), SSD Volume Type       -  ami-0933d278
+# Microsoft Windows Server 2008 R2 Base                -  ami-0563a5c30fc5f9d4e
+# Microsoft Windows Server 2012 Base                   -  ami-01952e561546c353c
+# Microsoft Windows Server 2016 Base                   -  ami-04240e21ee16e76cc
+
+
 ### Links ###
 # Subnets - https://hackernoon.com/manage-aws-vpc-as-infrastructure-as-code-with-terraform-55f2bdb3de2a
 # Terraform & Ansible - https://medium.com/@mitesh_shamra/deploying-website-on-aws-using-terraform-and-ansible-f0251ae71f42
@@ -51,7 +61,7 @@ variable "private_subnet_cidr" {
 
 variable "ami" {
   description = "Ubuntu Server 18.04 LTS (HVM), SSD Volume Type"
-  default = "ami-0c55b159cbfafe1f0"
+  default = "ami-cd35d4bc"
 }
 
 variable "cyber-eip" {
@@ -273,7 +283,7 @@ resource "aws_eip_association" "cyber-eipa" {
 
 # RHEL-7.6_HVM-20190515-x86_64-0-Hourly2-GP2 - ami-01a834fd83ae239ff
 resource "aws_instance" "cyber-node1" {
-  ami           = "ami-01a834fd83ae239ff"
+  ami           = "ami-43d63732"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -291,7 +301,7 @@ resource "aws_instance" "cyber-node1" {
 
 # Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0653e888ec96eab9b
 resource "aws_instance" "cyber-node2" {
-  ami           = "ami-0653e888ec96eab9b"
+  ami           = "ami-0933d278"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -309,7 +319,7 @@ resource "aws_instance" "cyber-node2" {
 
 # Windows_Server-2008-R2_SP1-English-64Bit-Base-2019.06.12 - ami-03fe0a48fa4931d42
 resource "aws_instance" "cyber-node3" {
-  ami           = "ami-03fe0a48fa4931d42"
+  ami           = "ami-0563a5c30fc5f9d4e"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -328,7 +338,7 @@ resource "aws_instance" "cyber-node3" {
 
 # Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.06.12 - ami-0373777a9c7d3596b
 resource "aws_instance" "cyber-node4" {
-  ami           = "ami-0373777a9c7d3596b"
+  ami           = "ami-01952e561546c353c"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
@@ -346,7 +356,7 @@ resource "aws_instance" "cyber-node4" {
 
 # Windows_Server-2016-English-Full-Base-2019.06.12 - ami-096b2c9dc9336e7c4
 resource "aws_instance" "cyber-node5" {
-  ami           = "ami-096b2c9dc9336e7c4"
+  ami           = "ami-04240e21ee16e76cc"
   instance_type = "${var.node_size}"
   key_name = "${aws_key_pair.cyber-key.id}"
   subnet_id = "${aws_subnet.cyber-private-subnet.id}"
