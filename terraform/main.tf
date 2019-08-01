@@ -16,17 +16,22 @@
 ### Variables ###
 variable "node_size" {
   description = "Default Node Size"
-  default = "t3.medium"
+  default = "t3.micro"
 }
 
 variable "aws_region" {
   description = "Region for the VPC"
-  default = "us-east-2"
+  default = "us-gov-east-1"
+}
+
+variable "aws_profile" {
+  description = "AWS Profile"
+  default = "govcloud"
 }
 
 variable "aws_subregion" {
   description = "Region for the VPC"
-  default = "us-east-2a"
+  default = "us-gov-east-1a"
 }
 
 variable "vpc_cidr" {
@@ -51,7 +56,7 @@ variable "ami" {
 
 variable "cyber-eip" {
   description = "Cyber Elastic IP"
-  default = "eipalloc-059497ae0dfb1b2fa"
+  default = "eipalloc-02b02ac69d4022af4"
 }
 
 variable "key_path" {
