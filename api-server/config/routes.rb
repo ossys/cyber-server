@@ -84,16 +84,15 @@ Rails.application.routes.draw do
       end
     end
 
-  end
+    namespace :os_query, path: '/osquery' do
+      get '/test', to: 'os_query#test'
 
-  namespace :os_query, path: '/osquery' do
-    get '/test', to: 'os_query#test'
+      post '/enroll', to: 'os_query#enroll'
+      post '/config', to: 'os_query#osq_config'
+      post '/log', to: 'os_query#log'
 
-    post '/enroll', to: 'os_query#enroll'
-    post '/config', to: 'os_query#osq_config'
-    post '/log', to: 'os_query#log'
-
-    post '/distributed_read', to: 'os_query#dist_read'
-    post '/distributed_write', to: 'os_query#dist_write'
+      post '/distributed_read', to: 'os_query#dist_read'
+      post '/distributed_write', to: 'os_query#dist_write'
+    end
   end
 end
