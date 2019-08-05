@@ -1,4 +1,6 @@
-module EmassApi
+# frozen_string_literal: true
+
+module Emass
   class SystemsController < EmassApplicationController
     # params ->
     # includePackage : boolean
@@ -20,14 +22,14 @@ module EmassApi
     # # rmf is default if none passed
     def index
       data = [
-        {"systemId": 64},
-        {"systemId": 65}
+        { "systemId": 64 },
+        { "systemId": 65 }
       ]
       render_data(data)
     end
 
     def show
-      data = [ {"systemId": 64} ]
+      data = [{ "systemId": 64 }]
       render_data(data)
     end
 

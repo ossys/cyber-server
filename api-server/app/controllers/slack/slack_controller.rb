@@ -5,7 +5,7 @@ module Slack
     skip_before_action :authenticate
 
     def event
-      puts "Slack event received!"
+      puts 'Slack event received!'
       p params
 
       render json: { challenge: slack_params[:challenge] }, status: 200

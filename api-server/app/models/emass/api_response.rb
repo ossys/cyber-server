@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EmassApi
+module Emass
   class ApiResponse < ActiveModelSerializers::Model
     attributes :meta, :data, :pagination
   end

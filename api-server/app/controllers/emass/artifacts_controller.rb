@@ -1,4 +1,6 @@
-module EmassApi
+# frozen_string_literal: true
+
+module Emass
   class ArtifactsController < EmassApplicationController
     include EmassRenderHelper
 

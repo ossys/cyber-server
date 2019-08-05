@@ -28,7 +28,7 @@ $(RAILS_LOG_FILES):
 
 $(CADDY_CERT_FILES):
 	@if [ ! -d "$(CADDY_CERT_DIR)" ]; then mkdir $(CADDY_CERT_DIR); fi
-	@openssl req -x509 -nodes -newkey rsa:4096 -keyout $(CADDY_CERT_DIR)/server.key -out $(CADDY_CERT_DIR)/server.crt -days 365 -subj "/C=US/ST=South Carolina/L=Columbia/O=OSSYS/OU=Software Dev & Testing/CN=localhost/emailAddress=andrew.zah@ossys.com"
+	@openssl req -x509 -nodes -newkey rsa:4096 -keyout $(CADDY_CERT_DIR)/server.key -out $(CADDY_CERT_DIR)/server.crt -days 365 -subj "/C=US/ST=South Carolina/L=Columbia/O=OSSYS/CN=cyber.ossys.com/emailAddress=andrew.zah@ossys.com"
 
 $(RAILS_CRED_FILES):
 	@./api-server/bundle exec rails credentials:edit

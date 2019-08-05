@@ -1,4 +1,6 @@
-module EmassApi
+# frozen_string_literal: true
+
+module Emass
   class ControlsController < EmassApplicationController
     include EmassRenderHelper
 
@@ -6,8 +8,8 @@ module EmassApi
     # acronyms : string ex) AC-3,PM-6
     def index
       data = [
-        {"systemId": params[:id], "name": "AC-1" },
-        {"systemId": params[:id].to_i + 1, "name": "AC-2" }
+        { "systemId": params[:id], "name": 'AC-1' },
+        { "systemId": params[:id].to_i + 1, "name": 'AC-2' }
       ]
 
       render_data(data)

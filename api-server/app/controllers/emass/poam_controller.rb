@@ -1,5 +1,7 @@
-module EmassApi
-  class MilestonesController < EmassApplicationController
+# frozen_string_literal: true
+
+module Emass
+  class PoamController < EmassApplicationController
     include EmassRenderHelper
 
     def index

@@ -1,5 +1,7 @@
-module EmassApi
-  class PoamController < EmassApplicationController
+# frozen_string_literal: true
+
+module Emass
+  class MilestonesController < EmassApplicationController
     include EmassRenderHelper
 
     def index
@@ -24,7 +26,7 @@ module EmassApi
 
     private
 
-    def poam_params
+    def milestone_params
       params.permit(:id)
     end
   end

@@ -2,7 +2,7 @@
 
 require 'securerandom'
 
-module EmassApi
+module Emass
   class EmassController < EmassApplicationController
     def status
       render_data('success' => true)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module FrontendApi
+module Frontend
   class NodesController < FrontendApplicationController
     def index
       @nodes = Node.all

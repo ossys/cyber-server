@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Frontend
   class SerializableUser < JSONAPI::Serializable::Resource
     type 'users'

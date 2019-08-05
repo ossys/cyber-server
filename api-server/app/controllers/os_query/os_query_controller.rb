@@ -52,7 +52,7 @@ module OsQuery
       data = { statuses: statuses, queries: queries }.to_json
       ahqr = AdHocQueryResult.new(node_key: @node_key, data: data)
 
-      if ahqr && ahqr.save!
+      if ahqr&.save!
         render status: 201
       else
         render status: 400

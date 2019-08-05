@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module FrontendApi
+module Frontend
   class AuthController < FrontendApplicationController
     include RenderHelper
 

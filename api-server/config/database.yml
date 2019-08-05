@@ -16,7 +16,7 @@ test:
   database: api_server_test
 
 production:
-  <<: *default
+  adapter: postgresql
   host: db
   port: 5432
   database: <%= ENV['POSTGRES_DB'] %>

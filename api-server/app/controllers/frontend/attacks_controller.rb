@@ -43,26 +43,25 @@ module Frontend
       render json: { data: result }, status: 200
     end
 
-    #def webhook
-      #uri = URI.parse(ENV['SLACK_WEBHOOK'])
+    # def webhook
+    # uri = URI.parse(ENV['SLACK_WEBHOOK'])
 
-      #data = {text: 'hello, world'}.to_json
+    # data = {text: 'hello, world'}.to_json
 
-      #request = Net::HTTP::Post.new(uri.request_uri)
-      #request['Content-Type'] = 'application/json'
-      #request.body = data.to_s
+    # request = Net::HTTP::Post.new(uri.request_uri)
+    # request['Content-Type'] = 'application/json'
+    # request.body = data.to_s
 
-      #http = Net::HTTP.new(uri.host, uri.port)
-      #http.use_ssl = (uri.scheme == 'https')
+    # http = Net::HTTP.new(uri.host, uri.port)
+    # http.use_ssl = (uri.scheme == 'https')
 
-      #http.request(request)
-    #end
+    # http.request(request)
+    # end
 
     private
 
     def attacks_params
       params.permit(:file_name, :body)
     end
-
   end
 end

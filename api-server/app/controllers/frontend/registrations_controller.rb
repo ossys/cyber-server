@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-module FrontendApi
+module Frontend
   class RegistrationsController < FrontendApplicationController
     include RenderHelper
-
-    respond_to :json
 
     def create
       user = User.new(register_params)

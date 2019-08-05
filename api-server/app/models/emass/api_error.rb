@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EmassApi
+module Emass
   class ApiError < ActiveModelSerializers::Model
     attributes :meta
   end
