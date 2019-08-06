@@ -9,13 +9,13 @@
         project_path: '../terraform'
         state: absent
 
-    - name: Remove Key from SSH Agent
-      command: ssh-add -d ../keys/cyber.pub
-
-    - name: Delete Directory for SSH Keys
-      file:
-        path: ../keys
-        state: absent
+#    - name: Remove Key from SSH Agent
+#      command: ssh-add -d ../keys/cyber.pub
+#
+#    - name: Delete Directory for SSH Keys
+#      file:
+#        path: ../keys
+#        state: absent
 
     - name: Delete Terraform State Files
       file:
@@ -37,3 +37,6 @@
         path: "{{ item['path'] }}"
         state: absent
       with_items: "{{ retry.files }}"
+
+    - name: Delete known_hosts entry
+      command: ssh-keygen -f "~/.ssh/known_hosts" -R cyber.ossys.com

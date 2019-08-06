@@ -1,5 +1,5 @@
-localhost:443 {
-  tls /app/server.crt /app/server.key
+cyber.ossys.com, :443, :5000 {
+  tls self_signed
 
   proxy / http://server:5000 {
     transparent

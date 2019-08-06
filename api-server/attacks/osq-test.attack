@@ -1,0 +1,13 @@
+Feature: Test
+  Background:
+    Given "osquery" is installed
+
+  Scenario: Test
+    When I launch a "remote" query on node "b6028cb5-ca02-4830-ab81-31eb236a925e" named "test1" with:
+      """
+      select * from firefox_addons;
+      """
+    Then the output should contain:
+      """
+      uMatrix
+      """

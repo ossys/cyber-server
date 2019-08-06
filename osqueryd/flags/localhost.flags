@@ -9,11 +9,11 @@
 --tls_server_certs=../../files/cacert.pem
 --enroll_secret_path=../../files/osquery_secret
 
---config_tls_endpoint=/config
---distributed_tls_read_endpoint=/distributed_read
---distributed_tls_write_endpoint=/distributed_write
---enroll_tls_endpoint=/enroll
---logger_tls_endpoint=/log
+--config_tls_endpoint=/api/osquery/config
+--distributed_tls_read_endpoint=/api/osquery/distributed_read
+--distributed_tls_write_endpoint=/api/osquery/distributed_write
+--enroll_tls_endpoint=/api/osquery/enroll
+--logger_tls_endpoint=/api/osquery/log
 
 --config_plugin=tls
 --config_tls_refresh=5

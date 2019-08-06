@@ -5,32 +5,16 @@ services:
     build: ./api-server
     command: /app/script/start
     restart: always
-    env_file:
-      - ./api-server/.env
-      - ./api-server/.prod.env
     volumes:
       - bundle:/bundle
-      - type: bind
-        source: ./api-server/config/master.key
-        target: /app/config/master.key
     ports:
       - "5000"
     links:
       - db
 
   caddy:
-    image: abiosoft/caddy
+    image: abiosoft/caddy:no-stats
     restart: always
-    volumes:
-      - type: bind
-        source: ./api-server/Caddyfile
-        target: /etc/Caddyfile
-      - type: bind
-        source: ./api-server/app/assets/server.key
-        target: /app/server.key
-      - type: bind
-        source: ./api-server/app/assets/server.crt
-        target: /app/server.crt
     ports:
       - "443:443"
 
@@ -38,9 +22,6 @@ services:
     image: postgres:9.6.7-alpine
     ports:
       - '5432'
-    env_file:
-      - ./api-server/.env
-      - ./api-server/.prod.env
     volumes:
       - postgres:/var/lib/postgresql/data
     restart: always

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_01_171909) do
+ActiveRecord::Schema.define(version: 2019_07_29_153710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,11 +21,28 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "ad_hoc_query_lists_nodes", force: :cascade do |t|
+    t.bigint "ad_hoc_query_list_id"
+    t.bigint "node_id"
+    t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_nodes_on_ad_hoc_query_list_id"
+    t.index ["node_id"], name: "index_ad_hoc_query_lists_nodes_on_node_id"
+  end
+
   create_table "ad_hoc_query_lists_queries", force: :cascade do |t|
     t.bigint "ad_hoc_query_list_id"
     t.bigint "query_id"
     t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_queries_on_ad_hoc_query_list_id"
     t.index ["query_id"], name: "index_ad_hoc_query_lists_queries_on_query_id"
+  end
+
+  create_table "ad_hoc_query_results", force: :cascade do |t|
+    t.bigint "node_id"
+    t.string "node_key"
+    t.jsonb "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["node_id"], name: "index_ad_hoc_query_results_on_node_id"
+    t.index ["node_key"], name: "index_ad_hoc_query_results_on_node_key"
   end
 
   create_table "configs", force: :cascade do |t|
@@ -75,6 +92,13 @@ ActiveRecord::Schema.define(version: 2019_07_01_171909) do
   create_table "queries", force: :cascade do |t|
     t.text "name", null: false
     t.text "body", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string "attack_name", null: false
+    t.string "result", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

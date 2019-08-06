@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  server:
+    volumes:
+      - type: bind
+        source: ./api-server/config/master.key
+        target: /app/config/master.key
+    env_file:
+      - ./api-server/.env
+
+  caddy:
+    env_file:
+      - ./api-server/.env
+    volumes:
+      - type: bind
+        source: ./api-server/Caddyfile-dev
+        target: /etc/Caddyfile
+      - type: bind
+        source: ./api-server/app/assets/server.key
+        target: /app/server.key
+      - type: bind
+        source: ./api-server/app/assets/server.crt
+        target: /app/server.crt
+

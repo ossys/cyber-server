@@ -28,11 +28,9 @@ COPY ./Gemfile.lock $app/Gemfile.lock
 ENV BUNDLE_PATH=/bundle \
   BUNDLE_JOBS=3
 
-RUN bundle install --without development test
+RUN bundle install
 
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
 COPY . $app
-
-RUN echo $(openssl version)
 
 EXPOSE 5000

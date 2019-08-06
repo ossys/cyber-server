@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  server:
+    env_file:
+      - ./api-server/.env
+      - ./api-server/.prod.env
+
+  caddy:
+    env_file:
+      - ./api-server/.env
+      - ./api-server/.prod.env
+    volumes:
+      - type: bind
+        source: ./api-server/Caddyfile
+        target: /etc/Caddyfile

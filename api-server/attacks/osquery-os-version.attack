@@ -1,0 +1,14 @@
+@slow
+Feature: osquery attacks for local node
+  Background:
+    Given "osquery" is installed
+
+  Scenario: Improper System OS or Version
+    When I launch a "remote" query with:
+      """
+      select name from os_version
+      """
+    Then the output should contain:
+      """
+      Debian
+      """
