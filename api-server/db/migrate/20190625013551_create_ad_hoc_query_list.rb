@@ -13,14 +13,14 @@ class CreateAdHocQueryList < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    create_join_table :ad_hoc_query_lists, :queries do |t|
-      t.belongs_to :ad_hoc_query_list, index: true
-      t.belongs_to :query, index: true
+    create_join_table(:ad_hoc_query_lists, :queries) do |t|
+      t.index :ad_hoc_query_list_id
+      t.index :query_id
     end
 
-    create_join_table :ad_hoc_query_lists, :nodes do |t|
-      t.belongs_to :ad_hoc_query_list, index: true
-      t.belongs_to :node, index: true
+    create_join_table(:ad_hoc_query_lists, :nodes) do |t|
+      t.index :ad_hoc_query_list_id
+      t.index :node_id
     end
   end
 end

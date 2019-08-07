@@ -10,10 +10,4 @@ if Config.first.nil?
   config.name = 'Default'
   config.data = default_config
   config.save!
-
-  n = Node.new(node_key: 'test', config: config)
-  n.save!
-
-  q = Query.new(name: "os version name", body: "select name from os_version;")
-  q.save!
 end

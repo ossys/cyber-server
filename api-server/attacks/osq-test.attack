@@ -3,7 +3,7 @@ Feature: Test
     Given "osquery" is installed
 
   Scenario: Test
-    When I launch a "remote" query on node "b6028cb5-ca02-4830-ab81-31eb236a925e" named "test1" with:
+    When I launch a "remote" query on node "bb115cc0-7ea7-4cc9-a7af-996b420f38db" named "test1" with:
       """
       select * from firefox_addons;
       """

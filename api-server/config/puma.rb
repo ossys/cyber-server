@@ -16,7 +16,7 @@ app_dir = File.expand_path('..', __dir__)
 tmp_dir = File.join(app_dir, 'tmp')
 log_dir = File.join(app_dir, 'log')
 
-if Rails.env.production?
+unless Rails.env.production?
   #bind "unix://#{tmp_dir}/sockets/puma.sock"
   ssl_bind '127.0.0.1', '5002',
           cert: File.join('app', 'assets', 'server.crt'),

@@ -16,7 +16,7 @@ module OsQuery
         @node.build_from_params(enroll_params)
       end
 
-      node_invalid = @node&.save
+      node_invalid = @node&.save!
       result = {
         node_key: @node ? @node.node_key : nil,
         node_invalid: node_invalid

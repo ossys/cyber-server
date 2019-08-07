@@ -9,6 +9,11 @@ services:
     env_file:
       - ./api-server/.env
 
+  db:
+    env_file:
+      - ./api-server/.env
+      - ./api-server/.prod.env
+
   caddy:
     env_file:
       - ./api-server/.env
