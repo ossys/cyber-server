@@ -42,7 +42,6 @@ USER root
 RUN chown -R gauntltuser $app
 USER gauntltuser
 
-RUN rm -r $app/bin \
-  && bundle exec rake app:update:bin
+RUN bundle exec rake app:update:bin
 
 EXPOSE 5000
