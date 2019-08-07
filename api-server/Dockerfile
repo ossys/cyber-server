@@ -42,6 +42,7 @@ USER root
 RUN chown -R gauntltuser $app
 USER gauntltuser
 
-RUN bundle exec rake app:update:bin
+RUN bundle exec rake app:update:bin \
+  && EDITOR=vi bin/rails credentials:edit
 
 EXPOSE 5000

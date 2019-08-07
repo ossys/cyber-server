@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/docs'
 
   scope :api do
+    get :status, to: 'api#status'
+
     namespace :slack do
       post '/event', to: 'slack#event'
     end

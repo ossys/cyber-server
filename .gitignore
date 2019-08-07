@@ -26,6 +26,7 @@ terraform/terraform.*
 /api-server/bin
 /api-server/config/initializers/secret_token.rb
 /api-server/config/master.key
+/api-server/config/credentials.yml.enc
 /api-server/.bundle
 /api-server/vendor/bundle
 /osqueryd/run

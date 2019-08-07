@@ -14,7 +14,6 @@ services:
 
   caddy:
     image: abiosoft/caddy:no-stats
-    restart: always
     ports:
       - "443:443"
 
