@@ -8,7 +8,6 @@ services:
 
   db:
     env_file:
-      - ./api-server/.env
       - ./api-server/.prod.env
 
   caddy:
@@ -19,3 +18,5 @@ services:
       - type: bind
         source: ./api-server/Caddyfile
         target: /etc/Caddyfile
+      - caddypath:/var/caddy
+      - sites:/var/www/sites

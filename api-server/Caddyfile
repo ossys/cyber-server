@@ -1,5 +1,6 @@
 cyber.ossys.com {
-  tls self_signed
+  tls contact@ossys.com
+  #tls self_signed
 
   proxy / http://server:5000 {
     transparent
