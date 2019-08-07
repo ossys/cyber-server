@@ -31,6 +31,8 @@ ENV BUNDLE_PATH=/bundle \
 RUN bundle install
 
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
+RUN mkdir /app/log
+
 COPY . $app
 
 EXPOSE 5000
