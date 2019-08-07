@@ -19,7 +19,7 @@ RUN apt update \
 RUN gem install bundler
 
 ENV app /app
-RUN mkdir $app
+RUN mkdir -p $app/log
 WORKDIR $app
 
 COPY ./Gemfile $app/Gemfile
@@ -28,11 +28,18 @@ COPY ./Gemfile.lock $app/Gemfile.lock
 ENV BUNDLE_PATH=/bundle \
   BUNDLE_JOBS=3
 
+RUN useradd -ms /bin/bash gauntltuser \
+  && mkdir -p $BUNDLE_PATH \
+  && chown -R gauntltuser $BUNDLE_PATH
+
+USER gauntltuser
 RUN bundle install
 
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
-RUN mkdir /app/log
 
 COPY . $app
+USER root
+RUN chown -R gauntltuser $app
+USER gauntltuser
 
 EXPOSE 5000

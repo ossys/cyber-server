@@ -5,5 +5,5 @@
 bundle exec rake db:create db:migrate db:seed
 #bundle exec puma -C config/puma.rb
 
-cd $HOME/cyber-server/api-server
+cd /app
 bundle exec rails s
