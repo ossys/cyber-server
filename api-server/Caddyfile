@@ -1,4 +1,4 @@
-cyber.ossys.com, :443, :5000 {
+cyber.ossys.com {
   tls self_signed
 
   proxy / http://server:5000 {
