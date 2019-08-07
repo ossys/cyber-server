@@ -5,5 +5,4 @@
 bundle exec rake db:create db:migrate db:seed
 #bundle exec puma -C config/puma.rb
 
-cd /app
-bundle exec rails s
+bin/rails s -e production
