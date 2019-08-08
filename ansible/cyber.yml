@@ -21,6 +21,11 @@
         group: ubuntu
         mode: 0644
 
+    - name: Set Hostname
+      hostname:
+        name: cyber.ossys.com
+      become: yes
+
     - name: Add Docker GPG Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -35,7 +40,6 @@
         - 'deb http://archive.ubuntu.com/ubuntu/ bionic universe'
         - 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe'
         - 'deb http://security.ubuntu.com/ubuntu/ bionic-security universe'
-        - 'ppa:certbot/certbot'
         - 'ppa:ansible/ansible'
       become: yes
 
@@ -48,11 +52,8 @@
     - name: Install Required Packages
       apt:
         name: ['docker-ce',
-               'nginx',
                'software-properties-common',
                'ansible',
-               'certbot',
-               'python-certbot-nginx',
                'python3-pip',
                'python-pip']
       become: yes
@@ -71,43 +72,12 @@
         mode: '0755'
       become: yes
 
-    - name: Update Nginx Config
-      copy:
-        dest: /etc/nginx/sites-enabled/default
-        content: |
-          server {
-            root /var/www/html;
-
-            index index.html index.htm index.nginx-debian.html;
-
-            server_name cyber.ossys.com;
-
-            client_max_body_size 1000M;
-
-            location /api {
-              proxy_pass            http://127.0.0.1:5000;
-              proxy_set_header      Host $host;
-            }
-          }
-      become: yes
-
-    - name: Run Certbot
-      shell: certbot --nginx --non-interactive --agree-tos --redirect --domains cyber.ossys.com -m chad.cravens@ossys.com
-      become: yes
-
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
-      become: yes
-
     - name: Install Required Pip Packages
       pip:
         name: ['docker',
                'docker-compose']
-        executable: /usr/bin/pip
+        executable: /usr/bin/pip3
       become: yes
-      become_user: ubuntu
 
     - name: Clone Cyber Server
       git:
@@ -127,6 +97,7 @@
     - name: Stand Up Cyber Server
       docker_service:
         project_src: /home/ubuntu/cyber-server
+        files: ['docker-compose.yml',
+                'docker-compose.prod.yml']
         state: present
-      vars:
-        ansible_python_interpreter: /usr/bin/python
+      become: yes
