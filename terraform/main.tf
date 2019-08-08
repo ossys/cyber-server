@@ -66,7 +66,7 @@ variable "ami" {
 
 variable "cyber-eip" {
   description = "Cyber Elastic IP"
-  default = "eipalloc-02b02ac69d4022af4"
+  default = "eipalloc-0458ee428b25471b1"
 }
 
 variable "key_path" {
