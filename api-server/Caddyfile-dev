@@ -1,7 +1,7 @@
 cyber.ossys.com, :443, :6000 {
   tls /app/server.crt /app/server.key
 
-  proxy / http://localhost:5000 {
+  proxy /api http://server:5000/api {
     transparent
   }
 }
