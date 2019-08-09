@@ -14,3 +14,4 @@
     - name: Install a .deb package
       apt:
         deb: /home/ubuntu/osquery_3.3.2_1.linux.amd64.deb
+      become: yes
