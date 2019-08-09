@@ -43,11 +43,11 @@
         state: present
         force_init: yes
 
-- name: Cyber Environment
+- name: Cyber Server
   import_playbook: cyber.yml
 
-#- name: OSQuery Install
-#  import_playbook: osquery.yml
+- name: OSQuery Install
+  import_playbook: osquery.yml
 
 #- name: Jupyter Environment
 #  import_playbook: jupyter.yml
