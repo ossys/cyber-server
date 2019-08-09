@@ -19,5 +19,6 @@
     - name: Copy osquery config file
       copy:
         src: /usr/share/osquery/osquery.example.conf
-        remote_src: yes
         dest: /etc/osquery/osquery.conf
+        remote_src: yes
+      become: yes
