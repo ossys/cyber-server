@@ -1,7 +1,6 @@
-# cyber.ossys.com {
-cyber.ossys.com:443 {
+cyber.ossys.com {
+  tls /app/server.crt /app/server.key
   #tls contact@ossys.com
-  tls self_signed
 
   proxy /api http://server:5000 {
     transparent

@@ -18,5 +18,11 @@ services:
       - type: bind
         source: ./api-server/Caddyfile
         target: /etc/Caddyfile
+      - type: bind
+        source: ./api-server/app/assets/server.key
+        target: /app/server.key
+      - type: bind
+        source: ./api-server/app/assets/server.crt
+        target: /app/server.crt
       - caddypath:/var/caddy
       - sites:/var/www/sites
