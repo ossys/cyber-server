@@ -10,3 +10,7 @@
         url: https://pkg.osquery.io/deb/osquery_3.3.2_1.linux.amd64.deb
         dest: /home/ubuntu
         checksum: sha256:6c54a55df1feaf410064bc87696f9829d0787fb5b9c7beabeb4f5cca7ce6c3fb
+
+    - name: Install a .deb package
+      apt:
+        deb: /home/ubuntu/osquery_3.3.2_1.linux.amd64.deb
