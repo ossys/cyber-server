@@ -1,4 +1,4 @@
 - hosts: node2
 
-  - name: Ping Master
+  - name: Ping Node2
     ping:
