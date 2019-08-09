@@ -1,4 +1,4 @@
-cyber.ossys.com {
+cyber.ossys.com:443 {
   tls /app/server.crt /app/server.key
   #tls contact@ossys.com
 

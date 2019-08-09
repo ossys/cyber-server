@@ -80,20 +80,20 @@
 #        executable: /usr/bin/pip3
 #      become: yes
 #
-#    - name: Clone Cyber Server
-#      git:
-#        repo: git@github.com:ossys/cyber-server
-#        dest: /home/ubuntu/cyber-server
-#        accept_hostkey: yes
-#
-#    - name: Copy Environment Files
-#      copy:
-#        src: '{{ item }}'
-#        dest: /home/ubuntu/cyber-server/api-server
-#        mode: '0400'
-#      loop:
-#        - '../api-server/.env'
-#        - '../api-server/.prod.env'
+    - name: Clone Cyber Server
+      git:
+        repo: git@github.com:ossys/cyber-server
+        dest: /home/ubuntu/cyber-server
+        accept_hostkey: yes
+
+    - name: Copy Environment Files
+      copy:
+        src: '{{ item }}'
+        dest: /home/ubuntu/cyber-server/api-server
+        mode: '0400'
+      loop:
+        - '../api-server/.env'
+        - '../api-server/.prod.env'
 
     - name: Create Assets Directory
       file:
