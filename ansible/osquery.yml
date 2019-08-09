@@ -1,9 +1,9 @@
 - hosts: cyber
 
   - name: Install Node1
-    shell: --inventory-file=./ansible/hosts -u ubuntu --private-key=./keys/cyber ./ansible/build.yml
+    shell: ansible-playbook --inventory-file=./ansible/hosts -u ubuntu --private-key=./keys/cyber ./ansible/node1.yml
     args:
-      chdir: '/home/ubuntu/'
+      chdir: '/home/ubuntu/cyber-server'
 
 - name: Node 2 Install
   import_playbook: node2.yml
