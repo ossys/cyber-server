@@ -22,3 +22,10 @@
         dest: /etc/osquery/osquery.conf
         remote_src: yes
       become: yes
+
+    - name: Update hosts file
+      lineinfile:
+        path: /etc/hosts
+        insertafter: '127.0.0.1 localhost'
+        content:|
+          10.0.0.10 cyber.ossys.com
