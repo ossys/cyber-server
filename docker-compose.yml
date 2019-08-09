@@ -28,10 +28,6 @@ services:
 
 volumes:
   bundle:
-    external: true
   postgres:
-    external: true
   sites:
-    external: true
   caddypath:
-    external: true
