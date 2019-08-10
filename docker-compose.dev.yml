@@ -8,15 +8,13 @@ services:
         target: /app/config/master.key
     env_file:
       - ./api-server/.env
+      - ./api-server/.dev.env
 
   db:
     env_file:
-      - ./api-server/.env
       - ./api-server/.prod.env
 
   caddy:
-    env_file:
-      - ./api-server/.env
     volumes:
       - type: bind
         source: ./api-server/Caddyfile-dev

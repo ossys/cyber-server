@@ -13,6 +13,8 @@ services:
       - db
 
   caddy:
+    environment:
+      - ACME_AGREE=true
     image: abiosoft/caddy:no-stats
     ports:
       - "80:80"
