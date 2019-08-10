@@ -40,3 +40,4 @@
     - name: Retrieve Master Cert
       command: openssl s_client -showcerts -connect 10.0.0.10:443 -servername cyber.ossys.com > /etc/osquery/cacert
       become: yes
+      become_user: root
