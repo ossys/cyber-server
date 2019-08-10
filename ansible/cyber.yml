@@ -155,7 +155,7 @@
         line: '{{ item.line }}'
         create: yes
       with_items:
-        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ lookup("file", "/home/ubuntu/cyber-server/api-server/.secret.tmp") }}' }
+        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}' }
         - { insertafter: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}', line: 'DEVISE_JWT_SECRET_KEY={{ lookup("vars", "jwt") }}' }
       when: secrets.stat.exists == true
 
