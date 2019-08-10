@@ -50,14 +50,14 @@
       become: yes
       become_user: root
 
-#    - name: Copy osquery secret
-#      copy:
-#        dest: /etc/osquery/secret
-#        content: |
-#          very_secret
-#      become: yes
-#      become_user: root
-#
+    - name: Copy osquery secret
+      copy:
+        dest: /etc/osquery/secret
+        content: |
+          very_secret
+      become: yes
+      become_user: root
+
 #    - name: Start osquery service
 #      service:
 #        name: osqueryd
