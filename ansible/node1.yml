@@ -24,20 +24,20 @@
         remote_src: yes
       become: yes
 
-#    - name: Update hosts file
-#      lineinfile:
-#        path: /etc/hosts
-#        insertafter: '{{ item.insertafter }}'
-#        line: '{{ item.line }}'
-#      with_items:
-#        - { insertafter: '127.0.0.1 localhost', line: '10.0.0.10 cyber.ossys.com' }
-#        - { insertafter: '10.0.0.10 cyber.ossys.com', line: '10.0.1.10 node1' }
-#        - { insertafter: '10.0.1.10 node1', line: '10.0.1.11 node2' }
-#        - { insertafter: '10.0.1.11 node2', line: '10.0.1.12 node3' }
-#        - { insertafter: '10.0.1.12 node3', line: '10.0.1.13 node4' }
-#        - { insertafter: '10.0.1.13 node4', line: '10.0.1.14 node5' }
-#      become: yes
-#
+    - name: Update hosts file
+      lineinfile:
+        path: /etc/hosts
+        insertafter: '{{ item.insertafter }}'
+        line: '{{ item.line }}'
+      with_items:
+        - { insertafter: '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4', line: '10.0.0.10 cyber.ossys.com' }
+        - { insertafter: '10.0.0.10 cyber.ossys.com', line: '10.0.1.10 node1' }
+        - { insertafter: '10.0.1.10 node1', line: '10.0.1.11 node2' }
+        - { insertafter: '10.0.1.11 node2', line: '10.0.1.12 node3' }
+        - { insertafter: '10.0.1.12 node3', line: '10.0.1.13 node4' }
+        - { insertafter: '10.0.1.13 node4', line: '10.0.1.14 node5' }
+      become: yes
+
 #    - name: Retrieve Master Cert
 #      shell: echo quit | openssl s_client -showcerts -connect 10.0.0.10:443 -servername cyber.ossys.com > /etc/osquery/cacert
 #      become: yes
