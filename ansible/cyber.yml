@@ -136,8 +136,15 @@
 
     - name: Check Secret File
       stat:
-        path: /home/ubuntu/cyber-server/api-server/.secret.env
+        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
       register: secrets
+
+    - name: Save Temp Secret File
+      lineinfile:
+        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
+        line: '{{ lookup("vars", "secret") }}'
+        create: yes
+      when: secrets.stat.exists == false
 
     - name: Save Secret Values
       lineinfile:
@@ -146,16 +153,9 @@
         line: '{{ item.line }}'
         create: yes
       with_items:
-        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}' }
+        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ lookup("file", "/home/ubuntu/cyber-server/api-server/.secret.tmp") }}' }
         - { insertafter: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}', line: 'DEVISE_JWT_SECRET_KEY={{ lookup("vars", "jwt") }}' }
-      when: secrets.stat.exists == false
-
-    - name: Save Temp Secret File
-      lineinfile:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-        line: '{{ lookup("vars", "secret") }}'
-        create: yes
-      when: secrets.stat.exists == false
+      when: secrets.stat.exists == true
 
 #    - name: Stand Up Cyber Server
 #      docker_service:

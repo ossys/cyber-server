@@ -1,6 +1,4 @@
 - hosts: node2
-  vars:
-    secret: '{{ lookup("file", "/home/ubuntu/cyber-server/api-server/.secret.tmp") }}'
 
   tasks:
 
@@ -59,9 +57,9 @@
     - name: Save Secret Values
       lineinfile:
         path: /etc/osquery/secret
-        line: '{{ lookup("vars", "secret") }}'
+        line: '{{ lookup("file", "/home/ubuntu/cyber-server/api-server/.secret.tmp") }}'
         create: yes
-      when: secrets.stat.exists == false
+      when: secrets.stat.exists == true
       become: yes
       become_user: root
 
