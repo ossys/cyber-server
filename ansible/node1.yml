@@ -58,9 +58,9 @@
       become: yes
       become_user: root
 
-#    - name: Start osquery service
-#      service:
-#        name: osqueryd
-#        state: started
-#        enabled: yes
-#      become: yes
+    - name: Start osquery service
+      service:
+        name: osqueryd
+        state: started
+        enabled: yes
+      become: yes
