@@ -8,7 +8,7 @@ cyber.ossys.com ansible_python_interpreter=/usr/bin/python3
 10.0.0.10 ansible_python_interpreter=/usr/bin/python3
 
 [node1]
-10.0.1.10 ansible_python_interpreter=/usr/bin/python3
+10.0.1.10 ansible_python_interpreter=/usr/bin/python
 
 [node2]
 10.0.1.11 ansible_python_interpreter=/usr/bin/python3
