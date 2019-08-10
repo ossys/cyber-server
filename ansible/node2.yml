@@ -35,3 +35,4 @@
         - { insertafter: '10.0.1.11 node2', line: '10.0.1.12 node3' }
         - { insertafter: '10.0.1.12 node3', line: '10.0.1.13 node4' }
         - { insertafter: '10.0.1.13 node4', line: '10.0.1.14 node5' }
+      become: yes
