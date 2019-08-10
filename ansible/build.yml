@@ -48,9 +48,14 @@
 
 - name: Cyber Server
   import_playbook: cyber.yml
+  vars:
+    secret: '{{ lookup("vars", "secret") }}'
+    jwt: '{{ lookup("vars", "jwt") }}'
 
 - name: OSQuery Install
   import_playbook: osquery.yml
+  vars:
+    secret: '{{ lookup("vars", "secret") }}'
 
 #- name: Jupyter Environment
 #  import_playbook: jupyter.yml
