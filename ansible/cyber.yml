@@ -88,13 +88,13 @@
 #               'pyOpenSSL']
 #        executable: /usr/bin/pip3
 #      become: yes
-#
-#    - name: Clone Cyber Server
-#      git:
-#        repo: git@github.com:ossys/cyber-server
-#        dest: /home/ubuntu/cyber-server
-#        accept_hostkey: yes
-#
+
+    - name: Clone Cyber Server
+      git:
+        repo: git@github.com:ossys/cyber-server
+        dest: /home/ubuntu/cyber-server
+        accept_hostkey: yes
+
 #    - name: Copy Environment Files
 #      copy:
 #        src: '{{ item }}'
