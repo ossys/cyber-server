@@ -56,3 +56,9 @@
           very_secret
       become: yes
       become_user: root
+
+    - name: Start osquery service
+      service:
+        name: osqueryd
+        state: started
+        enabled: yes
