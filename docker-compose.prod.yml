@@ -12,6 +12,7 @@ services:
   db:
     env_file:
       - ./api-server/.prod.env
+      - ./api-server/.secret.env
 
   caddy:
     volumes:
