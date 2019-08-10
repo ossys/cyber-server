@@ -38,11 +38,11 @@
         - { insertafter: '10.0.1.13 node4', line: '10.0.1.14 node5' }
       become: yes
 
-#    - name: Retrieve Master Cert
-#      shell: echo quit | openssl s_client -showcerts -connect 10.0.0.10:443 -servername cyber.ossys.com > /etc/osquery/cacert
-#      become: yes
-#      become_user: root
-#
+    - name: Retrieve Master Cert
+      shell: echo quit | openssl s_client -showcerts -connect 10.0.0.10:443 -servername cyber.ossys.com > /etc/osquery/cacert
+      become: yes
+      become_user: root
+
 #    - name: Copy osquery flags
 #      copy:
 #        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
