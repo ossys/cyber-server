@@ -55,7 +55,7 @@
 - name: OSQuery Install
   import_playbook: osquery.yml
   vars:
-    secret: '{{ lookup("vars", "secret") }}'
+    secret: {{ lookup("vars", "secret") }}
 
 #- name: Jupyter Environment
 #  import_playbook: jupyter.yml
