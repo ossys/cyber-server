@@ -27,5 +27,5 @@
       lineinfile:
         path: /etc/hosts
         insertafter: '127.0.0.1 localhost'
-        content:|
+        content: |
           10.0.0.10 cyber.ossys.com
