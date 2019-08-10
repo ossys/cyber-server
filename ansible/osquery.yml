@@ -2,7 +2,13 @@
 
   tasks:
 
-    - name: Install Node2
-      shell: ansible-playbook --inventory-file=./ansible/hosts -u ubuntu --private-key=/home/ubuntu/.ssh/id_rsa ./ansible/node2.yml
+    - name: Install osquery
+      shell: ansible-playbook --inventory-file=./ansible/hosts -u ubuntu --private-key=/home/ubuntu/.ssh/id_rsa ./ansible/{{item}}.yml
       args:
         chdir: '/home/ubuntu/cyber-server'
+      with_items:
+        - 'node1'
+        - 'node2'
+#        - 'node3'
+#        - 'node4'
+#        - 'node5'
