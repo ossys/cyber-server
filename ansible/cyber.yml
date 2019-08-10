@@ -1,6 +1,15 @@
 - hosts: cyber
+  vars:
+    secret: '{{ "abcdefghijklmnopqrstuvwxyz0123456789" | password_hash("sha512") | hash("sha512") }}'
+    jwt: '{{ "abcdefghijklmnopqrstuvwxyz0123456789" | password_hash("sha512") | hash("sha512") }}'
 
   tasks:
+
+#    - name: Test Variable
+#      lineinfile:
+#        path: /tmp/secret
+#        line: "{{ lookup('vars', 'secret') }}"
+#        create: yes
 
 #    - name: Ping Master
 #      ping:
@@ -79,13 +88,13 @@
 #               'pyOpenSSL']
 #        executable: /usr/bin/pip3
 #      become: yes
-
-    - name: Clone Cyber Server
-      git:
-        repo: git@github.com:ossys/cyber-server
-        dest: /home/ubuntu/cyber-server
-        accept_hostkey: yes
-
+#
+#    - name: Clone Cyber Server
+#      git:
+#        repo: git@github.com:ossys/cyber-server
+#        dest: /home/ubuntu/cyber-server
+#        accept_hostkey: yes
+#
 #    - name: Copy Environment Files
 #      copy:
 #        src: '{{ item }}'
@@ -124,7 +133,23 @@
 #        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.crt'
 #        csr_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.csr'
 #        privatekey_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
-#
+
+    - name: Check Secrets File
+      stat:
+        path: /home/ubuntu/cyber-server/api-server/.secret.env
+      register: secrets
+
+    - name: Save Secret Values
+      lineinfile:
+        path: /home/ubuntu/cyber-server/api-server/.secret.env
+        insertafter: '{{ item.insertafter }}'
+        line: '{{ item.line }}'
+        create: yes
+      with_items:
+        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}' }
+        - { insertafter: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}', line: 'DEVISE_JWT_SECRET_KEY={{ lookup("vars", "jwt") }}' }
+      when: secrets.stat.exists == false
+
 #    - name: Stand Up Cyber Server
 #      docker_service:
 #        project_src: /home/ubuntu/cyber-server

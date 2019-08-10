@@ -50,11 +50,19 @@
       become: yes
       become_user: root
 
-    - name: Copy osquery secret
-      copy:
-        dest: /etc/osquery/secret
-        content: |
-          very_secret
+    - name: Check Secrets File
+      stat:
+        path: /etc/osquery/secret
+      register: secrets
+      become: yes
+      become_user: root
+
+    - name: Save Secret Values
+      lineinfile:
+        path: /etc/osquery/secret
+        line: '{{ lookup("vars", "secret") }}'
+        create: yes
+      when: secrets.stat.exists == false
       become: yes
       become_user: root
 
