@@ -1,4 +1,6 @@
 - hosts: node1
+  vars:
+    secret: '{{ lookup("file", "/home/ubuntu/cyber-server/api-server/.secret.tmp") }}'
 
   tasks:
 
@@ -47,13 +49,6 @@
       copy:
         src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
         dest: /etc/osquery/osquery.flags
-      become: yes
-      become_user: root
-
-    - name: Check Secrets File
-      stat:
-        path: /etc/osquery/secret
-      register: secrets
       become: yes
       become_user: root
 
