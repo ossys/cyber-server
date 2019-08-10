@@ -43,13 +43,13 @@
       become: yes
       become_user: root
 
-#    - name: Copy osquery flags
-#      copy:
-#        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
-#        dest: /etc/osquery/osquery.flags
-#      become: yes
-#      become_user: root
-#
+    - name: Copy osquery flags
+      copy:
+        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
+        dest: /etc/osquery/osquery.flags
+      become: yes
+      become_user: root
+
 #    - name: Copy osquery secret
 #      copy:
 #        dest: /etc/osquery/secret
