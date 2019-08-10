@@ -150,11 +150,6 @@
         - { insertafter: 'OSQUERY_ENROLL_SECRET={{ lookup("vars", "secret") }}', line: 'DEVISE_JWT_SECRET_KEY={{ lookup("vars", "jwt") }}' }
       when: secrets.stat.exists == false
 
-    - name: Check Temp Secret File
-      stat:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-      register: secrets
-
     - name: Save Temp Secret File
       lineinfile:
         path: /home/ubuntu/cyber-server/api-server/.secret.tmp

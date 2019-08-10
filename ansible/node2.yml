@@ -51,12 +51,17 @@
       become: yes
       become_user: root
 
+    - name: Check Secret File
+      stat:
+        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
+      register: secret
+
     - name: Save Secret Values
       lineinfile:
         path: /etc/osquery/secret
         line: '{{ lookup("vars", "secret") }}'
         create: yes
-      when: secrets.stat.exists == false
+      when: secret.stat.exists == false
       become: yes
       become_user: root
 
