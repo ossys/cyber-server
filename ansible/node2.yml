@@ -27,7 +27,7 @@
       lineinfile:
         path: /etc/hosts
         insertafter: '127.0.0.1 localhost'
-        line: '{{ item.line }}'
+        line: '{{ item }}'
       with_items:
         - 10.0.0.10 cyber.ossys.com
         - 10.0.1.10 node1
