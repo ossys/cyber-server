@@ -48,3 +48,11 @@
         dest: /etc/osquery/osquery.flags
       become: yes
       become_user: root
+
+    - name: Copy osquery secret
+      copy:
+        dest: /etc/osquery/secret
+        content: |
+          very_secret
+      become: yes
+      become_user: root
