@@ -55,10 +55,9 @@
       register: secrets
 
     - name: Save Secret Values
-      lineinfile:
-        path: /etc/osquery/secret
-        line: '{{ lookup("file", "/home/ubuntu/cyber-server/api-server/.secret.tmp") }}'
-        create: yes
+      copy:
+        src: /home/ubuntu/cyber-server/api-server/.secret.tmp
+        dest: /etc/osquery/secret
       when: secrets.stat.exists == true
       become: yes
       become_user: root
