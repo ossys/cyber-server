@@ -2,9 +2,6 @@ version: '3.7'
 
 services:
   server:
-    environment:
-      - DEVISE_JWT_SECRET_KEY
-      - OSQUERY_ENROLL_SECRET
     env_file:
       - ./api-server/.env
       - ./api-server/.prod.env
