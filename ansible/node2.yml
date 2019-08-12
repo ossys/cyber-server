@@ -49,18 +49,11 @@
       become: yes
       become_user: root
 
-    - name: Check Secret File
-      stat:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-      register: secrets
-
     - name: Save Secret Values
       copy:
         src: /home/ubuntu/cyber-server/api-server/.secret.tmp
         dest: /etc/osquery/secret
       when: secrets.stat.exists == true
-      become: yes
-      become_user: root
 
     - name: Start osquery service
       service:
