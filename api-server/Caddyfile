@@ -1,4 +1,5 @@
-cyber.ossys.com:80 {}
+cyber.ossys.com:80 {
+}
 
 cyber.ossys.com:443 {
   tls self_signed
