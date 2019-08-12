@@ -120,7 +120,7 @@
         state_or_province_name: 'SC'
         locality_name: 'Columbia'
         organization_name: 'Open Source Systems'
-        common_name: 'cyber.ossys.com'
+        common_name: 'master'
         email_address: 'andrew.zah@ossys.com'
 
     - name: Generate Caddy Certificate
