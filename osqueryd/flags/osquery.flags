@@ -4,7 +4,7 @@
 --debug
 --tls_dump=true
 
---tls_hostname=cyber.ossys.com
+--tls_hostname=master
 
 --tls_server_certs=/etc/osquery/cacert
 --enroll_secret_path=/etc/osquery/secret
