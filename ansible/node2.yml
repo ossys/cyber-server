@@ -53,6 +53,8 @@
       copy:
         src: /home/ubuntu/cyber-server/api-server/.secret.tmp
         dest: /etc/osquery/secret
+      become: yes
+      become_user: root
 
     - name: Start osquery service
       service:
