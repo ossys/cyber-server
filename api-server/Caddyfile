@@ -1,5 +1,6 @@
 cyber.ossys.com {
-  tls contact@ossys.com
+  tls self_signed
+  #tls contact@ossys.com
 }
 
 10.0.0.10:443 {
