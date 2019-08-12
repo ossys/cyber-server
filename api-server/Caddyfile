@@ -9,7 +9,7 @@ cyber.ossys.com:443 {
   }
 }
 
-10.0.0.10:443 {
+master:443 {
   tls /app/server.crt /app/server.key
 
   proxy /api http://server:5000 {
