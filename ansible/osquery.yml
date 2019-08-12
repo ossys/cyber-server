@@ -3,7 +3,7 @@
   tasks:
 
     - name: Install osquery
-      command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook --inventory-file=/home/ubuntu/cyber-server/ansible/hosts -u {{ item.user }} --private-key=/home/ubuntu/.ssh/id_rsa /home/ubuntu/cyber-server/ansible/{{ item.node }}.yml
+      shell: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook --inventory-file=/home/ubuntu/cyber-server/ansible/hosts -u {{ item.user }} --private-key=/home/ubuntu/.ssh/id_rsa /home/ubuntu/cyber-server/ansible/{{ item.node }}.yml
       args:
         chdir: '/home/ubuntu/cyber-server'
       with_items:
