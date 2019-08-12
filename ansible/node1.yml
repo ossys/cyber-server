@@ -39,7 +39,7 @@
       become: yes
 
     - name: Retrieve Master Cert
-      shell: echo quit | openssl s_client -showcerts -connect 10.0.0.10:443 -servername master > /etc/osquery/cacert
+      shell: echo quit | openssl s_client -showcerts -connect master:443 -servername master > /etc/osquery/cacert
       become: yes
       become_user: root
 
