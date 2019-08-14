@@ -40,8 +40,8 @@
 
     - name: Copy osquery secret file
       win_copy:
-        src: C:\Program Files\osquery\osquery.example.conf
-        dest: C:\ProgramData\osquery\osquery.conf
+        src: /home/ubuntu/cyber-server/api-server/.secret.tmp
+        dest: C:\ProgramData\osquery\secret
 
     - name: Copy server certificate
       win_copy:
@@ -50,10 +50,9 @@
 
     - name: Copy osquery config file
       win_copy:
-        src: /usr/share/osquery/osquery.example.conf
-        dest: /etc/osquery/osquery.conf
+        src: C:\Program Files\osquery\osquery.example.conf
+        dest: C:\ProgramData\osquery\osquery.conf
         remote_src: yes
-      become: yes
 
     - name: Download osquery safe script
       win_get_url:
