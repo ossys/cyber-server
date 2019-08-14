@@ -70,13 +70,13 @@
       win_service:
         name: osqueryd
       register: osqueryd
-      when: osqueryd.state is defined
 
 ## TMP ##
     - name: Uninstall osqueryd service
       win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -uninstall osqueryd
       args:
         chdir: C:\Program Files\osquery
+      when: osqueryd.state is defined
 #########
 
     - name: Install osqueryd service
