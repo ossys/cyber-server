@@ -66,17 +66,18 @@
       args:
         chdir: C:\Program Files\osquery
 
+    - name: Check osqueryd service
+      win_service:
+        name: osqueryd
+      register: osqueryd
+      when: osqueryd.state is defined
+
 ## TMP ##
     - name: Uninstall osqueryd service
       win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -uninstall osqueryd
       args:
         chdir: C:\Program Files\osquery
 #########
-
-    - name: Check osqueryd service
-      win_service:
-        name: osqueryd
-      register: osqueryd
 
     - name: Install osqueryd service
       win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs C:\ProgramData\osquery\osquery.flags
