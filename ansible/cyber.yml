@@ -77,11 +77,16 @@
 
     - name: Install Required Pip Packages
       pip:
+        name: ['pywinrm']
+        executable: /usr/bin/pip
+      become: yes
+
+    - name: Install Required Pip3 Packages
+      pip:
         name: ['docker',
                'docker-compose',
-               'pyOpenSSL',
-               'pywinrm']
-        executable: /usr/bin/pip
+               'pyOpenSSL']
+        executable: /usr/bin/pip3
       become: yes
 
     - name: Clone Cyber Server
