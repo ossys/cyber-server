@@ -21,7 +21,10 @@
     - name: Change Hostname
       win_hostname:
         name: node3
-      register: res
+      register: chg_hostname
+
+    - name: Ping Master
+      win_shell: ping -n 1 master
 
     - name: Create osquery Program Data Folder
       win_file:
@@ -50,9 +53,8 @@
 
     - name: Copy osquery config file
       win_copy:
-        src: C:\Program Files\osquery\osquery.example.conf
+        src: /home/ubuntu/cyber-server/osqueryd/wel-windows.json
         dest: C:\ProgramData\osquery\osquery.conf
-        remote_src: yes
 
     - name: Download osquery safe script
       win_get_url:
@@ -81,6 +83,11 @@
       args:
         chdir: C:\Program Files\osquery
       when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
+
+    - name: Install osqueryd service
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -installWelManifest
+      args:
+        chdir: C:\Program Files\osquery
 
     - name: Set service startup mode to auto and ensure it is started
       win_service:
