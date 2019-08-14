@@ -26,7 +26,7 @@
         dest: C:\Program Files\osquery\osquery_utils.ps1
 
     - name: Source osquery utils script
-      win_shell: . C:\\"Program Files\"\osquery\osquery_utils.ps1
+      win_shell: . \"C:\Program Files\osquery\osquery_utils.ps1\"
 
 #    - name: Run set safe permissions script
 #      win_shell: Set-SafePermissions C:\Program^ Files\osquery\osqueryd\
