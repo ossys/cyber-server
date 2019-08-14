@@ -9,3 +9,8 @@
       win_chocolatey:
         name: osquery
         state: present
+
+    - name: Copy a single file
+      win_copy:
+        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
+        dest: C:\Program Files\osquery\osquery.flags
