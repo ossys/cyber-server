@@ -6,8 +6,8 @@
 
 --tls_hostname=master
 
---tls_server_certs=/etc/osquery/cacert
---enroll_secret_path=/etc/osquery/secret
+--tls_server_certs=./cacert
+--enroll_secret_path=./secret
 
 --config_tls_endpoint=/api/osquery/config
 --distributed_tls_read_endpoint=/api/osquery/distributed_read
@@ -16,7 +16,7 @@
 --logger_tls_endpoint=/api/osquery/log
 
 --config_plugin=tls
---config_tls_refresh=5
+--config_tls_refresh=60
 
 --disable_distributed=false
 --distributed_plugin=tls
@@ -24,4 +24,4 @@
 --distributed_tls_max_attempts=3
 
 --logger_plugin=tls
---logger_tls_period=20
+--logger_tls_period=120
