@@ -5,89 +5,89 @@
 
   tasks:
 
-    - name: Ping Master
-      ping:
-
-    - name: Copy Private SSH Key
-      copy:
-        src: ../keys/cyber
-        dest: /home/ubuntu/.ssh/id_rsa
-        owner: ubuntu
-        group: ubuntu
-        mode: 0400
-
-    - name: Copy Public SSH Key
-      copy:
-        src: ../keys/cyber.pub
-        dest: /home/ubuntu/.ssh/id_rsa.pub
-        owner: ubuntu
-        group: ubuntu
-        mode: 0644
-
-    - name: Set Hostname
-      hostname:
-        name: cyber.ossys.com
-      become: yes
-
-    - name: Add Docker GPG Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-      become: yes
-
-    - name: Enable Required Repositories
-      apt_repository:
-        repo: '{{ item }}'
-      loop:
-        - 'deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
-        - 'deb http://archive.ubuntu.com/ubuntu/ bionic universe'
-        - 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe'
-        - 'deb http://security.ubuntu.com/ubuntu/ bionic-security universe'
-        - 'ppa:ansible/ansible'
-      become: yes
-
-    - name: Update Packages
-      apt:
-        upgrade: yes
-        update_cache: yes
-      become: yes
-
-    - name: Install Required Packages
-      apt:
-        name: ['docker-ce',
-               'software-properties-common',
-               'ansible',
-               'python3-pip',
-               'python-pip']
-      become: yes
-
-    - name: Add ubuntu to docker group
-      user:
-        name: ubuntu
-        groups: docker
-        append: yes
-      become: yes
-
-    - name: Download Docker Compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: '0755'
-      become: yes
-
-    - name: Install Required Pip Packages
-      pip:
-        name: ['pywinrm']
-        executable: /usr/bin/pip
-      become: yes
-
-    - name: Install Required Pip3 Packages
-      pip:
-        name: ['docker',
-               'docker-compose',
-               'pyOpenSSL']
-        executable: /usr/bin/pip3
-      become: yes
+#    - name: Ping Master
+#      ping:
+#
+#    - name: Copy Private SSH Key
+#      copy:
+#        src: ../keys/cyber
+#        dest: /home/ubuntu/.ssh/id_rsa
+#        owner: ubuntu
+#        group: ubuntu
+#        mode: 0400
+#
+#    - name: Copy Public SSH Key
+#      copy:
+#        src: ../keys/cyber.pub
+#        dest: /home/ubuntu/.ssh/id_rsa.pub
+#        owner: ubuntu
+#        group: ubuntu
+#        mode: 0644
+#
+#    - name: Set Hostname
+#      hostname:
+#        name: cyber.ossys.com
+#      become: yes
+#
+#    - name: Add Docker GPG Key
+#      apt_key:
+#        url: https://download.docker.com/linux/ubuntu/gpg
+#        state: present
+#      become: yes
+#
+#    - name: Enable Required Repositories
+#      apt_repository:
+#        repo: '{{ item }}'
+#      loop:
+#        - 'deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
+#        - 'deb http://archive.ubuntu.com/ubuntu/ bionic universe'
+#        - 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe'
+#        - 'deb http://security.ubuntu.com/ubuntu/ bionic-security universe'
+#        - 'ppa:ansible/ansible'
+#      become: yes
+#
+#    - name: Update Packages
+#      apt:
+#        upgrade: yes
+#        update_cache: yes
+#      become: yes
+#
+#    - name: Install Required Packages
+#      apt:
+#        name: ['docker-ce',
+#               'software-properties-common',
+#               'ansible',
+#               'python3-pip',
+#               'python-pip']
+#      become: yes
+#
+#    - name: Add ubuntu to docker group
+#      user:
+#        name: ubuntu
+#        groups: docker
+#        append: yes
+#      become: yes
+#
+#    - name: Download Docker Compose
+#      get_url:
+#        url: https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64
+#        dest: /usr/local/bin/docker-compose
+#        mode: '0755'
+#      become: yes
+#
+#    - name: Install Required Pip Packages
+#      pip:
+#        name: ['pywinrm']
+#        executable: /usr/bin/pip
+#      become: yes
+#
+#    - name: Install Required Pip3 Packages
+#      pip:
+#        name: ['docker',
+#               'docker-compose',
+#               'pyOpenSSL']
+#        executable: /usr/bin/pip3
+#      become: yes
 
     - name: Clone Cyber Server
       git:
@@ -95,76 +95,76 @@
         dest: /home/ubuntu/cyber-server
         accept_hostkey: yes
 
-    - name: Copy Environment Files
-      copy:
-        src: '{{ item }}'
-        dest: /home/ubuntu/cyber-server/api-server
-        mode: '0400'
-      loop:
-        - '../api-server/.env'
-        - '../api-server/.prod.env'
-
-    - name: Create Assets Directory
-      file:
-        path: /home/ubuntu/cyber-server/api-server/app/assets
-        state: directory
-
-    - name: Generate Caddy Private Key
-      openssl_privatekey:
-        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
-        type: RSA
-        size: 4096
-        state: present
-
-    - name: Generate Caddy CSR
-      openssl_csr:
-        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.csr'
-        privatekey_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
-        country_name: 'US'
-        state_or_province_name: 'SC'
-        locality_name: 'Columbia'
-        organization_name: 'Open Source Systems'
-        common_name: 'master'
-        email_address: 'andrew.zah@ossys.com'
-
-    - name: Generate Caddy Certificate
-      openssl_certificate:
-        provider: selfsigned
-        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.crt'
-        csr_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.csr'
-        privatekey_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
-
-    - name: Check Secret File
-      stat:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-      register: secrets
-
-    - name: Save Temp Secret File
-      lineinfile:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-        line: '{{ lookup("vars", "secret") }}'
-        create: yes
-      when: secrets.stat.exists == false
-
-    - name: Get secret value
-      slurp:
-        src: /home/ubuntu/cyber-server/api-server/.secret.tmp
-      register: secret
-
-    - name: Save Secret Values
-      lineinfile:
-        path: /home/ubuntu/cyber-server/api-server/.secret.env
-        insertafter: '{{ item.insertafter }}'
-        line: '{{ item.line }}'
-        create: yes
-      with_items:
-        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ secret["content"] | b64decode }}' }
-        - { insertafter: 'OSQUERY_ENROLL_SECRET={{ secret["content"] | b64decode }}', line: 'DEVISE_JWT_SECRET_KEY={{ lookup("vars", "jwt") }}' }
-
-    - name: Stand Up Cyber Server
-      docker_service:
-        project_src: /home/ubuntu/cyber-server
-        files: ['docker-compose.yml',
-                'docker-compose.prod.yml']
-        state: present
-      become: yes
+#    - name: Copy Environment Files
+#      copy:
+#        src: '{{ item }}'
+#        dest: /home/ubuntu/cyber-server/api-server
+#        mode: '0400'
+#      loop:
+#        - '../api-server/.env'
+#        - '../api-server/.prod.env'
+#
+#    - name: Create Assets Directory
+#      file:
+#        path: /home/ubuntu/cyber-server/api-server/app/assets
+#        state: directory
+#
+#    - name: Generate Caddy Private Key
+#      openssl_privatekey:
+#        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
+#        type: RSA
+#        size: 4096
+#        state: present
+#
+#    - name: Generate Caddy CSR
+#      openssl_csr:
+#        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.csr'
+#        privatekey_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
+#        country_name: 'US'
+#        state_or_province_name: 'SC'
+#        locality_name: 'Columbia'
+#        organization_name: 'Open Source Systems'
+#        common_name: 'master'
+#        email_address: 'andrew.zah@ossys.com'
+#
+#    - name: Generate Caddy Certificate
+#      openssl_certificate:
+#        provider: selfsigned
+#        path: '/home/ubuntu/cyber-server/api-server/app/assets/server.crt'
+#        csr_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.csr'
+#        privatekey_path: '/home/ubuntu/cyber-server/api-server/app/assets/server.key'
+#
+#    - name: Check Secret File
+#      stat:
+#        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
+#      register: secrets
+#
+#    - name: Save Temp Secret File
+#      lineinfile:
+#        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
+#        line: '{{ lookup("vars", "secret") }}'
+#        create: yes
+#      when: secrets.stat.exists == false
+#
+#    - name: Get secret value
+#      slurp:
+#        src: /home/ubuntu/cyber-server/api-server/.secret.tmp
+#      register: secret
+#
+#    - name: Save Secret Values
+#      lineinfile:
+#        path: /home/ubuntu/cyber-server/api-server/.secret.env
+#        insertafter: '{{ item.insertafter }}'
+#        line: '{{ item.line }}'
+#        create: yes
+#      with_items:
+#        - { insertafter: '', line: 'OSQUERY_ENROLL_SECRET={{ secret["content"] | b64decode }}' }
+#        - { insertafter: 'OSQUERY_ENROLL_SECRET={{ secret["content"] | b64decode }}', line: 'DEVISE_JWT_SECRET_KEY={{ lookup("vars", "jwt") }}' }
+#
+#    - name: Stand Up Cyber Server
+#      docker_service:
+#        project_src: /home/ubuntu/cyber-server
+#        files: ['docker-compose.yml',
+#                'docker-compose.prod.yml']
+#        state: present
+#      become: yes
