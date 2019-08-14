@@ -58,8 +58,7 @@
                'software-properties-common',
                'ansible',
                'python3-pip',
-               'python-pip',
-               'pywinrm']
+               'python-pip']
       become: yes
 
     - name: Add ubuntu to docker group
@@ -80,7 +79,8 @@
       pip:
         name: ['docker',
                'docker-compose',
-               'pyOpenSSL']
+               'pyOpenSSL',
+               'pywinrm']
         executable: /usr/bin/pip3
       become: yes
 

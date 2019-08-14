@@ -16,18 +16,27 @@ cyber.ossys.com ansible_python_interpreter=/usr/bin/python3
 [node3]
 10.0.1.12
 
+[node3:vars]
+ansible_connection=winrm
+ansible_ssh_port=5986
+ansible_ssh_user=Administrator
+ansible_ssh_pass=myTempPassword123!
+ansible_winrm_server_cert_validation=ignore
+
 [node4]
 10.0.1.13
+
+[node4:vars]
+ansible_connection=winrm
+ansible_ssh_port=5986
+ansible_ssh_user=Administrator
+ansible_ssh_pass=myTempPassword123!
+ansible_winrm_server_cert_validation=ignore
 
 [node5]
 10.0.1.14
 
-[win:children]
-node3
-node4
-node5
-
-[win:vars]
+[node5:vars]
 ansible_connection=winrm
 ansible_ssh_port=5986
 ansible_ssh_user=Administrator
