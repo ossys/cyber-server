@@ -1,7 +1,7 @@
 cyber-local.dev:443, :6000 {
-  tls /app/server.crt /app/server.key
+  tls ./app/assets/server.crt ./app/assets/server.key
 
-  proxy /api http://server:5000/api {
+  proxy /api http://localhost:5000 {
     transparent
   }
 }
