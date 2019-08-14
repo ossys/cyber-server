@@ -7,9 +7,21 @@
 
     - name: Add master as a host
       win_hosts:
+        canonical_name: '{{ item.name }}'
+        ip_address: '{{ item.ip }}'
         state: present
-        canonical_name: localhost
-        ip_address: 10.0.0.10
+      with_items:
+        - { name: 'master', ip: '10.0.0.10' }
+        - { name: 'node1', ip: '10.0.1.10' }
+        - { name: 'node2', ip: '10.0.1.11' }
+        - { name: 'node3', ip: '10.0.1.12' }
+        - { name: 'node4', ip: '10.0.1.13' }
+        - { name: 'node5', ip: '10.0.1.14' }
+
+    - name: Change Hostname
+      win_hostname:
+        name: node3
+      register: res
 
     - name: Ping Master
       win_shell: ping.exe -n 1 10.0.0.10
