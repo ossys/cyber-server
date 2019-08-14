@@ -1,1 +1,6 @@
 - hosts: node4
+
+  tasks:
+
+    - name: Ping Node4
+      win_ping:
