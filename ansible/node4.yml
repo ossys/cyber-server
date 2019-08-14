@@ -4,3 +4,45 @@
 
     - name: Ping Node4
       win_ping:
+
+    - name: Install osqueryd
+      win_chocolatey:
+        name: osquery
+        state: present
+
+    - name: Copy osquery flags file
+      win_copy:
+        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
+        dest: C:\Program Files\osquery\osquery.flags
+
+    - name: Copy osquery secret file
+      win_copy:
+        src: /home/ubuntu/cyber-server/api-server/.secret.tmp
+        dest: C:\Program Files\osquery\secret
+
+    - name: Download osquery safe script
+      win_get_url:
+        url: https://raw.githubusercontent.com/osquery/osquery/master/tools/provision/chocolatey/osquery_utils.ps1
+        dest: C:\Program Files\osquery\osquery_utils.ps1
+
+    - name: Source osquery utils script
+      win_shell: (. C:\\"Program Files\"\osquery\osquery_utils.ps1) -and (Set-SafePermissions C:\\"Program Files\"\osquery\osqueryd\)
+      args:
+        chdir: C:\Program Files\osquery
+
+    - name: Check osqueryd service
+      win_service:
+        name: osqueryd
+      register: osqueryd
+
+    - name: Install osqueryd service
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs 'C:\\"Program Files\"\osquery\osquery.flags'
+      args:
+        chdir: C:\Program Files\osquery
+      when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
+
+    - name: Set service startup mode to auto and ensure it is started
+      win_service:
+        name: osqueryd
+        start_mode: auto
+        state: started

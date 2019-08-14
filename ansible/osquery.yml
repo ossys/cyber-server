@@ -7,13 +7,13 @@
       args:
         chdir: '/home/ubuntu/cyber-server'
       with_items:
-        - { user: 'ec2-user', node: 'node1' }
-        - { user: 'ubuntu', node: 'node2' }
-#        - { user: 'Administrator', node: 'node3' }
-#        - { user: 'Administrator', node: 'node4' }
-#        - { user: 'Administrator', node: 'node5' }
+#        - { user: 'ec2-user', node: 'node1' }
+#        - { user: 'ubuntu', node: 'node2' }
+        - { user: 'Administrator', node: 'node3' }
+        - { user: 'Administrator', node: 'node4' }
+        - { user: 'Administrator', node: 'node5' }
 
-    - name: Delete Temp Secret File
-      file:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-        state: absent
+#    - name: Delete Temp Secret File
+#      file:
+#        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
+#        state: absent
