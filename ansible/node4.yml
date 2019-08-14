@@ -12,13 +12,18 @@
 
     - name: Copy osquery flags file
       win_copy:
-        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
+        src: /home/ubuntu/cyber-server/osqueryd/flags/osquery-win.flags
         dest: C:\Program Files\osquery\osquery.flags
 
     - name: Copy osquery secret file
       win_copy:
         src: /home/ubuntu/cyber-server/api-server/.secret.tmp
         dest: C:\Program Files\osquery\secret
+
+    - name: Copy server certificate
+      win_copy:
+        src: /home/ubuntu/cyber-server/api-server/app/assets/server.crt
+        dest: C:\Program Files\osquery\cacert
 
     - name: Download osquery safe script
       win_get_url:
