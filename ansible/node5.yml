@@ -30,3 +30,11 @@
 
     - name: Run set safe permissions script
       win_shell: Set-SafePermissions C:\Program Files\osquery\osqueryd\
+
+    - name: Install osqueryd service
+      win_shell: manage-osqueryd -install -startupArgs 'C:\Program Files\osquery\osquery.flags'
+
+    - name: Install osqueryd service
+      win_shell: C:\Program Files\osquery\manage-osqueryd.ps1 -install -startupArgs 'C:\Program Files\osquery\osquery.flags'
+      args:
+        chdir: C:\Program Files\osquery
