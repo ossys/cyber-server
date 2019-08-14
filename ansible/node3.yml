@@ -7,5 +7,5 @@
 
     - name: Install osqueryd
       win_chocolatey:
-        name: git
+        name: osquery
         state: present

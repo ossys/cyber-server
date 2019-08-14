@@ -4,3 +4,8 @@
 
     - name: Ping Node4
       win_ping:
+
+    - name: Install osqueryd
+      win_chocolatey:
+        name: osquery
+        state: present
