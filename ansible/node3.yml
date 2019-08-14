@@ -54,7 +54,7 @@
       register: osqueryd
 
     - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs 'C:\Program Files\osquery\osquery.flags'
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs C:\Program Files\osquery\osquery.flags
       args:
         chdir: C:\Program Files\osquery
       when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
