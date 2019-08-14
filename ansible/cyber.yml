@@ -81,7 +81,7 @@
                'docker-compose',
                'pyOpenSSL',
                'pywinrm']
-        executable: /usr/bin/pip3
+        executable: /usr/bin/pip
       become: yes
 
     - name: Clone Cyber Server
