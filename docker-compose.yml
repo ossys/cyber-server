@@ -15,7 +15,7 @@ services:
   caddy:
     environment:
       - ACME_AGREE=true
-    image: abiosoft/caddy:no-stats
+    image: abiosoft/caddy:1.0.1-no-stats
     ports:
       - "80:80"
       - "443:443"
