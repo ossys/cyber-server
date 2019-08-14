@@ -5,7 +5,7 @@
     - name: Ping Node3
       win_ping:
 
-    - name: Add master as a host
+    - name: Add all hosts
       win_hosts:
         canonical_name: '{{ item.name }}'
         ip_address: '{{ item.ip }}'
@@ -23,8 +23,10 @@
         name: node3
       register: res
 
-    - name: Ping Master
-      win_shell: ping.exe -n 1 master
+    - name: Create osquery Program Data Folder
+      win_file:
+        path: C:\ProgramData\osquery
+        state: directory
 
     - name: Install osqueryd
       win_chocolatey:
@@ -34,17 +36,17 @@
     - name: Copy osquery flags file
       win_copy:
         src: /home/ubuntu/cyber-server/osqueryd/flags/osquery-win.flags
-        dest: C:\Program Files\osquery\osquery.flags
+        dest: C:\ProgramData\osquery\osquery.flags
 
     - name: Copy osquery secret file
       win_copy:
         src: /home/ubuntu/cyber-server/api-server/.secret.tmp
-        dest: C:\Program Files\osquery\secret
+        dest: C:\ProgramData\osquery\secret
 
     - name: Copy server certificate
       win_copy:
         src: /home/ubuntu/cyber-server/api-server/app/assets/server.crt
-        dest: C:\Program Files\osquery\cacert
+        dest: C:\ProgramData\osquery\cacert
 
     - name: Download osquery safe script
       win_get_url:
@@ -69,7 +71,7 @@
       register: osqueryd
 
     - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs 'C:\Program Files\osquery\osquery.flags'
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs C:\ProgramData\osquery\osquery.flags
       args:
         chdir: C:\Program Files\osquery
       when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
