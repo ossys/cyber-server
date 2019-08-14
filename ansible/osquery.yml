@@ -13,7 +13,7 @@
         - { user: 'Administrator', node: 'node4' }
         - { user: 'Administrator', node: 'node5' }
 
-    - name: Delete Temp Secret File
-      file:
-        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
-        state: absent
+#    - name: Delete Temp Secret File
+#      file:
+#        path: /home/ubuntu/cyber-server/api-server/.secret.tmp
+#        state: absent

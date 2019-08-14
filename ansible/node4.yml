@@ -10,7 +10,12 @@
         name: osquery
         state: present
 
-    - name: Copy a single file
+    - name: Copy osquery flags file
       win_copy:
         src: /home/ubuntu/cyber-server/osqueryd/flags/osquery.flags
         dest: C:\Program Files\osquery\osquery.flags
+
+    - name: Copy osquery secret file
+      win_copy:
+        src: /home/ubuntu/cyber-server/api-server/.secret.tmp
+        dest: C:\Program Files\osquery\secret
