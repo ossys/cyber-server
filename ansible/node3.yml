@@ -11,6 +11,9 @@
         canonical_name: localhost
         ip_address: 10.0.0.10
 
+    - name: Ping Master
+      win_shell: ping.exe -n 1 master
+
     - name: Install osqueryd
       win_chocolatey:
         name: osquery
