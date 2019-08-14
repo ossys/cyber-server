@@ -10,8 +10,8 @@
 #        - { user: 'ec2-user', node: 'node1' }
 #        - { user: 'ubuntu', node: 'node2' }
         - { user: 'Administrator', node: 'node3' }
-        - { user: 'Administrator', node: 'node4' }
-        - { user: 'Administrator', node: 'node5' }
+#        - { user: 'Administrator', node: 'node4' }
+#        - { user: 'Administrator', node: 'node5' }
 
 #    - name: Delete Temp Secret File
 #      file:
