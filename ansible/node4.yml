@@ -50,4 +50,4 @@
       win_service:
         name: osqueryd
         start_mode: auto
-        state: started
+        state: restarted

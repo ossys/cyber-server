@@ -5,6 +5,12 @@
     - name: Ping Node3
       win_ping:
 
+    - name: Add master as a host
+      win_hosts:
+        state: present
+        canonical_name: localhost
+        ip_address: 10.0.0.10
+
     - name: Install osqueryd
       win_chocolatey:
         name: osquery
@@ -50,4 +56,4 @@
       win_service:
         name: osqueryd
         start_mode: auto
-        state: started
+        state: restarted
