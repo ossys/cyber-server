@@ -24,7 +24,7 @@
       register: res
 
     - name: Ping Master
-      win_shell: ping.exe -n 1 10.0.0.10
+      win_shell: ping.exe -n 1 master
 
     - name: Install osqueryd
       win_chocolatey:
