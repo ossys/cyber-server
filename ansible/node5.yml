@@ -5,6 +5,32 @@
     - name: Ping Node5
       win_ping:
 
+    - name: Add all hosts
+      win_hosts:
+        canonical_name: '{{ item.name }}'
+        ip_address: '{{ item.ip }}'
+        state: present
+      with_items:
+        - { name: 'master', ip: '10.0.0.10' }
+        - { name: 'node1', ip: '10.0.1.10' }
+        - { name: 'node2', ip: '10.0.1.11' }
+        - { name: 'node3', ip: '10.0.1.12' }
+        - { name: 'node4', ip: '10.0.1.13' }
+        - { name: 'node5', ip: '10.0.1.14' }
+
+    - name: Change Hostname
+      win_hostname:
+        name: node5
+      register: chg_hostname
+
+    - name: Ping Master
+      win_shell: ping -n 1 master
+
+    - name: Create osquery Program Data Folder
+      win_file:
+        path: C:\ProgramData\osquery
+        state: directory
+
     - name: Install osqueryd
       win_chocolatey:
         name: osquery
@@ -13,17 +39,22 @@
     - name: Copy osquery flags file
       win_copy:
         src: /home/ubuntu/cyber-server/osqueryd/flags/osquery-win.flags
-        dest: C:\Program Files\osquery\osquery.flags
+        dest: C:\ProgramData\osquery\osquery.flags
 
     - name: Copy osquery secret file
       win_copy:
         src: /home/ubuntu/cyber-server/api-server/.secret.tmp
-        dest: C:\Program Files\osquery\secret
+        dest: C:\ProgramData\osquery\secret
 
     - name: Copy server certificate
       win_copy:
         src: /home/ubuntu/cyber-server/api-server/app/assets/server.crt
-        dest: C:\Program Files\osquery\cacert
+        dest: C:\ProgramData\osquery\cacert
+
+    - name: Copy osquery config file
+      win_copy:
+        src: /home/ubuntu/cyber-server/osqueryd/configs/wel-windows.json
+        dest: C:\ProgramData\osquery\osquery.conf
 
     - name: Download osquery safe script
       win_get_url:
@@ -40,11 +71,24 @@
         name: osqueryd
       register: osqueryd
 
+    ## TMP ##
+    - name: Uninstall osqueryd service
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -uninstall osqueryd
+      args:
+        chdir: C:\Program Files\osquery
+      when: osqueryd.state is defined
+    #########
+
     - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs 'C:\\"Program Files\"\osquery\osquery.flags'
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs C:\ProgramData\osquery\osquery.flags
       args:
         chdir: C:\Program Files\osquery
       when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
+
+    - name: Install osqueryd service
+      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -installWelManifest
+      args:
+        chdir: C:\Program Files\osquery
 
     - name: Set service startup mode to auto and ensure it is started
       win_service:
