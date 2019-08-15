@@ -43,6 +43,19 @@ module Frontend
       render json: { data: result }, status: 200
     end
 
+    def manual_run
+      p 'creating'
+      AttackFile.create(manual_attack_params)
+
+      p 'initializing attack'
+      attack = Attack.new("#{manual_attack_params[:name]}.attack")
+      p 'running attack'
+      result = attack.run!
+
+      p 'rendering data'
+      render json: { data: result }, status: 200
+    end
+
     # def webhook
     # uri = URI.parse(ENV['SLACK_WEBHOOK'])
 
@@ -62,6 +75,10 @@ module Frontend
 
     def attacks_params
       params.permit(:file_name, :body)
+    end
+
+    def manual_attack_params
+      params.permit(:node_id, :query, :output, :name)
     end
   end
 end

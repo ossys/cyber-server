@@ -24,6 +24,7 @@ class AdHocQuery
       end
     end
 
+    p result
     result
   end
 end

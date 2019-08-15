@@ -1,0 +1,13 @@
+Feature: Test
+  Background:
+    Given "osquery" is installed
+
+  Scenario: Test
+    When I launch a "remote" query on node "NODE" named "NAME" with:
+      """
+      QUERY
+      """
+    Then the output should contain:
+      """
+      OUTPUT
+      """

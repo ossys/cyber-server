@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         put '/', to: 'attacks#update'
         delete '/', to: 'attacks#destroy'
 
+        post '/run_manual', to: 'attacks#manual_run'
         post '/run', to: 'attacks#run'
       end
 

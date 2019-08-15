@@ -1,0 +1,13 @@
+Feature: Test
+  Background:
+    Given "osquery" is installed
+
+  Scenario: Test
+    When I launch a "remote" query on node "38a679db-7c42-4d71-b3c8-a668593b6429" named "test2" with:
+      """
+      select name, version from os_version
+      """
+    Then the output should contain:
+      """
+      Debian
+      """

@@ -4,7 +4,7 @@
 --debug
 --tls_dump=true
 
---tls_hostname=localhost:5001
+--tls_hostname=localhost:5002
 
 --tls_server_certs=../../files/cacert.pem
 --enroll_secret_path=../../files/osquery_secret
