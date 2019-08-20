@@ -1,8 +1,8 @@
 {
   "options": {
-    "config_plugin": "filesystem",
-    "logger_plugin": "windows_event_log",
-    "logger_path": ".",
+    "config_plugin": "tls",
+    "logger_plugin": "tls,filesystem",
+    "logger_path": "C:\\ProgramData\\osquery\\log",
     "disable_logging": "false",
     "utc": "true"
   },

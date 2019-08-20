@@ -1,13 +1,12 @@
 --force=true
---host_identifier=windoze
+--host_identifier=$(hostname)
 --verbose=true
---debug
 --tls_dump=true
 
 --tls_hostname=master
 
---tls_server_certs=./cacert
---enroll_secret_path=./secret
+--tls_server_certs=C:\ProgramData\osquery\cacert
+--enroll_secret_path=C:\ProgramData\osquery\secret
 
 --config_tls_endpoint=/api/osquery/config
 --distributed_tls_read_endpoint=/api/osquery/distributed_read
@@ -25,3 +24,4 @@
 
 --logger_plugin=tls
 --logger_tls_period=120
+
