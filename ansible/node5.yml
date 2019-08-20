@@ -53,7 +53,7 @@
 
     - name: Copy osquery config file
       win_copy:
-        src: /home/ubuntu/cyber-server/osqueryd/configs/wel-windows.json
+        src: /home/ubuntu/cyber-server/osqueryd/configs/default-win.json
         dest: C:\ProgramData\osquery\osquery.conf
 
     - name: Download osquery safe script
