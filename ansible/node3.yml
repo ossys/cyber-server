@@ -80,15 +80,11 @@
 #########
 
     - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs C:\ProgramData\osquery\osquery.flags
+      win_shell: |
+        'C:\Program Files\osquery\manage-osqueryd.ps1' -install -startupArgs "--flagfile C:\ProgramDat\osquery\osquery.flags"
       args:
         chdir: C:\Program Files\osquery
       when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
-
-    - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -installWelManifest
-      args:
-        chdir: C:\Program Files\osquery
 
     - name: Set service startup mode to auto and ensure it is started
       win_service:
