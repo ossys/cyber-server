@@ -75,6 +75,7 @@
 
     - name: osqueryd Start Mode Restart
       win_service:
+        name: osqueryd
         start_mode: auto
         state: restarted
 
