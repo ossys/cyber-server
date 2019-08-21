@@ -71,11 +71,10 @@
         name: osqueryd
         display_name: OsQuery Daemon
         description: Daemonized version of OsQuery
-        path: C:\"Program Files\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags
+        path: C:\\"Program Files\"\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags
 
     - name: osqueryd Start Mode Restart
       win_service:
         name: osqueryd
         start_mode: auto
         state: restarted
-

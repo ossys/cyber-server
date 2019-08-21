@@ -66,31 +66,14 @@
       args:
         chdir: C:\Program Files\osquery
 
-    - name: Check osqueryd service
+    - name: osqueryd service
       win_service:
         name: osqueryd
-      register: osqueryd
+        display_name: OsQuery Daemon
+        description: Daemonized version of OsQuery
+        path: C:\\"Program Files\"\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags
 
-    ## TMP ##
-    - name: Uninstall osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -uninstall osqueryd
-      args:
-        chdir: C:\Program Files\osquery
-      when: osqueryd.state is defined
-    #########
-
-    - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -install -startupArgs C:\ProgramData\osquery\osquery.flags
-      args:
-        chdir: C:\Program Files\osquery
-      when: osqueryd.state is not defined or (osqueryd.state is defined and osqueryd.state == 'absent')
-
-    - name: Install osqueryd service
-      win_shell: C:\\"Program Files\"\osquery\manage-osqueryd.ps1 -installWelManifest
-      args:
-        chdir: C:\Program Files\osquery
-
-    - name: Set service startup mode to auto and ensure it is started
+    - name: osqueryd Start Mode Restart
       win_service:
         name: osqueryd
         start_mode: auto
