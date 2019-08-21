@@ -36,6 +36,11 @@
         name: osquery
         state: present
 
+    - name: Install NSSM service wrapper
+      win_chocolatey:
+        name: nssm
+        state: present
+
     - name: Copy osquery flags file
       win_copy:
         src: /home/ubuntu/cyber-server/osqueryd/flags/osquery-win.flags
@@ -66,14 +71,16 @@
       args:
         chdir: C:\Program Files\osquery
 
-    - name: osqueryd service
-      win_service:
+    - name: Install Osquery with flags and logging
+      win_nssm:
         name: osqueryd
-        display_name: OsQuery Daemon
-        description: Daemonized version of OsQuery
-        path: C:\\"Program Files\"\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags
+        application: C:\Program Files\osquery\osqueryd\osqueryd.exe
+        stdout_file: C:\ProgramData\osquery\stdout.log
+        stdout_err: C:\ProgramData\osquery\stderr.log
+        arguments:
+          - --flagfile C:\ProgramData\osquery\osquery.flags
 
-    - name: osqueryd Start Mode Restart
+    - name: Set Osqueryd service stat
       win_service:
         name: osqueryd
         start_mode: auto
