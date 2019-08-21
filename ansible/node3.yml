@@ -74,6 +74,7 @@
         path: C:\"Program Files\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags
 
     - name: osqueryd Start Mode Restart
+      win_service:
         start_mode: auto
         state: restarted
 
