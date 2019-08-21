@@ -66,12 +66,14 @@
       args:
         chdir: C:\Program Files\osquery
 
-    - name: Osqueryd service
+    - name: osqueryd service
       win_service:
         name: osqueryd
         display_name: OsQuery Daemon
-        descripion: Daemonized version of OsQuery
-        path: 'C:\"Program Files\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags'
+        description: Daemonized version of OsQuery
+        path: C:\"Program Files\osquery\osqueryd\osqueryd.exe --flagfile C:\ProgramData\osquery\osquery.flags
+
+    - name: osqueryd Start Mode Restart
         start_mode: auto
         state: restarted
 
