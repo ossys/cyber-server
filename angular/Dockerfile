@@ -6,5 +6,4 @@ COPY . .
 RUN npm run build
 
 FROM nginx:1.17.3-alpine
-#COPY ./nginx.conf /etc/nginx/conf.d
 COPY --from=builder /app/dist/angular /usr/share/nginx/html

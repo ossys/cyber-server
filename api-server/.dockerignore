@@ -1,3 +1,4 @@
 /bin
 config/master.key
 /log/*
+*.env

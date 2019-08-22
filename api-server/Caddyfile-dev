@@ -1,7 +1,13 @@
-cyber-local.dev:443, :6000 {
-  tls ./app/assets/server.crt ./app/assets/server.key
+cyber.local:443 {
+  tls self_signed
 
-  proxy /api http://localhost:5000 {
+  proxy /api http://server:5000/ {
+    transparent
+  }
+
+  proxy / http://frontend:80/ {
     transparent
   }
 }
+
+# vim: set syntax=caddyfile:
