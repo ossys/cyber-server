@@ -2,3 +2,6 @@
 config/master.key
 /log/*
 *.env
+/tmp
+/spec
+/swagger

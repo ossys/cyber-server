@@ -8,7 +8,8 @@ services:
         target: /app/config/master.key
     env_file:
       - ./api-server/.env
-      - ./api-server/.dev.env
+      - ./api-server/.secret.env
+      - ./api-server/.prod.env
 
   db:
     env_file:
@@ -25,4 +26,40 @@ services:
       - type: bind
         source: ./api-server/app/assets/server.crt
         target: /app/server.crt
+
+  node_one:
+    build:
+      context: ./osqueryd
+      dockerfile: ./docker/Dockerfile-node1
+    restart: always
+    depends_on:
+      - caddy
+      - server
+
+  node_two:
+    build:
+      context: ./osqueryd
+      dockerfile: ./docker/Dockerfile-node2
+    restart: always
+    depends_on:
+      - caddy
+      - server
+
+  node_three:
+    build:
+      context: ./osqueryd
+      dockerfile: ./docker/Dockerfile-node3
+    restart: always
+    depends_on:
+      - caddy
+      - server
+
+  node_four:
+    build:
+      context: ./osqueryd
+      dockerfile: ./docker/Dockerfile-node4
+    restart: always
+    depends_on:
+      - caddy
+      - server
 

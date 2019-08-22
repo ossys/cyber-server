@@ -1,5 +1,5 @@
-cyber.local:443 {
-  tls self_signed
+localhost, localhost:443, :443 {
+  tls /app/server.crt /app/server.key
 
   proxy /api http://server:5000/ {
     transparent

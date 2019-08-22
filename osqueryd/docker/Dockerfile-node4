@@ -1,0 +1,17 @@
+FROM amazonlinux:2018.03.0.20190514
+
+WORKDIR /opt/osquery
+
+RUN curl -L 'https://pkg.osquery.io/rpm/osquery-3.3.2-1.linux.x86_64.rpm' -o osquery.rpm \
+  && yum install osquery.rpm -y
+
+COPY ./configs/default-linux.json /etc/osquery/osquery.conf
+COPY ./flags/osquery-node-nix.flags /etc/osquery/osquery.flags
+COPY ./files/cacert.pem /etc/osquery/cacert
+COPY ./docker/docker.sh /docker.sh
+
+RUN echo very_secret > /etc/osquery/secret
+
+ENTRYPOINT ["sh", "-c", "/docker.sh"]
+
+# vim: set syntax=dockerfile:

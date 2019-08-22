@@ -1,0 +1,21 @@
+FROM debian:sid
+
+WORKDIR /opt/osquery
+
+RUN apt update \
+  && apt install curl -y
+
+RUN curl -L 'https://pkg.osquery.io/deb/osquery_3.3.2_1.linux.amd64.deb' -o osquery.deb \
+  && dpkg -i osquery.deb
+
+COPY ./configs/default-linux.json /etc/osquery/osquery.conf
+COPY ./flags/osquery-node-nix.flags /etc/osquery/osquery.flags
+COPY ./files/cacert.pem /etc/osquery/cacert
+COPY ./docker/docker.sh /docker.sh
+
+RUN echo very_secret > /etc/osquery/secret
+RUN service osqueryd restart
+
+ENTRYPOINT ["sh", "-c", "/docker.sh"]
+
+# vim: set syntax=dockerfile:

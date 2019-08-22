@@ -1,5 +1,4 @@
 FROM debian:stretch
-MAINTAINER Andrew Zah <andrew.zah@ossys.com>
 
 # nmap
 RUN apt update \
@@ -36,13 +35,12 @@ USER gauntltuser
 RUN bundle install
 
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
-
 COPY . $app
+
 USER root
 RUN chown -R gauntltuser $app
 USER gauntltuser
 
-RUN bundle exec rake app:update:bin \
-  && EDITOR=vi bin/rails credentials:edit
+RUN bundle exec rake app:update:bin
 
 EXPOSE 5000
