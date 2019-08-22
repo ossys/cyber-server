@@ -2,10 +2,15 @@ cyber.ossys.com:80 {
 }
 
 cyber.ossys.com:443 {
+  gzip
   tls self_signed
   #tls contact@ossys.com
 
-  proxy /api http://server:5000 {
+  proxy /api http://server:5000/ {
+    transparent
+  }
+
+  proxy / http://frontend:80/ {
     transparent
   }
 }

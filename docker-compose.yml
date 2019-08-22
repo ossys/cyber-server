@@ -1,6 +1,14 @@
 version: '3.7'
 
 services:
+  frontend:
+    build: ./angular
+    restart: always
+    ports:
+      - "80"
+    depends_on:
+      - server
+
   server:
     build: ./api-server
     command: /app/script/start
@@ -9,7 +17,7 @@ services:
       - bundle:/bundle
     ports:
       - "5000"
-    links:
+    depends_on:
       - db
 
   caddy:
