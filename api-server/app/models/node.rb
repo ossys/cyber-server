@@ -4,7 +4,8 @@ require 'securerandom'
 
 class Node < ApplicationRecord
   belongs_to :config
-  has_and_belongs_to_many :ad_hoc_query_lists, through: :ad_hoc_query_lists_nodes
+  has_and_belongs_to_many :ad_hoc_queries, through: :ad_hoc_queries_nodes
+  has_many :ad_hoc_results
 
   def build_from_params(params)
     return unless params['host_details'].present?
@@ -57,7 +58,6 @@ class Node < ApplicationRecord
   end
 
   def self.from_node_key(params)
-    puts "params: #{params}"
     Node.find_by(node_key: params[:node_key])
   end
 end

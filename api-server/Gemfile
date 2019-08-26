@@ -17,6 +17,8 @@ gem 'jwt', '~> 1.5'
 gem 'lograge'
 gem 'rswag', '~> 2.0', '>= 2.0.5'
 
+gem 'sidekiq'
+
 # json serialization / marshalling
 gem 'jsonapi-rails'
 gem 'active_model_serializers', '~> 0.10.9'

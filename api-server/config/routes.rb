@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => '/docs'
-  mount Rswag::Api::Engine => '/docs'
+  if Rails.env.development?
+    mount Rswag::Ui::Engine => '/docs'
+    mount Rswag::Api::Engine => '/docs'
+  end
 
   scope :api do
     get :status, to: 'api#status'
@@ -14,28 +16,30 @@ Rails.application.routes.draw do
     namespace :frontend do
       resources :nodes, only: %i[index show]
       resources :configs, only: %i[index show create update destroy]
-      resources :ad_hoc_query_lists, only: %i[index create show]
-      post '/ad_hoc_query_lists/manual', to: 'ad_hoc_query_lists#create_manual'
+
+      resources :ad_hoc_queries, only: %i[index create show destroy]
+      resources :ad_hoc_results, only: %i[index show destroy]
+
+      resources :queries, only: %i[index create show]
+      post '/queries/search', to: 'queries#search'
+
       post :users, to: 'users#create'
       post :token, to: 'auth#create'
 
       #get :webhook, to: 'attacks#webhook'
 
       scope :attacks do
-        get '/', to: 'attacks#index'
-        get '/:file_name', to: 'attacks#show'
-        post '/', to: 'attacks#create'
-        put '/', to: 'attacks#update'
-        delete '/', to: 'attacks#destroy'
-
-        post '/run_manual', to: 'attacks#manual_run'
         post '/run', to: 'attacks#run'
+        post '/run_manual', to: 'attacks#manual_run'
       end
 
-      scope :tests do
-        post '/run', to: 'tests#run'
+      scope :attack_files do
+        get '/', to: 'attack_files#index'
+        get '/:file_name', to: 'attack_files#show'
+        post '/', to: 'attack_files#create'
+        put '/', to: 'attack_files#update'
+        delete '/', to: 'attack_files#destroy'
       end
-
     end
 
     scope :emass do

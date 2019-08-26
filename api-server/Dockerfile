@@ -24,9 +24,6 @@ WORKDIR $app
 COPY ./Gemfile $app/Gemfile
 COPY ./Gemfile.lock $app/Gemfile.lock
 
-ENV BUNDLE_PATH=/bundle \
-  BUNDLE_JOBS=3
-
 RUN useradd -ms /bin/bash gauntltuser \
   && mkdir -p $BUNDLE_PATH \
   && chown -R gauntltuser $BUNDLE_PATH
@@ -34,10 +31,10 @@ RUN useradd -ms /bin/bash gauntltuser \
 USER gauntltuser
 RUN bundle install
 
+USER root
 COPY --from=0 /usr/bin/nmap /usr/bin/nmap
 COPY . $app
 
-USER root
 RUN chown -R gauntltuser $app
 USER gauntltuser
 

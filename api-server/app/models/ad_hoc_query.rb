@@ -1,30 +1,55 @@
 # frozen_string_literal: true
 
-class AdHocQuery
-  # run from the osquery attack adapter
-  def self.run(node_key, query_name, query_body)
-    start_time = Time.now
-    timeout_time = Time.now + 30.seconds
+class AdHocQuery < ApplicationRecord
+  has_and_belongs_to_many :queries, through: :ad_hoc_queries_queries
+  has_and_belongs_to_many :nodes, through: :ad_hoc_queries_nodes
 
-    query_list = AdHocQueryList.from_query(node_key, query_name, query_body)
-    return "Error: Does node #{node_key} exist?" if query_list.nil?
-    return "Error: Unable to save query due to: #{query_list.errors}" unless query_list.save!
+  def self.from_query(node_key, query_name, query_body)
+    node = Node.find_by(node_key: node_key)
+    return nil if node.nil?
 
-    result = ''
-    loop do
-      return "Error: Timed out- a response was not received from node #{node_key} in time." if Time.now > timeout_time
+    query = ::Query.new(name: query_name, body: query_body)
+    query.save!
 
-      sleep 1.second
+    AdHocQuery.new(nodes: [node], queries: [query])
+  end
 
-      if query_result = AdHocQueryResult.last_result_for_node(node_key, start_time)
-        result = query_result.data
-        break
-      else
-        next
-      end
+  def self.build(params)
+    queries = []
+    nodes = params['nodes']
+            .map { |k| Node.find_by(node_key: k) }
+            .compact
+
+    return nil if nodes.empty?
+
+    params['queries'].each do |param|
+      query = ::Query.new
+      query.name = param['name']
+      query.body = param['body']
+
+      query.save!
+      queries << query
     end
 
-    p result
-    result
+    AdHocQuery.new(nodes: nodes, queries: queries)
+  end
+
+  def self.find_list(node_key)
+    AdHocQuery
+      .includes(:nodes)
+      .joins(:nodes)
+      .where('nodes.node_key = ?', node_key)
+      .where(has_run: false)
+      .first
+  end
+
+  def as_json(_options = {})
+    {
+      id: id,
+      has_run: has_run,
+      queries: queries,
+      created_at: created_at,
+      updated_at: updated_at
+    }
   end
 end

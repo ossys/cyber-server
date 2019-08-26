@@ -19,6 +19,7 @@ services:
       - "5000"
     depends_on:
       - db
+      - sidekiq
 
   caddy:
     environment:
@@ -35,6 +36,17 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     restart: always
+
+  sidekiq:
+    build: ./api-server
+    command: bundle exec sidekiq
+    env_file:
+      - ./api-server/.env
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:5.0.5-alpine3.10
 
 volumes:
   bundle:

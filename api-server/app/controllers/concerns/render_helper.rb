@@ -14,7 +14,7 @@ module RenderHelper
   def render_resource(resource, opts = DEFAULT_OPTS)
     response = opts.merge(json: { data: resource })
 
-    if errors?(resource)
+    if no_errors?(resource)
       render response
     else
       validation_error(resource)
@@ -49,7 +49,7 @@ module RenderHelper
     render response
   end
 
-  def errors?(resource)
+  def no_errors?(resource)
     if resource.respond_to?('each')
       resource.all? { |r| r.errors.empty? }
     else

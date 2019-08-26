@@ -28,7 +28,7 @@ module Frontend
 
     def destroy
       # cannot delete the default config
-      return render status: 400 if params[:id] == '1'
+      return render_error("Cannot delete default config") if params[:id] == '1'
 
       if (config = Config.find_by(id: params[:id]))
         config.destroy

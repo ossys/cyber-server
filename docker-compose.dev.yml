@@ -54,12 +54,12 @@ services:
       - caddy
       - server
 
-  node_four:
-    build:
-      context: ./osqueryd
-      dockerfile: ./docker/Dockerfile-node4
-    restart: always
-    depends_on:
-      - caddy
-      - server
+  #node_four:
+    #build:
+      #context: ./osqueryd
+      #dockerfile: ./docker/Dockerfile-node4
+    #restart: always
+    #depends_on:
+      #- caddy
+      #- server
 

@@ -15,34 +15,37 @@ ActiveRecord::Schema.define(version: 2019_07_29_153710) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "ad_hoc_query_lists", force: :cascade do |t|
+  create_table "ad_hoc_queries", force: :cascade do |t|
     t.boolean "has_run", default: false
+    t.boolean "has_completed", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "ad_hoc_query_lists_nodes", id: false, force: :cascade do |t|
-    t.bigint "ad_hoc_query_list_id", null: false
+  create_table "ad_hoc_queries_nodes", id: false, force: :cascade do |t|
+    t.bigint "ad_hoc_query_id", null: false
     t.bigint "node_id", null: false
-    t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_nodes_on_ad_hoc_query_list_id"
-    t.index ["node_id"], name: "index_ad_hoc_query_lists_nodes_on_node_id"
+    t.index ["ad_hoc_query_id"], name: "index_ad_hoc_queries_nodes_on_ad_hoc_query_id"
+    t.index ["node_id"], name: "index_ad_hoc_queries_nodes_on_node_id"
   end
 
-  create_table "ad_hoc_query_lists_queries", id: false, force: :cascade do |t|
-    t.bigint "ad_hoc_query_list_id", null: false
+  create_table "ad_hoc_queries_queries", id: false, force: :cascade do |t|
+    t.bigint "ad_hoc_query_id", null: false
     t.bigint "query_id", null: false
-    t.index ["ad_hoc_query_list_id"], name: "index_ad_hoc_query_lists_queries_on_ad_hoc_query_list_id"
-    t.index ["query_id"], name: "index_ad_hoc_query_lists_queries_on_query_id"
+    t.index ["ad_hoc_query_id"], name: "index_ad_hoc_queries_queries_on_ad_hoc_query_id"
+    t.index ["query_id"], name: "index_ad_hoc_queries_queries_on_query_id"
   end
 
-  create_table "ad_hoc_query_results", force: :cascade do |t|
+  create_table "ad_hoc_results", force: :cascade do |t|
     t.bigint "node_id"
+    t.bigint "ad_hoc_query_id"
     t.string "node_key"
     t.jsonb "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["node_id"], name: "index_ad_hoc_query_results_on_node_id"
-    t.index ["node_key"], name: "index_ad_hoc_query_results_on_node_key"
+    t.index ["ad_hoc_query_id"], name: "index_ad_hoc_results_on_ad_hoc_query_id"
+    t.index ["node_id"], name: "index_ad_hoc_results_on_node_id"
+    t.index ["node_key"], name: "index_ad_hoc_results_on_node_key"
   end
 
   create_table "configs", force: :cascade do |t|

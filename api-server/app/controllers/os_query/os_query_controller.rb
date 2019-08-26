@@ -4,11 +4,9 @@ module OsQuery
   class OsQueryController < ApplicationController
     include RenderHelper
 
-    before_action :check_node_key, except: :enroll
-    before_action :set_node_key, except: :enroll
+    before_action :check_set_node_key, except: :enroll
 
     skip_before_action :authenticate
-    wrap_parameters :osq
 
     def enroll
       if ENV['OSQUERY_ENROLL_SECRET'] == enroll_params[:enroll_secret]
@@ -34,28 +32,50 @@ module OsQuery
     def dist_read
       response = { queries: {} }
 
-      if (aql = AdHocQueryList.find_list(@node_key))
-        aql.queries.each do |q|
-          response[:queries][q.name] = q.body
+      if (aq = AdHocQuery.find_list(@node_key))
+        aq.queries.each_with_index do |q, i|
+          response[:queries]["#{q.name}-#{i}-#{aq.id}"] = q.body
         end
-        aql.has_run = true
-        aql.save!
-        render json: response, status: 200
+        aq.has_run = true
+        if aq.save
+          render json: response, status: 200
+        else
+          render status: 200
+          #log the error: TODO
+        end
       else
-        render status: 400
+        render status: 200
       end
     end
 
     def dist_write
-      statuses = dist_write_params[:statuses]
-      queries = dist_write_params[:queries]
-      data = { statuses: statuses, queries: queries }.to_json
-      ahqr = AdHocQueryResult.new(node_key: @node_key, data: data)
+      results = Hash.new {|h,k| h[k] = Hash.new(&h.default_proc) }
+      statuses = dist_write_params[:statuses].to_h
+      queries = dist_write_params[:queries].to_h
 
-      if ahqr&.save!
-        render status: 201
-      else
-        render status: 400
+      statuses.each do |k, v|
+        name, _, id = k.split("-")
+
+        results[id] = {} if results[id].nil?
+        results[id][:queries] = {} if results[id][:queries].nil?
+        results[id][:statuses] = {} if results[id][:statuses].nil?
+
+        results[id][:queries][k] = queries[k]
+        results[id][:statuses][k] = v
+      end
+
+      results.each do |ad_hoc_query_id, values|
+        ad_hoc_query = AdHocQuery.find(ad_hoc_query_id)
+        unless ad_hoc_query.has_completed
+          node = Node.find_by(node_key: @node_key)
+          data = { queries: values[:queries], statuses: values[:statuses] }
+          ahqr = AdHocResult.new(
+            ad_hoc_query: ad_hoc_query, node: node, node_key: @node_key, data: data)
+          if ahqr.save
+            ad_hoc_query.has_completed = true
+            ad_hoc_query.save!
+          end
+        end
       end
     end
 
@@ -70,14 +90,17 @@ module OsQuery
 
     private
 
-    def check_node_key
-      return if node_key_params[:node_key].present?
+    def check_set_node_key
+      if node_key_params[:node_key].present?
+        if Node.find_by(node_key: node_key_params[:node_key])
+          @node_key = node_key_params[:node_key]
+          return
+        else
+          return render status: 200, json: { "node_invalid": true }
+        end
+      end
 
       render_error('node_key was not present')
-    end
-
-    def set_node_key
-      @node_key = node_key_params[:node_key]
     end
 
     def enroll_params
