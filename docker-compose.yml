@@ -33,15 +33,13 @@ services:
     image: postgres:9.6.7-alpine
     ports:
       - '5432'
-    volumes:
-      - postgres:/var/lib/postgresql/data
     restart: always
 
   sidekiq:
     build: ./api-server
     command: bundle exec sidekiq
     env_file:
-      - ./api-server/.env
+      - ./api-server/.prod.env
     depends_on:
       - redis
 
@@ -50,6 +48,5 @@ services:
 
 volumes:
   bundle:
-  postgres:
   sites:
   caddypath:

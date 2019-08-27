@@ -34,19 +34,21 @@ class AdHocQuery < ApplicationRecord
     AdHocQuery.new(nodes: nodes, queries: queries)
   end
 
-  def self.find_list(node_key)
+  def self.timed_out
     AdHocQuery
-      .includes(:nodes)
-      .joins(:nodes)
-      .where('nodes.node_key = ?', node_key)
-      .where(has_run: false)
-      .first
+      .where(completed: false)
+      .where(timed_out: false)
+      .where('created_at < ?', 1.minute.ago)
+  end
+
+  def is_complete?
+    self.nodes.map(&:id) == AdHocResult.where(ad_hoc_query_id: self.id).map(&:node_id).uniq
   end
 
   def as_json(_options = {})
     {
       id: id,
-      has_run: has_run,
+      completed: completed,
       queries: queries,
       created_at: created_at,
       updated_at: updated_at

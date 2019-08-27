@@ -8,6 +8,8 @@ services:
       - ./api-server/.secret.env
 
   db:
+    volumes:
+      - postgres:/var/lib/postgresql/data
     env_file:
       - ./api-server/.prod.env
       - ./api-server/.secret.env
@@ -25,3 +27,6 @@ services:
         target: /app/server.crt
       - caddypath:/var/caddy
       - sites:/var/www/sites
+
+volumes:
+  postgres:

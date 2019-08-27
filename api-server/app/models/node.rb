@@ -60,4 +60,14 @@ class Node < ApplicationRecord
   def self.from_node_key(params)
     Node.find_by(node_key: params[:node_key])
   end
+
+  def pending_adhoc_queries
+    incomplete_queries = self
+      .ad_hoc_queries
+      .where(completed: false)
+      .order(:created_at)
+
+    incomplete_queries
+      .select{|q| AdHocResult.where(ad_hoc_query_id: q.id).where(node_id: self.id).empty? }
+  end
 end

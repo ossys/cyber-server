@@ -27,6 +27,10 @@ services:
         source: ./api-server/app/assets/server.crt
         target: /app/server.crt
 
+  redis:
+    ports:
+      - "6379:6379"
+
   node_one:
     build:
       context: ./osqueryd

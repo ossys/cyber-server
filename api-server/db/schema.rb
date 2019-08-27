@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(version: 2019_07_29_153710) do
   enable_extension "plpgsql"
 
   create_table "ad_hoc_queries", force: :cascade do |t|
-    t.boolean "has_run", default: false
-    t.boolean "has_completed", default: false
+    t.boolean "completed", default: false
+    t.boolean "timed_out", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

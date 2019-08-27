@@ -1,0 +1,5 @@
+# config/schedule.yml
+
+find_timed_out_queries:
+  cron: "* * * * *"
+  class: "InactiveQueryWorker"

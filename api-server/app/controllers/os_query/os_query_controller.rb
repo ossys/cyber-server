@@ -4,7 +4,7 @@ module OsQuery
   class OsQueryController < ApplicationController
     include RenderHelper
 
-    before_action :check_set_node_key, except: :enroll
+    before_action :check_set_node, except: :enroll
 
     skip_before_action :authenticate
 
@@ -32,24 +32,18 @@ module OsQuery
     def dist_read
       response = { queries: {} }
 
-      if (aq = AdHocQuery.find_list(@node_key))
+      if (aq = @node.pending_adhoc_queries.first)
         aq.queries.each_with_index do |q, i|
           response[:queries]["#{q.name}-#{i}-#{aq.id}"] = q.body
         end
-        aq.has_run = true
-        if aq.save
-          render json: response, status: 200
-        else
-          render status: 200
-          #log the error: TODO
-        end
+        render json: response, status: 200
       else
         render status: 200
       end
     end
 
     def dist_write
-      results = Hash.new {|h,k| h[k] = Hash.new(&h.default_proc) }
+      results = {}
       statuses = dist_write_params[:statuses].to_h
       queries = dist_write_params[:queries].to_h
 
@@ -66,13 +60,13 @@ module OsQuery
 
       results.each do |ad_hoc_query_id, values|
         ad_hoc_query = AdHocQuery.find(ad_hoc_query_id)
-        unless ad_hoc_query.has_completed
+        unless ad_hoc_query.completed
           node = Node.find_by(node_key: @node_key)
           data = { queries: values[:queries], statuses: values[:statuses] }
           ahqr = AdHocResult.new(
             ad_hoc_query: ad_hoc_query, node: node, node_key: @node_key, data: data)
-          if ahqr.save
-            ad_hoc_query.has_completed = true
+          if ahqr.save && ad_hoc_query.is_complete?
+            ad_hoc_query.completed = true
             ad_hoc_query.save!
           end
         end
@@ -90,10 +84,11 @@ module OsQuery
 
     private
 
-    def check_set_node_key
+    def check_set_node
       if node_key_params[:node_key].present?
         if Node.find_by(node_key: node_key_params[:node_key])
           @node_key = node_key_params[:node_key]
+          @node = Node.find_by(node_key: @node_key)
           return
         else
           return render status: 200, json: { "node_invalid": true }

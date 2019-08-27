@@ -3,8 +3,8 @@
 class CreateAdHocQueries < ActiveRecord::Migration[6.0]
   def change
     create_table :ad_hoc_queries do |t|
-      t.boolean :has_run, default: false
-      t.boolean :has_completed, default: false
+      t.boolean :completed, default: false
+      t.boolean :timed_out, default: false
       t.timestamps
     end
 
