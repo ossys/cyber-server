@@ -53,7 +53,7 @@ module Frontend
       self.osqi_uuid           = osquery_info['uuid']
       self.osqi_version        = osquery_info['version']
 
-      self.config = Config.first
+      self.config = Config.for_os(self.os_name)
     end
 
     def self.generate_key
