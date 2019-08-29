@@ -3,7 +3,8 @@ cyber.ossys.com:80 {
 
 cyber.ossys.com:443 {
   gzip
-  tls contact@ossys.com
+  #tls contact@ossys.com
+  tls self_signed
 
   proxy /api http://server:5000/ {
     transparent
