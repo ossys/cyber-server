@@ -1,10 +1,8 @@
 --force=true
---host_identifier=$(hostname)
---verbose=true
---debug
---tls_dump=true
-
+--host_identifier=hostname
 --tls_hostname=master
+
+--disable_events=false
 
 --tls_server_certs=/etc/osquery/cacert
 --enroll_secret_path=/etc/osquery/secret
@@ -24,4 +22,4 @@
 --distributed_tls_max_attempts=3
 
 --logger_plugin=tls
---logger_tls_period=120
+--logger_tls_period=20

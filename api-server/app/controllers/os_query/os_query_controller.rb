@@ -5,12 +5,11 @@ module OsQuery
     include RenderHelper
 
     before_action :check_set_node, except: :enroll
-
     skip_before_action :authenticate
 
     def enroll
       if ENV['OSQUERY_ENROLL_SECRET'] == enroll_params[:enroll_secret]
-        @node = Node.new
+        @node = ::Frontend::Node.new
         @node.build_from_params(enroll_params)
       end
 
@@ -25,7 +24,7 @@ module OsQuery
 
     # can't be named `config` due to rails conflict
     def osq_config
-      node = Node.from_node_key(node_key_params)
+      node = ::Frontend::Node.from_node_key(node_key_params)
       render json: node.config.data.to_json
     end
 
@@ -59,11 +58,11 @@ module OsQuery
       end
 
       results.each do |ad_hoc_query_id, values|
-        ad_hoc_query = AdHocQuery.find(ad_hoc_query_id)
+        ad_hoc_query = ::Frontend::AdHocQuery.find(ad_hoc_query_id)
         unless ad_hoc_query.completed
           node = Node.find_by(node_key: @node_key)
           data = { queries: values[:queries], statuses: values[:statuses] }
-          ahqr = AdHocResult.new(
+          ahqr = ::Frontend::AdHocResult.new(
             ad_hoc_query: ad_hoc_query, node: node, node_key: @node_key, data: data)
           if ahqr.save && ad_hoc_query.is_complete?
             ad_hoc_query.completed = true
@@ -74,8 +73,8 @@ module OsQuery
     end
 
     def log
-      puts "received log. key: #{params[:node_key]}, type: #{params[:log_type]}"
-      render status: 200
+      LogParserWorker.perform_async(@node.id, log_params.to_h)
+      render status: 200, json: {}
     end
 
     def test
@@ -86,9 +85,9 @@ module OsQuery
 
     def check_set_node
       if node_key_params[:node_key].present?
-        if Node.find_by(node_key: node_key_params[:node_key])
+        if ::Frontend::Node.find_by(node_key: node_key_params[:node_key])
           @node_key = node_key_params[:node_key]
-          @node = Node.find_by(node_key: @node_key)
+          @node = ::Frontend::Node.find_by(node_key: @node_key)
           return
         else
           return render status: 200, json: { "node_invalid": true }
@@ -117,7 +116,10 @@ module OsQuery
     end
 
     def log_params
-      params.permit(:node_key, :log_type, data: [{}])
+      params.permit(
+        :node_key, :log_type, data: [
+          :name, :action, :hostIdentifier, :calendarTime, :unixTime, :epoch, :counter, :columns => {}
+        ])
     end
 
     def dist_read_params

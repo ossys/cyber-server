@@ -4,21 +4,14 @@
     "logger_plugin": "tls,filesystem",
     "logger_path": "C:\\ProgramData\\osquery\\log",
     "disable_logging": "false",
-    "utc": "true"
+    "schedule_splay_percent": "10"
   },
 
   "schedule": {
-    "system_info": {
-      "query": "SELECT hostname, cpu_brand, physical_memory FROM system_info;",
-      "interval": 3600
+    "network_addresses": {
+      "query": "select * from interface_addresses where address not like '%veth%' and address not like '%docker%'",
+      "interval": 5
     }
-  },
-
-  "decorators": {
-    "load": [
-      "SELECT uuid AS host_uuid FROM system_info;",
-      "SELECT user AS username FROM logged_in_users ORDER BY time DESC LIMIT 1;"
-    ]
   },
 
   "feature_vectors": {
@@ -61,5 +54,5 @@
       0.0,      0.0,      0.0,      0.0,       0.0,      0.0,      0.0,
       0.0,      0.0,      0.0
     ]
-  }    
+  }
 }

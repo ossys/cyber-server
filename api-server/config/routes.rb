@@ -15,6 +15,9 @@ Rails.application.routes.draw do
 
     namespace :frontend do
       resources :nodes, only: %i[index show]
+      get '/nodes/:id/usb_logs', to: 'usb_logs#index'
+      get '/nodes/:id/interface_addresses', to: 'interface_addresses#index'
+
       resources :configs, only: %i[index show create update destroy]
 
       resources :ad_hoc_queries, only: %i[index create show destroy]

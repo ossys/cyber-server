@@ -4,10 +4,11 @@ class InactiveQueryWorker
   include Sidekiq::Worker
 
   def perform(*args)
-    if (timed_out_queries = AdHocQuery.timed_out)
-      timed_out_queries
-        .in_batches
-        .update_all(timed_out: true)
-    end
+    timed_out_queries = ::Frontend::AdHocQuery.timed_out
+    return if timed_out_queries.nil? || timed_out_queries.empty?
+
+    timed_out_queries
+      .in_batches
+      .update_all(timed_out: true)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_29_153710) do
+ActiveRecord::Schema.define(version: 2019_08_28_232142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,18 @@ ActiveRecord::Schema.define(version: 2019_07_29_153710) do
     t.jsonb "data", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "interface_addresses", force: :cascade do |t|
+    t.string "interface"
+    t.string "address"
+    t.string "mask"
+    t.string "broadcast"
+    t.string "point_to_point"
+    t.string "interface_type"
+    t.string "unixtime"
+    t.bigint "node_id"
+    t.index ["node_id"], name: "index_interface_addresses_on_node_id"
   end
 
   create_table "nodes", force: :cascade do |t|
@@ -104,6 +116,25 @@ ActiveRecord::Schema.define(version: 2019_07_29_153710) do
     t.string "result", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "usb_logs", force: :cascade do |t|
+    t.string "action"
+    t.string "subclass"
+    t.string "model"
+    t.string "model_id"
+    t.string "protocol"
+    t.string "removable"
+    t.string "serial"
+    t.string "usb_class"
+    t.string "usb_port"
+    t.string "usb_address"
+    t.string "vendor"
+    t.string "vendor_id"
+    t.string "version"
+    t.string "unixtime"
+    t.bigint "node_id"
+    t.index ["node_id"], name: "index_usb_logs_on_node_id"
   end
 
   create_table "users", force: :cascade do |t|
